@@ -1,4 +1,4 @@
-import numpy as np
+import logging
 
-def qpmr():
-    print("Starting qpmr")
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
