@@ -16,6 +16,28 @@ def grid_size_heuristic(region, *args, **kwargs) -> float:
     logger.debug(f"Grid size not specified, setting as ds={r} (solved by heuristic)")
     return r
 
+def find_roots(x, y):
+    s = np.abs(np.diff(np.sign(y))).astype(bool)
+    return x[:-1][s] + np.diff(x)[s]/(np.abs(y[1:][s]/y[:-1][s])+1)
+
+def create_callable(coefs, delays):
+    degree, num_delays = np.shape(coefs)
+    def f(z):
+        shape = np.shape(z)
+        value = np.zeros(shape)
+        _memory = np.ones(shape)
+        delay_grid = np.exp(
+            (np.tile(complex_grid, (len(delays), 1, 1))
+            * (-delays[:, np.newaxis, np.newaxis]))
+        )
+        for d in range(degree):       
+            func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
+            _memory *= complex_grid # _memory = np.multiply(_memory, complex_grid)
+        return z
+    
+    return f
+
+
 def qpmr(region: list, coefs, delays, **kwargs):
     """
 
@@ -39,6 +61,11 @@ def qpmr(region: list, coefs, delays, **kwargs):
     # defaults
     e = kwargs.get("e", 1e-6)
     ds = kwargs.get("ds", grid_size_heuristic(region))
+
+    # roots precission
+    max_iterations = kwargs.get("max_iterations", 10)
+
+
 
     assert isinstance(e, float) and e > 0.0, "error 'e' numerical accuracy"
     assert isinstance(ds, float) and ds > 0.0, "error 'ds' grid stepsize"
@@ -72,37 +99,64 @@ def qpmr(region: list, coefs, delays, **kwargs):
 
     ## finding contours
     quad_contour = plt.contour(real_range, imag_range, func_value_real, levels=[0])
-    segments_real = quad_contour.allsegs
-    quad_contour = plt.contour(real_range, imag_range, func_value_imag, levels=[0])
-    segments_imag = quad_contour.allsegs
+    zero_level_contours = quad_contour.allsegs[0] # only level-0 polygons
+    # quad_contour = plt.contour(real_range, imag_range, func_value_imag, levels=[0])
+    # segments_imag = quad_contour.allsegs
 
     # detecting intersection points
-    print(segments_real)
-    print(type(segments_real))
+    #print(segments_real)
+    if zero_level_contours is None:
+        raise ValueError("No 0-level contours found")
+    
+    roots = []
+    for polygon in zero_level_contours:
+        polygon_complex = polygon[:,0] + 1j*polygon[:,1]
+        
+        # calculate value for all of these points
+        delay_terms = np.exp(
+            (np.tile(polygon_complex, (len(delays), 1))
+             * (-delays[:, np.newaxis]))
+        )
+        polygon_func_value = np.zeros(polygon_complex.shape, dtype=polygon_complex.dtype)
+        _memory = np.ones(polygon_complex.shape, dtype=polygon_complex.dtype)
+        for d in range(degree):       
+            polygon_func_value += np.sum(delay_terms * _memory[np.newaxis, :] * coefs[:, d][:, np.newaxis], axis=0)
+            _memory *= polygon_complex # _memory = np.multiply(_memory, complex_grid)
+        
+        # find all intersections
+        polygon_func_imag = np.imag(polygon_func_value)
+        roots.append(find_roots(polygon_complex, polygon_func_imag))
+
+    roots = np.hstack(roots)
+
+    # TODO Newton method
+
     # continue on line 332
 
-    return func_value, complex_grid
+    return func_value, complex_grid, roots
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
+    
     region = [-10, 2, 0, 30]
     delays = np.array([0.0, 1.0])
     coefs = np.array([[0, 1],[1, 0]])
 
-    value, complex_grid = qpmr(region, coefs, delays)
+    value, complex_grid, roots = qpmr(region, coefs, delays)
 
     def h(s):
         return s + np.exp(-s)
 
-    if False:
+    if True:
         plt.figure()
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')
+        plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r")
 
-        plt.figure()
-        plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')
-        plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(h(complex_grid)), levels=[0], colors='green')
+        #plt.figure()
+        #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')
+        #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(h(complex_grid)), levels=[0], colors='green')
 
         plt.show()
 
