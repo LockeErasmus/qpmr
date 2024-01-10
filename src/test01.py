@@ -16,6 +16,9 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     
     region = [-10, 2, 0, 30]
+    # region = [1.4, 2.6, 1.0, 4.0] # region with no real 0-level contours
+    # region = [-8, -4, 0, 30] # contours present, no crossings -> no roots
+
     delays = np.array([0.0, 1.0])
     coefs = np.array([[0, 1],[1, 0]])
 
@@ -25,8 +28,8 @@ if __name__ == "__main__":
         return s + np.exp(-s)
 
     if True:
-        complex_grid = meta.get("complex_grid")
-        value = meta.get("func_value")
+        complex_grid = meta.complex_grid
+        value = meta.z_value
         plt.figure()
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')

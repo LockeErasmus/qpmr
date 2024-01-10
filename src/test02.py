@@ -33,8 +33,8 @@ if __name__ == "__main__":
         return s + np.exp(-s)
 
     if True:
-        complex_grid = meta.get("complex_grid")
-        value = meta.get("func_value")
+        complex_grid = meta.complex_grid
+        value = meta.z_value
         plt.figure()
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
         plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')

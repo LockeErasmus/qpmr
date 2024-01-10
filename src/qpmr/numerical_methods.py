@@ -9,7 +9,7 @@ import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
-def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max_iterations: int=100):
+def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max_iterations: int=2):
     """ Implementation of original numerical method from QPmR v2    
     """
     x = np.copy(x0)

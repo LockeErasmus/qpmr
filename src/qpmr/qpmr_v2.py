@@ -1,23 +1,22 @@
 """
 QPmR v2 implementation
 """
+from functools import cached_property
 import logging
-from typing import Callable
 
-import matplotlib.pyplot as plt
+import contourpy
 import numpy as np
+import numpy.typing as npt
 
 from .numerical_methods import numerical_newton
 
 logger = logging.getLogger(__name__)
 
-
 def grid_size_heuristic(region, *args, **kwargs) -> float:
     r = (region[1] - region[0]) * (region[3] - region[2]) / 1000.
-    logger.debug(f"Grid size not specified, setting as ds={r} (solved by heuristic)")
     return r
 
-def find_roots(x, y):
+def find_roots(x, y) -> npt.NDArray:
     """ Finds 0-level crossings by checking consequent difference in signs, ie
     
     s[k] is True if sign(y[k]), sign(y[k+1]) is either `+-` or `-+`
@@ -42,7 +41,25 @@ def create_vector_callable(coefs, delays):
         return val
     return func
 
-def qpmr(region: list, coefs, delays, **kwargs):
+
+class QpmrOutputMetadata:
+    # TODO maybe dataclass? but solve cached property
+    real_range: npt.NDArray = None
+    imag_range: npt.NDArray = None
+    z_value: npt.NDArray = None
+
+    contours_real: list[npt.NDArray] = None
+    contours_imag: list[npt.NDArray] = None
+
+    @cached_property
+    def complex_grid(self) -> npt.NDArray:
+        return 1j*self.imag_range.reshape(-1, 1) + self.real_range
+
+def qpmr(
+        region: list[float, float, float, float],
+        coefs: npt.NDArray,
+        delays: npt.NDArray,
+        **kwargs) -> tuple[npt.NDArray | None, QpmrOutputMetadata]:
     """
 
     Args:
@@ -53,6 +70,8 @@ def qpmr(region: list, coefs, delays, **kwargs):
         **kwargs:
             e (float) - computation accuracy, default = 1e-6
             ds (float) - grid step, default obtained by heuristic
+
+            newton_max_iterations: int
     
     """
 
@@ -67,13 +86,15 @@ def qpmr(region: list, coefs, delays, **kwargs):
     ds = kwargs.get("ds", None)
     if not ds:
         ds = grid_size_heuristic(region)
+        logger.debug(f"Grid size not specified, setting as ds={ds} (solved by heuristic)")
     
-    # roots precission
-    max_iterations = kwargs.get("max_iterations", 10)
-
-
+    # roots precission - newtom method
+    newton_max_iterations = kwargs.get("newton_max_iterations", 100)
+    # TODO add others as well
     assert isinstance(e, float) and e > 0.0, "error 'e' numerical accuracy"
     assert isinstance(ds, float) and ds > 0.0, "error 'ds' grid stepsize"
+
+    metadata = QpmrOutputMetadata()
 
     # extend region and create meshgrid (original algorithm) -> TODO move to function
     bmin=region[0] - 3*ds
@@ -82,8 +103,11 @@ def qpmr(region: list, coefs, delays, **kwargs):
     wmax=region[3] + 3*ds
     real_range = np.arange(bmin, bmax, ds)
     imag_range = np.arange(wmin, wmax, ds)
-    complex_grid = 1j*imag_range.reshape(-1, 1) + real_range
-
+    # add to metadata
+    metadata.real_range = real_range
+    metadata.imag_range = imag_range
+    complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
+    
     # values of function -> TODO move to separate function
     degree, num_delays = coefs.shape # TODO variables keep, move up and rework
     func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
@@ -94,23 +118,24 @@ def qpmr(region: list, coefs, delays, **kwargs):
         (np.tile(complex_grid, (len(delays), 1, 1)) # N times complex grid, [0,:,:] is complex grid for delay1 etc.
          * (-delays[:, np.newaxis, np.newaxis])) # power of broadcasting [delay1, delay2, ..., delayN]
     )
-    for d in range(degree):       
+    for d in range(degree):
         func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
         _memory *= complex_grid 
+
+    metadata.z_value = func_value
 
     func_value_real = np.real(func_value)
     # func_value_imag = np.imag(func_value) # not needed in original algorithm
 
-    ## finding contours
-    quad_contour = plt.contour(real_range, imag_range, func_value_real, levels=[0])
-    zero_level_contours = quad_contour.allsegs[0] # only level-0 polygons
-    # quad_contour = plt.contour(real_range, imag_range, func_value_imag, levels=[0])
-    # segments_imag = quad_contour.allsegs
+    ## finding contours via contourpy library
+    contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value_real) # TODO other kwargs can go here
+    zero_level_contours = contour_generator.lines(0.0) # find all 0 level curves
 
-    if zero_level_contours is None: # TODO no raise error but return None?
-        raise ValueError("No 0-level contours found")
+    if not zero_level_contours: # list is empty, i.e []
+        logger.warning(f"No real 0-level contours were found in region {region}.")
+        return None, metadata
     
-    # detecting intersection points
+    # detecting intersection points 
     roots = []
     for polygon in zero_level_contours:
         polygon_complex = polygon[:,0] + 1j*polygon[:,1]
@@ -128,7 +153,14 @@ def qpmr(region: list, coefs, delays, **kwargs):
         
         # find all intersections
         polygon_func_imag = np.imag(polygon_func_value)
-        roots.append(find_roots(polygon_complex, polygon_func_imag))
+        crossings = find_roots(polygon_complex, polygon_func_imag)
+        if crossings.size:
+            roots.append(crossings)
+    
+    if not roots: # no crossings found
+        logger.warning(f"No crossings (root guesses found)") # TODO better message
+        return None, metadata
+    
     roots = np.hstack(roots)
 
     # apply numerical method to increase precission
@@ -140,9 +172,8 @@ def qpmr(region: list, coefs, delays, **kwargs):
             & (roots.imag >= region[2]) & (roots.imag <= region[3])) # Im bounds
     roots = roots[mask]
 
-    # TODO - decide what to do with metadata --> dataclass ?
-    metadata = {
-        "func_value": func_value,
-        "complex_grid": complex_grid,
-    }
+    # TODO case where roots found, but are outside of defined region
+
+    # TODO argument check
+
     return roots, metadata
