@@ -9,6 +9,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton
+from .argument_principle import argument_principle
 
 logger = logging.getLogger(__name__)
 
@@ -75,13 +76,14 @@ def qpmr(
     
     """
 
-    assert len(region) == 4, "TODO"
+    assert len(region) == 4, "region is expected to be of a form [Re_min, Re_max, Im_min, Im_max]"
+    assert region[0] < region[1], f"region boundaries on real axis has to fullfill {region[0]} < {region[1]}"
+    assert region[2] < region[3], f"region boundaries on imaginary axis has to fullfill {region[2]} < {region[3]}"
 
     # TODO assert coefs dimensions, match delays dimensions
     # TODO assert degree >= 0, meaning coefs has at least 1 column
     
     # defaults
-    logger.debug(f"defined kwargs {kwargs}")
     e = kwargs.get("e", 1e-6)
     ds = kwargs.get("ds", None)
     if not ds:
@@ -174,6 +176,12 @@ def qpmr(
 
     # TODO case where roots found, but are outside of defined region
 
-    # TODO argument check
+    # TODO check the distance from the first approximation of the roots is
+    # less then 2*ds - as matlab line 629
+
+    # TODO argument check - as matlab line 651
+    # implement separate function - as matlab line 1009
+    n = argument_principle(func, region, ds/10., eps=e/100.) # ds and eps obtained from original matlab implementation
+
 
     return roots, metadata

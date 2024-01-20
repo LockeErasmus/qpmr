@@ -9,7 +9,7 @@ import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
-def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max_iterations: int=2):
+def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max_iterations: int=100):
     """ Implementation of original numerical method from QPmR v2    
     """
     x = np.copy(x0)
@@ -30,14 +30,3 @@ def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max
 
 def secant(x0, x1=None, tolerance=1e-7, max_iterations=20):
     raise NotImplementedError("Secant method is yet to be implemented")
-
-
-
-
-
-
-
-
-
-
-

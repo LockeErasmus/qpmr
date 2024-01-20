@@ -50,17 +50,17 @@ We will follow 3 examples from the 2014 paper.
 ### Example 1
 
 Find all the roots of the quassi-polynomial
-$$
-h(s) = s + e^{-s}
-$$
+
+$$h(s) = s + e^{-s}$$
+
 located in region $\mathbb{D} = \{\beta+j\omega| -10 \leq \beta\leq 2;~0 \leq \omega \leq 30\}$.
-$$
+```math
 \begin{array}{c|cc|c}
 \alpha_{j} & s^{0} & s^{1} & p_j(s)e^{-s\alpha_j} \\ \hline
 0 & 0 & 1 & s \\
 1 & 1 & 0 & e^{-s} \\
 \end{array}
-$$
+```
 
 ```python
 delays = np.array([0., 1])
