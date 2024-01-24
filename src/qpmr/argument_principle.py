@@ -33,7 +33,7 @@ def argument_principle(func: Callable, region, ds, eps) -> float:
                     region[0] + 1j*np.flip(linspace_imag)]
     contour_steps = np.r_[np.full(shape=(n_steps_real,), fill_value=step_real),
                           np.full(shape=(n_steps_imag,), fill_value=1j*step_imag),
-                          np.full(shape=(n_steps_real,), fill_value=step_real),
+                          np.full(shape=(n_steps_real,), fill_value=-step_real),
                           np.full(shape=(n_steps_imag,), fill_value=-1j*step_imag)]
 
     # calculate d func / dz

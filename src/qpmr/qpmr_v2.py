@@ -160,14 +160,14 @@ def qpmr(
             roots.append(crossings)
     
     if not roots: # no crossings found
-        logger.warning(f"No crossings (root guesses found)") # TODO better message
+        logger.warning(f"No crossings contour crossings found!") # TODO better message
         return None, metadata
     
-    roots = np.hstack(roots)
+    roots0 = np.hstack(roots)
 
     # apply numerical method to increase precission
     func = create_vector_callable(coefs, delays)
-    roots = numerical_newton(func, roots) # TODO inplace=True?
+    roots = numerical_newton(func, roots0) # TODO inplace=True?
 
     # filter out roots that are not in predefined region
     mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
@@ -178,10 +178,21 @@ def qpmr(
 
     # TODO check the distance from the first approximation of the roots is
     # less then 2*ds - as matlab line 629
+    dist = np.abs(roots - roots0)
+    num_dist_violations = (dist > 2*ds).sum()
+    if num_dist_violations > 0:
+        logger.warning("2*delta s violated") # TODO message
+        # TODO follow-up behaviour
+    
+    
+
+
 
     # TODO argument check - as matlab line 651
     # implement separate function - as matlab line 1009
     n = argument_principle(func, region, ds/10., eps=e/100.) # ds and eps obtained from original matlab implementation
+    logger.info(f"Using argument principle: {n}, real number of roots {len(roots)}")
 
-
+    _roots_str = '    \n'.join([str(r) for r in roots])
+    logger.info(f"roots: {_roots_str}")
     return roots, metadata
