@@ -22,8 +22,12 @@ def find_roots(x, y) -> npt.NDArray:
     
     s[k] is True if sign(y[k]), sign(y[k+1]) is either `+-` or `-+`
 
+    removing duplicates: if `+-+` or `-+-` sequence is present -> only first occurence
+
     """
     s = np.abs(np.diff(np.sign(y))).astype(bool)
+    duplicates = s[:-1] & s[1:] # duplicates mask
+    s[1:] = np.bitwise_xor(s[1:], duplicates) # removes duplicates
     return x[:-1][s] + np.diff(x)[s]/(np.abs(y[1:][s]/y[:-1][s])+1)
 
 def create_vector_callable(coefs, delays):
@@ -168,6 +172,8 @@ def qpmr(
     # apply numerical method to increase precission
     func = create_vector_callable(coefs, delays)
     roots = numerical_newton(func, roots0) # TODO inplace=True?
+    if False: # if newton did not converge
+        ... # run QPmR with ds=ds/3
 
     # filter out roots that are not in predefined region
     mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
@@ -178,21 +184,32 @@ def qpmr(
 
     # TODO check the distance from the first approximation of the roots is
     # less then 2*ds - as matlab line 629
-    dist = np.abs(roots - roots0)
+    dist = np.abs(roots - roots0[mask])
     num_dist_violations = (dist > 2*ds).sum()
     if num_dist_violations > 0:
         logger.warning("2*delta s violated") # TODO message
         # TODO follow-up behaviour
+        # run QPmR with ds=ds/3
     
-    
-
-
-
     # TODO argument check - as matlab line 651
     # implement separate function - as matlab line 1009
     n = argument_principle(func, region, ds/10., eps=e/100.) # ds and eps obtained from original matlab implementation
-    logger.info(f"Using argument principle: {n}, real number of roots {len(roots)}")
+    smaller_region = [region[0]+ds/10., region[1]-ds/10., region[2]+ds/10.,region[3]-ds/10.]
+    n_smaller = argument_principle(func, smaller_region, ds/10., eps=e/100.)
+    if len(roots) == n or len(roots) == n_smaller:
+        # ok, continue
+        pass
+    else:
+        logger.info(f"Argument principle: {n}, real number of roots {len(roots)}")
+        logger.info(f"Argument principle (smaller Region): {n_smaller}, real number of roots {len(roots)}")
+        # TODO follow-up behaviour
+        # run QPmR with ds=ds/3
+        modified_kwargs = kwargs.copy()
+        modified_kwargs['ds'] = ds / 3.0
+        return qpmr(region, coefs, delays, **modified_kwargs)
+
+
 
     _roots_str = '    \n'.join([str(r) for r in roots])
-    logger.info(f"roots: {_roots_str}")
+    #logger.info(f"roots: {_roots_str}")
     return roots, metadata
