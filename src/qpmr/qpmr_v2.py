@@ -3,6 +3,7 @@ QPmR v2 implementation
 """
 from functools import cached_property
 import logging
+from typing import Callable
 
 import contourpy
 import numpy as np
@@ -30,7 +31,7 @@ def find_roots(x, y) -> npt.NDArray:
     s[1:] = np.bitwise_xor(s[1:], duplicates) # removes duplicates
     return x[:-1][s] + np.diff(x)[s]/(np.abs(y[1:][s]/y[:-1][s])+1)
 
-def create_vector_callable(coefs, delays):
+def create_vector_callable(coefs, delays) -> Callable:
     degree, num_delays = np.shape(coefs)
     def func(z):
         shape = np.shape(z)
