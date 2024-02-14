@@ -26,7 +26,7 @@ located in the complex plane region $\mathbb{D} \in \mathbb{C}$, with the
 boundaries $\beta_{min} \leq \Re(\mathbb{D}) \leq \beta_{max}$ and 
 $\omega_{min} \leq \Im(\mathbb{D}) \leq \omega_{max}$, where $\alpha_{0}=0 < \alpha_{1} < \dots < \alpha_n$ are the delays and $p_j(s) = \sum\limits_{k=0}^{d}c_{j,k} s^{k}$ where $d = \max\{degree(p_j(s))|j=0,\dots, n\}$.
 
-The following table may help undertand how is quasi-polynomial representation:
+The following table may clarify quasi-polynomial representation:
 
 ```math
 \begin{array}{c|cccc|c}
@@ -34,7 +34,7 @@ The following table may help undertand how is quasi-polynomial representation:
 \alpha_{0} & c_{0,0} & c_{0,1} & \dots & c_{0,d} &  \sum\limits_{k=0}^{d}c_{0,k} s^{k} e^{-s\alpha_0} \\
 \alpha_{1} & c_{1,0} & c_{1,1} & \dots & c_{1,d} &  \sum\limits_{k=0}^{d}c_{1,k} s^{k} e^{-s\alpha_1} \\
 \vdots & \vdots & \vdots & \ddots & \vdots &  \vdots \\
-\alpha_{n} & c_{n,0} & c_{n,1} & \dots & c_{n,d} &  \sum\limits_{k=0}^{d}c_{n,k} s^{k} e^{-s\alpha_n} \\
+\alpha_{n} & c_{n,0} & c_{n,1} & \dots & c_{n,d} &  \sum\limits_{k=0}^{d}c_{n,k} s^{k} e^{-s\alpha_n}
 \end{array}
 ```
 
