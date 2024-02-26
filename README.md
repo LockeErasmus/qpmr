@@ -16,7 +16,9 @@
     <br/>
 </p>
 
-This package is python implementation of `QPmR v2` algorithm described in [[1]](#1). 
+This package is python implementation of `QPmR v2` algorithm described in [[1]](#1). **PLEASE NOTE THAT IT IS STILL IN DEVELOPMENT**
+
+## Introduction
 
 The `QPmR v2` algorithm is designed to find all roots of the quassi-polynomial
 
@@ -58,7 +60,7 @@ located in region $\mathbb{D} = [\beta+j\omega: -10 \leq \beta\leq 2;~0 \leq \om
 \begin{array}{c|cc|c}
 \alpha_{j} & s^{0} & s^{1} & p_j(s)e^{-s\alpha_j} \\ \hline
 0 & 0 & 1 & s \\
-1 & 1 & 0 & e^{-s} \\
+1 & 1 & 0 & e^{-s}
 \end{array}
 ```
 
@@ -156,7 +158,7 @@ Clone repository
 git clone https://github.com/LockeErasmus/qpmr.git
 ```
 
-install from source
+install from source with `-e`
 ```bash
 pip install -e qpmr
 ```
