@@ -16,7 +16,7 @@
     <br/>
 </p>
 
-This package is python implementation of `QPmR v2` algorithm described in [[1]](#1). **PLEASE NOTE THAT IT IS STILL IN DEVELOPMENT**
+This package is python implementation of `QPmR v2` algorithm described in [[1]](#1), [[2]](#2). **This project is still in development**
 
 ## Introduction
 
@@ -41,8 +41,10 @@ The following table may clarify quasi-polynomial representation:
 ```
 
 <a id="1">[1]</a>
-Vyhlidal, T. and Zitek, P. (2014). 
-QPmR-Quasi-polynomial root-finder: Algorithm update and examples
+Vyhlidal, T., and Zítek, P. (2009). Mapping based algorithm for large-scale computation of quasi-polynomial zeros. IEEE Transactions on Automatic Control, 54(1), 171-177.
+
+<a id="2">[2]</a>
+Vyhlidal, T. and Zitek, P. (2014). QPmR-Quasi-polynomial root-finder: Algorithm update and examples
 Editors: Vyhídal T., Lafay J.F., Sipahi R., Sringer 2014.
 
 ### Examples
@@ -123,7 +125,21 @@ logger.addHandler(handler)
 
 ## Citing this work
 
-Cite the following work
+Please, cite the following article
+```
+@article{vyhlidal2009mapping,
+  title={Mapping based algorithm for large-scale computation of quasi-polynomial zeros},
+  author={Vyhlidal, Tomas and Z{\'\i}tek, Pavel},
+  journal={IEEE Transactions on Automatic Control},
+  volume={54},
+  number={1},
+  pages={171--177},
+  year={2009},
+  publisher={IEEE}
+}
+```
+
+Alternatively, this chapter of book
 ```
 @incollection{vyhlidal2014qpmr,
   title={QPmR-Quasi-polynomial root-finder: Algorithm update and examples},
@@ -134,8 +150,6 @@ Cite the following work
   publisher={Springer}
 }
 ```
-
-
 
 ## Installation
 
