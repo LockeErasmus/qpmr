@@ -114,6 +114,7 @@ def qpmr(
     metadata.real_range = real_range
     metadata.imag_range = imag_range
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
+    logger.debug(f"Size of the array via 'numpy .nbytes' {complex_grid.nbytes} bytes")
     
     # values of function -> TODO move to separate function
     degree, num_delays = coefs.shape # TODO variables keep, move up and rework
