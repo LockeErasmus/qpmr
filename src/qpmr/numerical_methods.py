@@ -22,11 +22,13 @@ def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max
         x += step
         if max_res <= 0.1 * tolerance: # TODO why 0.1 - just taken from original implementation
             logger.debug(f"Numerical Newton converged in {i+1}/{max_iterations} steps, last MAX(|res|) = {max_res}")
+            converged = True
             break
     if i == max_iterations - 1:
         # TODO also add warnings.warn(.) ?
         logger.warning(f"Numerical Newton did not converged in {max_iterations} steps, last MAX(|res|) = {max_res}")
-    return x
+        converged = False
+    return x, converged
 
 def secant(x0, x1=None, tolerance=1e-7, max_iterations=20):
     raise NotImplementedError("Secant method is yet to be implemented")

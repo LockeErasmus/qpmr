@@ -76,8 +76,8 @@ def qpmr(
         **kwargs:
             e (float) - computation accuracy, default = 1e-6
             ds (float) - grid step, default obtained by heuristic
-
-            newton_max_iterations: int
+            newton_max_iterations (int)
+            grid_nbytes: int, set None to just not have threshold, default 250e6 bytes
     
     """
 
@@ -108,13 +108,24 @@ def qpmr(
     bmax=region[1] + 3*ds
     wmin=region[2] - 3*ds
     wmax=region[3] + 3*ds
+
+    # estimate size of array in bytes np.complex128
+    nbytes = ((bmax - bmin) // ds + 1) * ((wmax - wmin) // ds + 1) * 16 # 128 / 8 = bytes per complex number
+    nbytes_max = kwargs.get("nbytes_max", 250_000_000)
+    if nbytes_max is None:
+        logger.warning("Disabled nbytes check - this may trigger swapping etc ...")
+    elif nbytes > nbytes_max:
+        raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. "
+                          "Specify smaller region, or increase `grid_nbytes`."))
+    else:
+        logger.debug(f"Estimated size of complex grid = {nbytes} bytes")
+
+    # construct grid, add to metadata
     real_range = np.arange(bmin, bmax, ds)
     imag_range = np.arange(wmin, wmax, ds)
-    # add to metadata
     metadata.real_range = real_range
     metadata.imag_range = imag_range
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
-    logger.debug(f"Size of the array via 'numpy .nbytes' {complex_grid.nbytes} bytes")
     
     # values of function -> TODO move to separate function
     degree, num_delays = coefs.shape # TODO variables keep, move up and rework
@@ -166,32 +177,39 @@ def qpmr(
             roots.append(crossings)
     
     if not roots: # no crossings found
-        logger.warning(f"No crossings contour crossings found!") # TODO better message
+        logger.warning(f"No contour crossings found!") # TODO better message
         return None, metadata
     
     roots0 = np.hstack(roots)
 
     # apply numerical method to increase precission
     func = create_vector_callable(coefs, delays)
-    roots = numerical_newton(func, roots0) # TODO inplace=True?
-    if False: # if newton did not converge
-        ... # run QPmR with ds=ds/3
+    roots, converged = numerical_newton(func, roots0, max_iterations=newton_max_iterations)
+    if not converged: # if newton did not converge
+        logger.info("Newton did not converged, ds <- ds / 3")
+        modified_kwargs = kwargs.copy()
+        modified_kwargs['ds'] = ds / 3.0
+        return qpmr(region, coefs, delays, **modified_kwargs)
 
     # filter out roots that are not in predefined region
     mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
             & (roots.imag >= region[2]) & (roots.imag <= region[3])) # Im bounds
     roots = roots[mask]
 
-    # TODO case where roots found, but are outside of defined region
-
+    # Case where roots found, but are outside of defined region
+    if roots.size == 0:
+        logger.warning(f"No roots found in region!")
+        return None, metadata
+    
     # TODO check the distance from the first approximation of the roots is
     # less then 2*ds - as matlab line 629
     dist = np.abs(roots - roots0[mask])
     num_dist_violations = (dist > 2*ds).sum()
     if num_dist_violations > 0:
-        logger.warning("2*delta s violated") # TODO message
-        # TODO follow-up behaviour
-        # run QPmR with ds=ds/3
+        logger.info("After Newton, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
+        modified_kwargs = kwargs.copy()
+        modified_kwargs['ds'] = ds / 3.0
+        return qpmr(region, coefs, delays, **modified_kwargs)
     
     # TODO argument check - as matlab line 651
     # implement separate function - as matlab line 1009
@@ -204,14 +222,8 @@ def qpmr(
     else:
         logger.info(f"Argument principle: {n}, real number of roots {len(roots)}")
         logger.info(f"Argument principle (smaller Region): {n_smaller}, real number of roots {len(roots)}")
-        # TODO follow-up behaviour
-        # run QPmR with ds=ds/3
         modified_kwargs = kwargs.copy()
         modified_kwargs['ds'] = ds / 3.0
         return qpmr(region, coefs, delays, **modified_kwargs)
 
-
-
-    _roots_str = '    \n'.join([str(r) for r in roots])
-    #logger.info(f"roots: {_roots_str}")
     return roots, metadata
