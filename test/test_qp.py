@@ -4,7 +4,7 @@ Set of tests quassipolynomials
 
 import numpy as np
 
-from qpmr.quassipoly import QuassiPolynomial
+from qpmr.quasipoly import QuasiPolynomial
 
 def test_minimal_form_1():
     delays = np.array([0.0, 1.0, 0.0, 1.0, 2.5])
@@ -17,7 +17,7 @@ def test_minimal_form_1():
     minimal_delays = np.array([0., 1.])
     minimal_coefs = np.array([[0, 3],
                               [4, 0.]])
-    qp = QuassiPolynomial(coefs, delays)
+    qp = QuasiPolynomial(coefs, delays)
     qp_minimal = qp.minimal_form()
 
     assert qp_minimal.degree == 2
