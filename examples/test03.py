@@ -5,7 +5,8 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 
-from qpmr import qpmr
+from qpmr import qpmr, distribution_diagram
+from qpmr.quasipoly import QuasiPolynomial
 
 
 _ = logging.getLogger("matplotlib").setLevel(logging.ERROR)
@@ -76,7 +77,6 @@ if __name__ == "__main__":
         plt.subplot(122)
         plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r", alpha=0.4)
         plt.scatter(np.real(matlab_roots), np.imag(matlab_roots), marker="x", color="b")
-        
 
         #plt.figure()
         #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')

@@ -7,6 +7,7 @@ import numpy as np
 
 from qpmr import qpmr, distribution_diagram
 from qpmr.quasipoly import QuasiPolynomial
+from qpmr.distribution import concave_envelope_inplace
 
 _ = logging.getLogger("matplotlib").setLevel(logging.ERROR)
 _ = logging.getLogger("PIL").setLevel(logging.ERROR)
@@ -27,23 +28,23 @@ if __name__ == "__main__":
                       [0, 6.7, 0, 0, 0, -1.1, 0, 1, 0],
                       [29.1, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, -1.8, 0.001, 0, 0, -12.8, 0, 1.7, 0.2]])
-    roots, meta = qpmr(region, coefs, delays)
 
-    def h(s):
-        return s + np.exp(-s)
+    qp = QuasiPolynomial(coefs, delays)
+    x, y, mask = distribution_diagram(qp)
+
+    # x = np.arange(10)
+    # y = np.arange(10)
+    # mask = np.full_like(x, fill_value=False, dtype=bool)
+    # concave_envelope_inplace(x,y,mask)
 
     if True:
-        complex_grid = meta.complex_grid
-        value = meta.z_value
+
         plt.figure()
-
-        plt.subplot(121)
-        plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
-        plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')
-        plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r")
-
-        plt.subplot(122)
-        plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r", alpha=0.4)
+        plt.plot(x,y, "ro")
+        plt.plot(x[mask], y[mask], "x-")
+        
+        
+        #plt.plot(qp.delays, qp.degree - qp.poly_degrees, "o")      
 
         #plt.figure()
         #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')
