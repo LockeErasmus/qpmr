@@ -5,9 +5,8 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 
-from qpmr import qpmr, distribution_diagram
+from qpmr import distribution_diagram
 from qpmr.quasipoly import QuasiPolynomial
-from qpmr.distribution import concave_envelope_inplace
 
 _ = logging.getLogger("matplotlib").setLevel(logging.ERROR)
 _ = logging.getLogger("PIL").setLevel(logging.ERROR)

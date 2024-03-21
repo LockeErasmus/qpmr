@@ -20,7 +20,7 @@ This package is python implementation of `QPmR v2` algorithm described in [[1]](
 
 ## Introduction
 
-The `QPmR v2` algorithm is designed to find all roots of the quassi-polynomial
+The `QPmR v2` algorithm is designed to find all roots of the quasi-polynomial
 
 $$h(s) = \sum\limits_{j=0}^{n} p_{j}(s) e^{-s\alpha_j}$$
 
@@ -53,7 +53,7 @@ We will follow 3 examples from the 2014 paper. Please not that `matplotlib` is n
 
 ### Example 1
 
-Find all the roots of the quassi-polynomial
+Find all the roots of the quasi-polynomial
 
 $$h(s) = s + e^{-s}$$
 

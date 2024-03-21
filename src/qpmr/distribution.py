@@ -11,12 +11,17 @@ from .quasipoly import QuasiPolynomial
 
 logger = logging.getLogger(__name__)
 
-def concave_envelope_inplace(x, y, mask) -> None:
-    """ builds concave envelope out of x, y points
+def concave_envelope_inplace(x: npt.NDArray, y: npt.NDArray, mask: npt.NDArray) -> None:
+    """ inplace fills the mask with True values representing concave envelope
+
+    Args:
+        x (array): x coordinates (thetas) 
+        y (array): y coordinates (degrees)
+        mask (array): mask 
     """
     n = len(mask)
     logger.info(f"{n=}, {x=}, {y=}, {mask=}")
-    if n == 0: # empty mask
+    if n == 0: # is_empty mask
         return
     elif n == 1:
         mask[0] = True
@@ -52,17 +57,16 @@ def distribution_diagram(qp: QuasiPolynomial, assume_minimal=False) -> tuple[npt
         - thetas (ndarray): max(delays) - delays in ascending order
         - degrees (ndarray): according degree of polynomial
         - mask (ndarray): mask determining concave envelope
-
     """
     # convert to minimal, sorted form
     if not assume_minimal:
         qp = qp.minimal_form()
 
-    # TODO non-empty
-    if qp.empty:
+    # TODO non-is_empty
+    if qp.is_empty:
         return
     
-    # qp is not empty, at least one delay, degree pair
+    # qp is not is_empty, at least one delay, degree pair
     delays = qp.delays # positive numbers
     degrees = qp.poly_degrees
 

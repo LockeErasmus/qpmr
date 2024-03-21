@@ -1,6 +1,6 @@
 """
 TODO:
-    1. empty QP
+    1. is_empty QP
 """
 
 import logging
@@ -34,35 +34,62 @@ def poly_degree(poly: npt.NDArray, order="reversed") -> int:
 class QuasiPolynomial:
 
     def __init__(self, coefs: npt.NDArray, delays) -> None:
+        
         # TODO checks 2D, match n, ...
+        # coefs has to be 2D, if empty, shape has to be (0,0)
 
         self.coefs = coefs
         self.delays = delays
+
     
     def __call__(self, s: complex):
         ... # TODO
         # consider also, value, value1D, value2D, valueND
+
+    @property
+    def is_empty(self) -> bool:
+        """ Checks if qp empty, equivalent to p(s) = 0 """
+        logger.debug(f"size={self.coefs.size}  |  {not bool(self.coefs.size)}")
+        if self.coefs.size:
+            return False
+        else:
+            return True
     
     @property
     def degree(self) -> int:
         """ maximal degree polynomials """
-        if self.empty:
+        if self.is_empty:
             return 0
         else:
             return self.coefs.shape[1] - 1
     
     @property
     def m(self):
-        """ number of powers = degree + 1 for non empty """
-        return self.coefs.shape[1]
+        """ number of powers = degree + 1 for non is_empty """
+        if self.is_empty:
+            return 0
+        else:
+            return self.coefs.shape[1]
 
     @property
     def n(self):
         """ number of delays """
-        return self.coefs.shape[0]
+        if self.is_empty:
+            return 0
+        else:
+            return self.coefs.shape[0]
+    
+    @property
+    def is_constant(self) -> bool:
+        pass
+
+    @property
+    def is_polynomial(self) -> bool:
+        pass
     
     @property
     def is_retarded(self) -> bool:
+        """ checks if qp is of retarded type """
         pass
 
     @property
@@ -71,13 +98,7 @@ class QuasiPolynomial:
 
     @property
     def is_advanced(self) -> bool:
-        return np.any(self.delays < 0.0)
-
-    @property
-    def empty(self) -> bool:
-        """ equivalent to p(s) = 0
-        """
-        return False # TODO
+        pass
 
     def minimal_form(self) -> 'QuasiPolynomial':
         """ Converts QuasiPolynomial to minimal sorted form with no duplicate delays
@@ -105,18 +126,28 @@ class QuasiPolynomial:
     
     @property
     def poly_degrees(self) -> npt.NDArray:
-        # TODO empty
+        # TODO is_empty
         return np.apply_along_axis(poly_degree, 1, self.coefs)
     
     def __neg__(self):
         return QuasiPolynomial(-self.coefs, self.delays)
     
     def __add__(self, other):
-        if isinstance(other, float):
-            pass
+        if isinstance(other, (int, float)):
+            const_qp = QuasiPolynomial(
+                np.array([[other]], dtype=self.coefs.dtype),
+                np.array([0.], dtype=self.delays.dtype),
+            )
+            return self.__add__(const_qp)
         elif isinstance(other, QuasiPolynomial):
-            degree = max(self.degree, other.degree)
-            coefs = 0 
+            if self.m >= other.m:
+                a = np.zeros(shape=(other.n, self.m), dtype=other.coefs.dtype)
+                a[:other.coefs.shape[0], :other.coefs.shape[1]] = other.coefs
+                coefs = np.r_[self.coefs, a]
+                delays = np.r_[self.delays, other.delays]
+                return QuasiPolynomial(coefs, delays)
+            else:
+                return other.__add__(self)
         else:
             raise Exception("Not possible to add TODO")
     
@@ -127,7 +158,7 @@ class QuasiPolynomial:
         raise NotImplementedError("")
 
     def __mul__(self, other):
-        if isinstance(other, float):
+        if isinstance(other, (int, float)):
             return QuasiPolynomial(other * self.coefs, self.delays)
         else:
             raise NotImplementedError("mul")
