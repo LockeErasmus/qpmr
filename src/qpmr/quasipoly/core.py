@@ -7,6 +7,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
+import scipy.signal
 
 
 logger = logging.getLogger(__name__)
@@ -35,7 +36,8 @@ class QuasiPolynomial:
 
     def __init__(self, coefs: npt.NDArray, delays) -> None:
         
-        # TODO checks 2D, match n, ...
+        # TODO ASSERT 2D
+        # TODO match n, ...
         # coefs has to be 2D, if empty, shape has to be (0,0)
 
         self.coefs = coefs
@@ -58,10 +60,7 @@ class QuasiPolynomial:
     @property
     def degree(self) -> int:
         """ maximal degree polynomials """
-        if self.is_empty:
-            return 0
-        else:
-            return self.coefs.shape[1] - 1
+        return self.m - 1
     
     @property
     def m(self):
@@ -81,24 +80,24 @@ class QuasiPolynomial:
     
     @property
     def is_constant(self) -> bool:
-        pass
+        raise NotImplementedError("")
 
     @property
     def is_polynomial(self) -> bool:
-        pass
+        raise NotImplementedError("")
     
     @property
     def is_retarded(self) -> bool:
         """ checks if qp is of retarded type """
-        pass
+        raise NotImplementedError("")
 
     @property
     def is_neutral(self) -> bool:
-        pass
+        raise NotImplementedError("")
 
     @property
     def is_advanced(self) -> bool:
-        pass
+        raise NotImplementedError("")
 
     def minimal_form(self) -> 'QuasiPolynomial':
         """ Converts QuasiPolynomial to minimal sorted form with no duplicate delays
@@ -152,16 +151,30 @@ class QuasiPolynomial:
             raise Exception("Not possible to add TODO")
     
     def __sub__(self, other):
-        raise NotImplementedError("")
+        return self.__add__(self, -other)
     
     def __pow__(self, other):
         raise NotImplementedError("")
 
     def __mul__(self, other):
+        """ """
         if isinstance(other, (int, float)):
             return QuasiPolynomial(other * self.coefs, self.delays)
+        elif isinstance(other, QuasiPolynomial):
+            # TODO emptyness
+            coef_list = []
+            delay_list = []
+            for j in range(other.m):
+                coef_list.append(
+                    scipy.signal.convolve2d(self.coefs, other.coefs[j:j+1,:], mode="fill", boundary="fill")
+                )
+                delay_list.append(self.delays + other.delays[j])
+            
+            new_coefs = np.concatenate(coef_list, axis=0)
+            new_delays = np.concatenate(delay_list)
+            return QuasiPolynomial(new_coefs, new_delays)
         else:
-            raise NotImplementedError("mul")
+            raise NotImplementedError(f"Not possible to raise quasi-polynomial to {type(other)}")
     
     def __radd__(self, other):
         return self.__add__(other)
