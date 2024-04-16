@@ -29,7 +29,7 @@ if __name__ == "__main__":
     delays = np.array([0.0, 1.0])
     coefs = np.array([[0, 1],[1, 0]])
 
-    roots, meta = qpmr(region, coefs, delays)
+    roots, meta = qpmr(region, coefs, delays, numerical_method="secant")
     matlab_roots = np.array([-0.3181 + 1.3372j,
                              -2.0623 + 7.5886j,
                              -2.6532 +13.9492j,

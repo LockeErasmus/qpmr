@@ -30,7 +30,7 @@ if __name__ == "__main__":
     if True:
         complex_grid = meta.complex_grid
         value = meta.z_value
-        real_value = np.clip(np.real(value), -10, 10)
+        real_value = np.tanh(np.real(value))
         
         fig = plt.figure()
         ax = plt.axes(projection='3d')

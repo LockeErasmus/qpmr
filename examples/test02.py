@@ -27,7 +27,7 @@ if __name__ == "__main__":
                       [0, 6.7, 0, 0, 0, -1.1, 0, 1, 0],
                       [29.1, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, -1.8, 0.001, 0, 0, -12.8, 0, 1.7, 0.2]])
-    roots, meta = qpmr(region, coefs, delays)
+    roots, meta = qpmr(region, coefs, delays, numerical_method="secant")
 
     def h(s):
         return s + np.exp(-s)
