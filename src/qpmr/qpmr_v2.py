@@ -9,10 +9,12 @@ import contourpy
 import numpy as np
 import numpy.typing as npt
 
-from .numerical_methods import numerical_newton
+from .numerical_methods import numerical_newton, secant
 from .argument_principle import argument_principle
 
 logger = logging.getLogger(__name__)
+
+IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
 def grid_size_heuristic(region, *args, **kwargs) -> float:
     r = (region[1] - region[0]) * (region[3] - region[2]) / 1000.
@@ -76,7 +78,10 @@ def qpmr(
         **kwargs:
             e (float) - computation accuracy, default = 1e-6
             ds (float) - grid step, default obtained by heuristic
-            newton_max_iterations (int)
+            numerical_method (str) - numerical method for increasing precission of roots,
+                default "newton"
+            numerical_method_kwargs (dict) - keyword arguments for numerical method
+            newton_max_iterations (int) TODO
             grid_nbytes: int, set None to just not have threshold, default 250e6 bytes
     
     """
@@ -95,8 +100,13 @@ def qpmr(
         ds = grid_size_heuristic(region)
         logger.debug(f"Grid size not specified, setting as ds={ds} (solved by heuristic)")
     
-    # roots precission - newtom method
-    newton_max_iterations = kwargs.get("newton_max_iterations", 100)
+    # numerical method
+    numerical_method = kwargs.get("numerical_method", "newton")
+    numerical_method_kwargs = kwargs.get("numerical_method_kwargs", dict())
+
+    if numerical_method not in IMPLEMENTED_NUMERICAL_METHODS:
+        raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
+    
     # TODO add others as well
     assert isinstance(e, float) and e > 0.0, "error 'e' numerical accuracy"
     assert isinstance(ds, float) and ds > 0.0, "error 'ds' grid stepsize"
@@ -182,11 +192,15 @@ def qpmr(
     
     roots0 = np.hstack(roots)
 
-    # apply numerical method to increase precission
+    # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
     func = create_vector_callable(coefs, delays)
-    roots, converged = numerical_newton(func, roots0, max_iterations=newton_max_iterations)
-    if not converged: # if newton did not converge
-        logger.info("Newton did not converged, ds <- ds / 3")
+    if numerical_method == "newton":
+        roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)
+    elif numerical_method == "secant":
+        roots, converged = secant(func, roots0, **numerical_method_kwargs)
+    
+    if not converged: # if numerical method did not converge
+        logger.info(f"'{numerical_method}' did not converged, ds <- ds / 3")
         modified_kwargs = kwargs.copy()
         modified_kwargs['ds'] = ds / 3.0
         return qpmr(region, coefs, delays, **modified_kwargs)
@@ -206,7 +220,7 @@ def qpmr(
     dist = np.abs(roots - roots0[mask])
     num_dist_violations = (dist > 2*ds).sum()
     if num_dist_violations > 0:
-        logger.info("After Newton, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
+        logger.info("After numerical method, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
         modified_kwargs = kwargs.copy()
         modified_kwargs['ds'] = ds / 3.0
         return qpmr(region, coefs, delays, **modified_kwargs)
