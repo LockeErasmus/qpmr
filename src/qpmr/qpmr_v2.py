@@ -159,6 +159,7 @@ def qpmr(
     ## finding contours via contourpy library
     contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value_real) # TODO other kwargs can go here
     zero_level_contours = contour_generator.lines(0.0) # find all 0 level curves
+    metadata.contours_real = zero_level_contours
 
     if not zero_level_contours: # list is is_empty, i.e []
         logger.warning(f"No real 0-level contours were found in region {region}.")

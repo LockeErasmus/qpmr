@@ -60,17 +60,19 @@ def secant(func: Callable, x0, x1=None, tolerance: float=1e-8, max_iterations: i
         - converged (bool): True if successful, False otherwise
     """
     x = np.copy(x0)
+    eval_counter = 0
     if x1 is None:
         logger.debug(f"Initial x1 not provided and therefore will be solved by heuristic")
-        x1 = x + 10 * tolerance * (1. + 1j)
-        x = x - 10 * tolerance * (1. + 1j)
+        x1 = x + 2 * tolerance * (1. + 1j)
+        x = x - 2 * tolerance * (1. + 1j)
     
     for i in range(max_iterations):
         x2 = x1 - func(x1) * (x1 - x) / (func(x1) - func(x0))
+        eval_counter += 2
         x, x1 = x1, x2
         max_res = np.max(np.abs(x-x1))
         if max_res <= tolerance:
-            logger.debug(f"Secant converged in {i+1}/{max_iterations} steps, last MAX(|res|) = {max_res}")
+            logger.debug(f"Secant converged in {i+1}/{max_iterations} steps| func evals={eval_counter}, last MAX(|res|) = {max_res}")
             converged = True
             break
     
