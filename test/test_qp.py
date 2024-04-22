@@ -48,7 +48,6 @@ def test_minimal_form_empty_2():
 
 # arithmetic operations
 
-
 ## __add__
 def test_add_empty_1():
     """ empty QP + empty QP = empty QP"""

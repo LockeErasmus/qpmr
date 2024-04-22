@@ -34,7 +34,7 @@ def find_roots(x, y) -> npt.NDArray:
     return x[:-1][s] + np.diff(x)[s]/(np.abs(y[1:][s]/y[:-1][s])+1)
 
 def create_vector_callable(coefs, delays) -> Callable:
-    degree, num_delays = np.shape(coefs)
+    num_delays, degree = np.shape(coefs)
     def func(z):
         shape = np.shape(z)
         _memory = np.ones(shape, dtype=z.dtype)
@@ -138,7 +138,7 @@ def qpmr(
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
     
     # values of function -> TODO move to separate function
-    degree, num_delays = coefs.shape # TODO variables keep, move up and rework
+    num_delays, degree = coefs.shape # TODO variables keep, move up and rework
     func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
     _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
     ## prepare exp(-s*tau)
