@@ -1,21 +1,29 @@
 [project]
 name = "qpmr"
-version = "0.0.1"
-requires-python = ">= 3.8"
+dynamic = ["version"]
+requires-python = ">= 3.10"
 dependencies = [
     "numpy",
+    "contourpy",
 ]
 description = "Quassi polynomial root finder"
 authors = [
 	{name = "Adam Peichl", email = "adpeichl@gmail.com"}
 ]
 maintainers = [
-    { name ="Adam Peichl", email = "adpeichl@gmail.com" }
+    { name ="Adam Peichl", email = "adpeichl@gmail.com"}
 ]
 
 # TODO add classifiers
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 
-readme = {file = "README.txt", content-type = "text/markdown"}
+readme = {file = "README.md", content-type = "text/markdown"}
 license = {file = "LICENSE"}
 keywords = ["timedelay", "control", "stability", "DDE"]
 
@@ -26,3 +34,10 @@ Repository = "https://github.com/LockeErasmus/qpmr"
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["./src"]
+include = ["mymodule*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "qpmr.__version__"}
