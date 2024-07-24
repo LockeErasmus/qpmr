@@ -3,11 +3,11 @@
 <p align="center">
     <!-- <a href="https://github.com/LockeErasmus/qpmr/actions">
         <img alt="CI" src="https://github.com/LockeErasmus/qpmr/workflows/CI/badge.svg?event=push&branch=master">
-    </a>
+    </a> -->
     <a href="https://pypi.org/project/qpmr/">
-        <img alt="PyPI" src="https://img.shields.io/pypi/v/qpmr"> -->
-    <!-- </a>
-    <a href="https://qpmr.readthedocs.io/en/latest/?badge=latest">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/qpmr">
+    </a>
+    <!-- <a href="https://qpmr.readthedocs.io/en/latest/?badge=latest">
         <img src="https://readthedocs.org/projects/qpmr/badge/?version=latest" alt="Documentation Status" />
     </a> -->
     <a href="https://github.com/LockeErasmus/qpmr/blob/master/LICENSE">
@@ -16,7 +16,11 @@
     <br/>
 </p>
 
-This package is python implementation of `QPmR v2` algorithm described in [[1]](#1), [[2]](#2). **This project is still in development**
+QPmR is python implementation of *quasi-polynomial based rootfinder*, algorithm for finding roots of given quasi polynomial in given rectangular region in complex plane [[1]](#1), [[2]](#2).
+
+Please, keep in mind that thisproject is still **under development**.
+
+For original MATLAB® implementation, we refer to [this page](https://control.fs.cvut.cz/en/qpmr/).
 
 ## Introduction
 
@@ -154,6 +158,11 @@ Alternatively, this chapter of book
 ## Installation
 
 ### Installing with `pip`
+
+Using pipy
+```bash
+pip install qpmr
+```
 
 From github
 ```bash
