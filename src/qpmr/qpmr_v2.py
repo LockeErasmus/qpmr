@@ -95,11 +95,12 @@ def qpmr(
             e (float) - computation accuracy, default = 1e-6
             ds (float) - grid step, default obtained by heuristic
             numerical_method (str) - numerical method for increasing precission
-                of roots, default "newton"
+                of roots, default "newton", other options: "secant"
             numerical_method_kwargs (dict) - keyword arguments for numerical
                 method, default None
             grid_nbytes_max (int): maximal allowed size of grid in bytes,
-                default 250e6 bytes, set to None to disregard size of grid
+                default 250e6 bytes, set to None to disregard maximum size check
+                of the grid
     """
     # region check
     assert len(region) == 4, "region is expected to be of a form [Re_min, Re_max, Im_min, Im_max]"
