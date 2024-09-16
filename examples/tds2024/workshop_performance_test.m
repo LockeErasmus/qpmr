@@ -1,8 +1,11 @@
+% Script for MATLAB performance comparison for TDS 2024 workshop presentation
+% QPmR function from https://control.fs.cvut.cz/en/qpmr assumed to be imported
+
 clear all;
 close all;
 
-%region = [-2, 7, 0, 9]
-%region = [-10, 7, 0, 100]
+% region = [-2, 7, 0, 9]
+% region = [-10, 7, 0, 100]
 region = [-10, 7, 0, 200]
 delays = [0.0, 1.3, 3.5, 4.3]
 python_coefs = [[20.1, 0, 0.2, 1.5],

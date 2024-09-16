@@ -7,7 +7,6 @@ TODO:
 import logging
 from typing import Callable
 
-
 import numpy as np
 import numpy.typing as npt
 

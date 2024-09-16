@@ -81,5 +81,3 @@ def distribution_diagram(qp: QuasiPolynomial, assume_minimal=False) -> tuple[npt
     concave_envelope_inplace(thetas[::-1], degrees[::-1], mask)
     
     return thetas[::-1], degrees[::-1], mask
-
-

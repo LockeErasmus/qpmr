@@ -23,3 +23,12 @@ twine upload dist/*
 ```
 
 Do not forget to input correct API token.
+
+
+## Local install test
+
+Locally, create new virtual environment and
+
+```
+pip install .path/to/qpmr/package/qpmr-0.0.1.tar.gz
+```
