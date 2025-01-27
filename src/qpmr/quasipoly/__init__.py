@@ -1,1 +1,1 @@
-from .core import QuasiPolynomial
+from .core import QuasiPolynomial, minimal_representation

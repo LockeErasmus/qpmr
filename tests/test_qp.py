@@ -113,3 +113,43 @@ def test_add_1():
     assert np.all(qp_result.coefs == 2*coefs)
     assert np.all(qp_result.delays == delays)
 
+def test_eval_1():
+    delays = np.array([0.0, 1.0])
+    coefs = np.array([[0, 1], [1, 0]])
+    
+    qp = QuasiPolynomial(
+        coefs,
+        delays,
+    )
+    
+    assert qp.eval(0) == 1.0
+    assert np.all(qp.eval(np.array([0, 0, 0, 0])) == 1.0)
+    assert qp.eval(1j) == 1j + np.exp(-1j)
+    assert np.allclose(qp.eval(np.array([1j])), 0.54030231+0.15852902j, atol=1e-6)
+
+def test_derivative_1():
+    delays = np.array([0.0, 1.0])
+    coefs = np.array([[0, 1], [1, 0]])
+
+    correct_coefs = np.array([[1, 0],[-1, 0]], dtype=np.float64)
+
+    qp = QuasiPolynomial(
+        coefs,
+        delays,
+    )
+
+    qp_result = qp.derivative
+
+    assert np.all(qp_result.coefs == correct_coefs)
+    assert np.all(qp_result.delays == delays) # delays unchanged
+
+def test_derivative_2():
+    delays = np.array([0.0, 1.1])
+    coefs = np.array([[0, 1.5, 2.5],[1, 2., 3.]])
+    
+    qp = QuasiPolynomial(
+        coefs,
+        delays,
+    )
+
+    print(qp.derivative)

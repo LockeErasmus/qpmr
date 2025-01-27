@@ -1,4 +1,4 @@
 #matplotlib
 contourpy
-numpy<=1.26
+numpy
 scipy

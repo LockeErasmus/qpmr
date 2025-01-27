@@ -31,22 +31,10 @@ if __name__ == "__main__":
     qp = QuasiPolynomial(coefs, delays)
     x, y, mask = distribution_diagram(qp)
 
-    # x = np.arange(10)
-    # y = np.arange(10)
-    # mask = np.full_like(x, fill_value=False, dtype=bool)
-    # concave_envelope_inplace(x,y,mask)
+    import qpmr.plot
 
-    if True:
+    qpmr.plot.delay_distribution_basic(x, y, mask)
 
-        plt.figure()
-        plt.plot(x,y, "ro")
-        plt.plot(x[mask], y[mask], "x-")
-        
-        
-        #plt.plot(qp.delays, qp.degree - qp.poly_degrees, "o")      
+    plt.show()
 
-        #plt.figure()
-        #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')
-        #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(h(complex_grid)), levels=[0], colors='green')
 
-        plt.show()

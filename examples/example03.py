@@ -2,7 +2,6 @@
 Example 3
 """
 import logging
-
 import numpy as np
 
 region = [-10, 5, 0, 50]

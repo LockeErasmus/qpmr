@@ -12,6 +12,31 @@ import scipy.signal
 
 logger = logging.getLogger(__name__)
 
+def minimal_representation(coefs, delays):
+    """ Compresses quasipolynomial representation
+
+    """
+    logger.debug(f"Minimal form of QP\n{self.coefs}\n{self.delays}")
+    new_delays = np.unique(self.delays) # sorted 1D array of unique delays
+    new_n = new_delays.shape[0] # new number of delays
+    new_coefs = np.zeros(shape=(new_n, self.m), dtype=self.coefs.dtype)
+    
+    for i in range(new_n):
+        mask = self.delays == new_delays[i]
+        new_coefs[i, :] = np.sum(self.coefs[mask, :], axis=0, keepdims=False)
+
+    # remove all zero column or rows
+    mask = new_coefs == 0
+    col_mask = ~mask.all(0)
+    row_mask = ~mask.all(1) 
+    new_coefs = new_coefs[np.ix_(row_mask, col_mask)]
+    new_delays = new_delays[row_mask]
+
+    qp = QuasiPolynomial(new_coefs, new_delays)
+    logger.debug(f"Minimal form of QP\n{qp.coefs}\n{qp.delays}")
+
+    return qp
+
 def poly_degree(poly: npt.NDArray, order="reversed") -> int:
     """ assumes 1D array as input
     
@@ -34,7 +59,7 @@ def poly_degree(poly: npt.NDArray, order="reversed") -> int:
 
 class QuasiPolynomial:
 
-    def __init__(self, coefs: npt.NDArray, delays) -> None:
+    def __init__(self, coefs: npt.NDArray, delays: npt.NDArray) -> None:
         
         # TODO ASSERT 2D
         # TODO match n, ...
@@ -98,6 +123,21 @@ class QuasiPolynomial:
     @property
     def is_advanced(self) -> bool:
         raise NotImplementedError("")
+    
+    @property
+    def derivative(self) -> 'QuasiPolynomial':
+        # TODO solve empty and constant cases
+        if self.is_empty:
+            # derivative of empty quasi-polynomial is empty quasipolynomial
+            return QuasiPolynomial(
+                coefs=np.array([[]], dtype=self.coefs.dtype),
+                delays=np.array([], dtype=self.delays.dtype),
+            )
+        
+        order_vector = np.arange(1, self.m, 1)
+        coefs = - self.coefs * self.delays[:, np.newaxis]        
+        coefs[:, :-1] = coefs[:, :-1] + self.coefs[:, 1:] * order_vector    
+        return QuasiPolynomial(coefs=coefs, delays=self.delays)
 
     def minimal_form(self) -> 'QuasiPolynomial':
         """ Converts QuasiPolynomial to minimal sorted form with no duplicate delays
@@ -127,6 +167,27 @@ class QuasiPolynomial:
     def poly_degrees(self) -> npt.NDArray:
         # TODO is_empty
         return np.apply_along_axis(poly_degree, 1, self.coefs)
+    
+    def eval(self, x):
+        """ Evaluates quasipolynomial at x """
+        if isinstance(x, (int, float, complex)):
+            coefs = self.coefs # transpose rows - powers of s, cols - delays
+            delays = self.delays
+            powers = np.arange(0, coefs.shape[1], 1, dtype=int)
+            return np.inner(np.sum(coefs * np.power(x,  powers), axis=1), np.exp(-delays*x))
+        elif isinstance(x, np.ndarray):
+            coefs = self.coefs.T # transpose rows - powers of s, cols - delays
+            delays = self.delays
+            powers = np.arange(0, coefs.shape[0], 1, dtype=int)
+            dels = np.exp(- x[..., np.newaxis] * delays[np.newaxis, ...])
+            aa = dels[..., np.newaxis] * coefs.T[np.newaxis, ...] # (..., n_delays, order)
+            r = np.multiply(
+                np.power(x[..., np.newaxis], powers[np.newaxis, ...]), # (..., order)
+                np.sum(aa, axis=-2), # sum by n_delays axis -> (..., order)
+            )
+            return np.sum(r, axis=-1)
+        else:
+            raise ValueError(f"Unsupported type of x '{type(x)}'")
     
     def __neg__(self):
         return QuasiPolynomial(-self.coefs, self.delays)
