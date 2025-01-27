@@ -7,3 +7,6 @@ logger.addHandler(logging.NullHandler())
 
 from .qpmr_v2 import qpmr, QpmrOutputMetadata
 from .distribution import distribution_diagram
+from .utils import init_qpmr_logger
+from .utils import init_qpmr_logger as init_logger
+
