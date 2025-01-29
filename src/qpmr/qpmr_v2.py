@@ -123,13 +123,14 @@ def qpmr(
     assert coefs.shape[0] == delays.shape[0], "number of rows in coefs has to match number of delays"
     assert coefs.shape[1] > 0, "degree of quasipolynomial =/= 0"
 
-    # advise if region defined in uneconomical way
+    # advise if region defined in un-economical way
     if region[2] < 0 and region[3] > 0:
         im_max = max(abs(region[2]), abs(region[3])) # better im_max
         logger.warning(
-            (f"Spectra of quasi-polynomials are symetrical by real axis, "
-             f"specified region {region=} is unnecessarily large. It is advised"
-             f" to switch to region=[{region[0]}, {region[1]}, 0, {im_max}]")
+            (f"Spectra of quasi-polynomials with real coefficients are"
+             f"symetrical by real axis, specified region {region=} is "
+             f"unnecessarily large. It is advised to switch to "
+             f"region=[{region[0]}, {region[1]}, 0, {im_max}]")
         )
     
     # solve kwargs values

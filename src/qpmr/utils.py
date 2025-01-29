@@ -1,5 +1,7 @@
 """
 Set of utility functions
+TODO:
+    1. make sure handlers added only once?
 """
 
 import logging

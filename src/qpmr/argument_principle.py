@@ -12,8 +12,10 @@ import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
-def argument_principle(func: Callable, region: list[float, float, float, float], ds: float, eps: float) -> float:
-    """ Argument principle
+def argument_principle(func: Callable, region: list[float, float, float, float],
+                       ds: float, eps: float) -> float:
+    """ Evaluates number of roots in given rectangular region via argument
+    principle
 
     Args:
         func (Callable): vector-suitable callable for quassipolynomial

@@ -1,5 +1,5 @@
 """
-Set of tests quassipolynomials
+Set of tests quasipolynomials
 """
 
 import numpy as np
