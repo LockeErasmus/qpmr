@@ -5,7 +5,7 @@ import logging
 
 import numpy as np
 
-region = [-4.5, 2.5, 0, 300]
+region = [-4.5, 2.5, 0, 150]
 delays = np.array([24.99, 23.35, 19.9, 18.52, 13.32, 10.33, 8.52, 4.61, 0.0])
 coefs = np.array([[51.7, 0, 0, 0, 0, 0, 0, 0 , 0],
                     [1.5, -0.1, 0.04, 0.03, 0, 0, 0, 0, 0],
@@ -19,25 +19,16 @@ coefs = np.array([[51.7, 0, 0, 0, 0, 0, 0, 0 , 0],
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    from qpmr import qpmr
+    import qpmr
+    import qpmr.plot
 
-    logging.getLogger("matplotlib").setLevel(logging.ERROR)
-    logging.getLogger("PIL").setLevel(logging.ERROR)
-    logger = logging.getLogger("qpmr")
-    logging.basicConfig(level=logging.DEBUG)
-    
-    roots, meta = qpmr(region, coefs, delays)
+    logger = qpmr.init_logger(level="DEBUG")
+
+    roots, meta = qpmr.qpmr(region, coefs, delays)
     complex_grid = meta.complex_grid
     value = meta.z_value
-
-    plt.figure()
-
-    plt.subplot(121)
-    plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
-    plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')
-    plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r")
-
-    plt.subplot(122)
-    plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r", alpha=0.4)
-
+    
+    fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
+    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
+    qpmr.plot.roots_basic(roots, ax=ax2)
     plt.show()

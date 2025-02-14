@@ -1,8 +1,14 @@
 """
 Basic arithmetic operations on quasipolynomials
 -----------------------------------------------
-add
-multiplication
+As of now:
+    1. addition
+    2. multiplication
+
+Notes:
+    1. negative quasipolynomial can be constructed simply by `-coefs`
+    2. subtraction = addition + negative
+    3. division of two quasipolynomials is meromophic function -> not covered
 """
 
 import logging
@@ -26,6 +32,9 @@ def add(coefs1: npt.NDArray, delays1: npt.NDArray, coefs2: npt.NDArray, delays2:
             represents polynomial coefficients corresponding to delay)
         delays2 (array): vector definition of associated delays (each delay
             corresponds to row in `coefs`)
+        **kwargs:
+            compress (bool): if True compresses the result (converts to minimal
+                form), default True
 
     Returns:
         tuple containing:
@@ -61,6 +70,9 @@ def multiply(coefs1: npt.NDArray, delays1: npt.NDArray, coefs2: npt.NDArray, del
             represents polynomial coefficients corresponding to delay)
         delays2 (array): vector definition of associated delays (each delay
             corresponds to row in `coefs`)
+        **kwargs:
+            compress (bool): if True compresses the result (converts to minimal
+                form), default True
 
     Returns:
         tuple containing:

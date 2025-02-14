@@ -12,11 +12,26 @@ import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
-def _check_qp(coefs: npt.NDArray, delays: npt.NDArray):
+def _check_qp(coefs: npt.NDArray, delays: npt.NDArray, raise_error=True) -> bool:
     """ Checks if quasipolynomial definition is valid
-    
+
+    Args:
+        coefs (array): matrix definition of polynomial coefficients (each row
+            represents polynomial coefficients corresponding to delay)
+        delays (array): vector definition of associated delays (each delay
+            corresponds to row in `coefs`)
     """
-    raise NotImplementedError(".") # TODO
+    # TODO
+    assert isinstance(coefs, np.ndarray)
+    assert coefs.ndim == 2
+
+    assert isinstance(delays, np.ndarray)
+    assert coefs.ndim == 1
+
+    assert coefs.shape[0] == delays.shape[0]
+
+    return True
+    
 
 def _eval_scalar(coefs: npt.NDArray, delays: npt.NDArray, s: int|float|complex):
     """ Evaluates quasipolynomial on complex value

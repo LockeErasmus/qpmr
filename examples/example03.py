@@ -50,32 +50,17 @@ matlab_roots = np.array([-1.3134 + 0.0000j,
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    from qpmr import qpmr
+    import qpmr
+    import qpmr.plot
 
-    logging.getLogger("matplotlib").setLevel(logging.ERROR)
-    logging.getLogger("PIL").setLevel(logging.ERROR)
-    logger = logging.getLogger("qpmr")
-    logging.basicConfig(level=logging.DEBUG)
+    logger = qpmr.init_logger(level="DEBUG")
 
-    roots, meta = qpmr(region, coefs, delays)
-
-    logger.info(f"matlab number of roots: {len(matlab_roots)}, python: {len(roots)}")
-
+    roots, meta = qpmr.qpmr(region, coefs, delays)
     complex_grid = meta.complex_grid
     value = meta.z_value
-    plt.figure()
-
-    plt.subplot(121)
-    plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(value), levels=[0], colors='blue')
-    plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(value), levels=[0], colors='green')
-    plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r")
-
-    plt.subplot(122)
-    plt.scatter(np.real(roots), np.imag(roots), marker="o", color="r", alpha=0.4)
-    plt.scatter(np.real(matlab_roots), np.imag(matlab_roots), marker="x", color="b")
-
-    #plt.figure()
-    #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.real(h(complex_grid)), levels=[0], colors='blue')
-    #plt.contour(np.real(complex_grid), np.imag(complex_grid), np.imag(h(complex_grid)), levels=[0], colors='green')
-
+    
+    fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
+    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
+    qpmr.plot.roots_basic(roots, ax=ax2)
+    ax2.scatter(matlab_roots.real, matlab_roots.imag, marker="o", s=80, edgecolors="b", facecolors='none', label="matlab")
     plt.show()

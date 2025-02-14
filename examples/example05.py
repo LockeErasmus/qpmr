@@ -19,11 +19,12 @@ a_vector = np.array([
     -0.0108, 0.0029, -0.0031
 ])
 tau_vector = np.linspace(0, 0.45, 20)
-
+vec = np.full_like(a_vector, fill_value=0.0)
+vec[0] = gamma
+coefs = np.c_[a_vector, vec]
+delays = tau_vector
 s0 = -2.3844 + 1j* 23.7554
-
 region = (-100, 0, 0, 100)
-
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -32,19 +33,14 @@ if __name__ == "__main__":
 
     logger = qpmr.init_logger(level="DEBUG")
 
-    # coefs
-    vec = np.full_like(a_vector, fill_value=0.0)
-    vec[0] = gamma
-
-    coefs = np.c_[a_vector, vec]
-    delays = tau_vector
-
     roots, meta = qpmr.qpmr(region, coefs, delays)
     complex_grid = meta.complex_grid
     value = meta.z_value
     
-    fig, ax = plt.subplots(1,1,figsize=(12,6))
-    qpmr.plot.roots_basic(roots, ax=ax)
+    fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
+    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
+    qpmr.plot.roots_basic(roots, ax=ax2)
+    ax2.scatter([s0.real], [s0.imag], marker="o", s=80, edgecolors="b", facecolors='none', label="matlab")
     plt.show()
 
 
