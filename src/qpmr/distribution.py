@@ -60,7 +60,7 @@ def distribution_diagram(qp: QuasiPolynomial, assume_minimal=False) -> tuple[npt
     """
     # convert to minimal, sorted form
     if not assume_minimal:
-        qp = qp.minimal_form()
+        qp = qp.compressed
 
     # TODO non-is_empty
     if qp.is_empty:

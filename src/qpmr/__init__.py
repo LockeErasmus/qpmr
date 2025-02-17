@@ -10,3 +10,5 @@ from .distribution import distribution_diagram
 from .utils import init_qpmr_logger
 from .utils import init_qpmr_logger as init_logger
 
+from .quasipoly import QuasiPolynomial, TransferFunction
+
