@@ -29,6 +29,7 @@ if __name__ == "__main__":
                       [0, -1.8, 0.001, 0, 0, -12.8, 0, 1.7, 0.2]])
 
     qp = QuasiPolynomial(coefs, delays)
+    
     x, y, mask = distribution_diagram(qp)
 
     import qpmr.plot
