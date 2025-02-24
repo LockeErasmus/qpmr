@@ -173,14 +173,26 @@ class QuasiPolynomial:
     
     @classmethod
     def from_array(cls, coefs: npt.NDArray, dtype=np.float64):
-        """ Creates crepresetation of non-delayd polynomial
+        """ Creates crepresetation of non-delayed polynomial
         
         Assumes coefs=[a_0, a_1, ..., a_d] representing polynomial:
 
             p(s) = a_0 + a_1 * s + ... + a_d * s^d
         """
-        coefs = np.array(coefs)
-        return cls(np.array([coefs], dtype=dtype), np.array([0], dtype=dtype))
+        if isinstance(coefs, list):
+            coefs = np.array(coefs, dtype=dtype)
+        
+        # check dimensions
+        if coefs.ndim == 2:
+            # check it is (1,n)
+            if coefs.shape[0] > 1:
+                raise ValueError(f"Not possible to construct polynomial representation from {coefs}")
+        elif coefs.ndim == 1:
+            coefs = coefs[np.newaxis, :]
+        else:
+            raise ValueError(f"Not possible to construct polynomial representation from {coefs}")
+        
+        return cls(coefs, np.array([0], dtype=dtype))
 
 class TransferFunction:
 
@@ -214,7 +226,7 @@ class TransferFunction:
             raise ValueError(f"Not possible to add {other}")
     
     def __sub__(self, other):
-        return self.__add__(self, -other)
+        return self.__add__(-other)
     
     def __pow__(self, power: int):
         if isinstance(power, int):

@@ -11,10 +11,13 @@ import numpy.typing as npt
 from qpmr import QpmrOutputMetadata
 
 def roots_basic(roots: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
-    """ Plots roots into complex plane
+    """ Plots roots ('x') into complex plane
+
+    Roots have different color stable - green, margin of stability - blue
+    unstable - red
     
     Args:
-        roots (array): array of complex roots
+        roots (array): array of complex numbers, if None treated as empty array
         ax (Axes): matplotlib Axes object, if None new figure, ax is created
         **kwargs:
             tol (float): tolerance for assuming Re(root) ~ 0, defgault 1e-10
@@ -27,6 +30,9 @@ def roots_basic(roots: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
 
     if ax is None:
         _, ax = plt.subplots()
+    
+    if roots is None:
+        roots = np.array([], dtype=np.complex128)
     
     ax.axhline(0.0, linestyle="-.", linewidth=1, color="k")
     ax.axvline(0.0, linestyle="-.", linewidth=1, color="k")
@@ -64,6 +70,36 @@ def roots_basic(roots: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
     ax.set_xlabel(r"$\Re (\lambda)$")
     ax.set_ylabel(r"$\Im (\lambda)$")
 
+    return ax
+
+def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
+    """ Plots poles ('x', red) and zeros ('o', blue) to one plot
+
+    Args:
+        poles (array): array of complex numbers, if None treated as empty array
+        zeros (array): array of complex numbers, if None treated as empty array
+        ax (Axes): matplotlib Axes object to plot to, default None, if None
+            creates a new one
+        **kwargs:
+            ---
+
+    Returns:
+        ax (Axes): matplotlib Axes object
+    """
+    if ax is None:
+        _, ax = plt.subplots()
+    
+    if poles is None:
+        poles = np.array([], dtype=np.complex128)
+    if zeros is None:
+        zeros = np.array([], dtype=np.complex128)
+
+    ax.axhline(0.0, linestyle="-.", linewidth=1, color="k")
+    ax.axvline(0.0, linestyle="-.", linewidth=1, color="k")
+    ax.scatter(zeros.real, zeros.imag, marker="o", linewidths=0.5, color="b", s=10)
+    ax.scatter(poles.real, poles.imag, marker="x", color="r", linewidths=0.5)
+    ax.set_xlabel(r"$\Re (\lambda)$")
+    ax.set_ylabel(r"$\Im (\lambda)$")
     return ax
     
 def qpmr_basic(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: matplotlib.axes.Axes=None, **kwargs):

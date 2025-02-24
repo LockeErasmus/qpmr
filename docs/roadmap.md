@@ -5,15 +5,18 @@
  - `QuasiPoly` class with convenient interface and everything
  - `TransferFunction` class with convenient interface and everything
  - tests
+ - examples
 
 ## Tasks to consider implement
 
 - `qpmr/numba`
 - symbolical version of `qpmr`, `qpmr/symbolic` ?
 - root multiplicity
-- add aQPmR functionality to find regions free of roots
 - also version for fractional order
 - GPU acceleration
+- distribution diagram branches for delays
+- add aQPmR functionality to find regions free of roots
+- QPmR based root-locus
 
 ## Simillar python libraries
 
