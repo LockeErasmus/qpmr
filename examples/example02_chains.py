@@ -21,22 +21,14 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import qpmr
     import qpmr.plot
-
-    from qpmr.distribution import _distribution_diagram
-
     logger = qpmr.init_logger(level="DEBUG", format="%(name)s - %(message)s")
 
     roots, meta = qpmr.qpmr(region, coefs, delays)
-    mi, omega = _distribution_diagram(coefs, delays, assume_compressed=False)
+    mi, omega, _ = qpmr.chain_asymptotes(coefs, delays, assume_compressed=False)
 
-    beta = np.linspace(region[0], region[1], 1000)
-    fig, ax = plt.subplots(1,1)
-    for m, w in zip(mi, omega):
-        for wk in w: 
-            plt.plot(beta, wk*np.exp(-1/m*beta),"k--", alpha=0.4)
-    ax = qpmr.plot.roots_basic(roots, ax=ax)
-    plt.xlim(region[0], region[1])
-    plt.ylim(region[2], region[3])
+    ax = qpmr.plot.roots_basic(roots)
+    qpmr.plot.chain_asymptotes(mi, omega, region, ax=ax)
+    
     plt.show()
         
 

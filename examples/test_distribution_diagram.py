@@ -5,15 +5,12 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 
-from qpmr import distribution_diagram
-from qpmr.quasipoly import QuasiPolynomial
-
-_ = logging.getLogger("matplotlib").setLevel(logging.ERROR)
-_ = logging.getLogger("PIL").setLevel(logging.ERROR)
-logger = logging.getLogger("qpmr")
+import qpmr
+#from qpmr import distribution_diagram
+# from qpmr.quasipoly import QuasiPolynomial
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logger = qpmr.init_logger(level="DEBUG", format="%(name)s - %(message)s")
     
     region = [-4.5, 4, 0, 100]
     region = [-4.5, 2.5, 0, 300]
@@ -27,10 +24,8 @@ if __name__ == "__main__":
                       [0, 6.7, 0, 0, 0, -1.1, 0, 1, 0],
                       [29.1, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, -1.8, 0.001, 0, 0, -12.8, 0, 1.7, 0.2]])
-
-    qp = QuasiPolynomial(coefs, delays)
     
-    x, y, mask = distribution_diagram(qp)
+    x, y, mask = qpmr.distribution_diagram(coefs, delays)
 
     import qpmr.plot
 

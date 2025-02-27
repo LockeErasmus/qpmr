@@ -1,5 +1,9 @@
 # Roadmap
 
+## Concrete fixes
+
+- check if current implementation qpmr works for purely real roots
+
 ## Task to implement
  - quasipolynomial arithmetic operations
  - `QuasiPoly` class with convenient interface and everything
@@ -17,6 +21,11 @@
 - distribution diagram branches for delays
 - add aQPmR functionality to find regions free of roots
 - QPmR based root-locus
+- stability envelope - constult Can
+
+## Questions for Tomas
+
+- in the context of asymptotical properties of chains, can we obtain asymptote for neutral segment?
 
 ## Simillar python libraries
 
