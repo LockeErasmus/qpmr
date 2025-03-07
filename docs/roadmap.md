@@ -2,7 +2,7 @@
 
 ## Concrete fixes
 
-- check if current implementation qpmr works for purely real roots
+- truncating roots to certain precision ???
 
 ## Task to implement
  - quasipolynomial arithmetic operations
@@ -26,6 +26,8 @@
 ## Questions for Tomas
 
 - in the context of asymptotical properties of chains, can we obtain asymptote for neutral segment?
+- argument principle and zeros located precisely on boundaries
+- what is the reason for ds <- 1/3*ds rule
 
 ## Simillar python libraries
 

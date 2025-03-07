@@ -34,8 +34,13 @@ def find_roots(x, y) -> npt.NDArray:
 
     removing duplicates: if `+-+` or `-+-` sequence is present -> only first occurence
 
+    Args:
+        x (array): complex vector representing real contour
+        y (array): real vector representing Im( h(z) )
+
     """
-    s = np.abs(np.diff(np.sign(y))).astype(bool)
+    s = (np.abs(np.diff(np.sign(y))).astype(bool) # corssings when sign of Im changes
+         | np.abs(np.diff(np.sign(x.imag))).astype(bool)) # crossings of real contour with real axis
     duplicates = s[:-1] & s[1:] # duplicates mask
     s[1:] = np.bitwise_xor(s[1:], duplicates) # removes duplicates
     return x[:-1][s] + np.diff(x)[s]/(np.abs(y[1:][s]/y[:-1][s])+1)
@@ -62,6 +67,8 @@ class QpmrOutputMetadata:
     real_range: npt.NDArray = None
     imag_range: npt.NDArray = None
     z_value: npt.NDArray = None
+    roots0: npt.NDArray = None
+    roots_numerical: npt.NDArray = None
 
     contours_real: list[npt.NDArray] = None
     # contours_imag: list[npt.NDArray] = None
@@ -146,7 +153,7 @@ def qpmr(
     # kwargs check
     assert isinstance(e, float) and e > 0.0, "error 'e' numerical accuracy"
     assert isinstance(ds, float) and ds > 0.0, "error 'ds' grid stepsize"
-    if numerical_method not in IMPLEMENTED_NUMERICAL_METHODS:
+    if numerical_method and numerical_method not in IMPLEMENTED_NUMERICAL_METHODS:
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create metadata object
@@ -164,7 +171,7 @@ def qpmr(
         logger.warning("Disabled nbytes check - this may trigger swapping etc ...")
     elif nbytes > nbytes_max:
         raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. "
-                          "Specify smaller region, or increase `grid_nbytes_max`."))
+                           "Specify smaller region, or increase `grid_nbytes_max`."))
     else:
         logger.debug(f"Estimated size of complex grid = {nbytes} bytes")
 
@@ -191,20 +198,18 @@ def qpmr(
 
     metadata.z_value = func_value
 
-    func_value_real = np.real(func_value)
-    # func_value_imag = np.imag(func_value) # not needed in original algorithm
-
-    ## finding contours via contourpy library
-    contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value_real)
-    zero_level_contours = contour_generator.lines(0.0) # find all 0 level curves
+    ## finding contours via contourpy library, only 0-level real contours are necessary
+    contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value.real)
+    zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
     metadata.contours_real = zero_level_contours
 
     if not zero_level_contours: # list is is_empty, i.e []
         logger.warning(f"No real 0-level contours were found in region {region}.")
-        return None, metadata
+        return np.array([], dtype=np.complex128), metadata
     
-    # detecting intersection points 
+    # detecting intersection points
     roots = []
+    logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
     for polygon in zero_level_contours:
         polygon_complex = polygon[:,0] + 1j*polygon[:,1]
         
@@ -230,19 +235,29 @@ def qpmr(
         return None, metadata
     
     roots0 = np.hstack(roots)
+    metadata.roots0 = roots0
+    print(roots0)
 
     # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
     func = create_vector_callable(coefs, delays)
-    if numerical_method == "newton":
-        roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)
-    elif numerical_method == "secant":
-        roots, converged = secant(func, roots0, **numerical_method_kwargs)
-    
-    if not converged: # if numerical method did not converge
-        logger.info(f"'{numerical_method}' did not converged, ds <- ds / 3")
-        modified_kwargs = kwargs.copy()
-        modified_kwargs['ds'] = ds / 3.0
-        return qpmr(region, coefs, delays, **modified_kwargs)
+    if numerical_method:
+        if numerical_method == "newton":
+            roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)
+        elif numerical_method == "secant":
+            roots, converged = secant(func, roots0, **numerical_method_kwargs)
+        
+        metadata.roots_numerical = roots
+        
+        if not converged: # if numerical method did not converge
+            logger.info(f"'{numerical_method}' did not converged, ds <- ds / 3")
+            modified_kwargs = kwargs.copy()
+            modified_kwargs['ds'] = ds / 3.0
+            return qpmr(region, coefs, delays, **modified_kwargs)
+    else:
+        # TODO warning
+        roots = roots0
+
+    np.round(roots, decimals=10, out=roots) # TODO
 
     # filter out roots that are not in predefined region
     mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
@@ -252,7 +267,7 @@ def qpmr(
     # Case where roots found, but are outside of defined region
     if roots.size == 0:
         logger.warning(f"No roots found in region!")
-        return None, metadata
+        return None, metadata # TODO this return is bold, we should still apply argument principle here
     
     # Check the distance from the approximation of the roots less then 2*ds
     dist = np.abs(roots - roots0[mask])
