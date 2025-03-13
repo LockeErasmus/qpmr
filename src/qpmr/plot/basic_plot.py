@@ -3,14 +3,14 @@ Basic root plots
 ----------------
 """
 
-import matplotlib.axes
+from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 
 from qpmr import QpmrOutputMetadata
 
-def roots_basic(roots: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
+def roots_basic(roots: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots roots ('x') into complex plane
 
     Roots have different color stable - green, margin of stability - blue
@@ -72,7 +72,7 @@ def roots_basic(roots: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
 
     return ax
 
-def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: matplotlib.axes.Axes=None, **kwargs):
+def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots poles ('x', red) and zeros ('o', blue) to one plot
 
     Args:
@@ -102,7 +102,7 @@ def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: matplotlib.axes.Axes=N
     ax.set_ylabel(r"$\Im (\lambda)$")
     return ax
     
-def qpmr_basic(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: matplotlib.axes.Axes=None, **kwargs):
+def qpmr_basic(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: Axes=None, **kwargs):
     """ Root plot with real and imaginary 0-level curves
 
     Args:
@@ -123,9 +123,9 @@ def qpmr_basic(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: matplotlib.
     re_grid = np.real(meta.complex_grid)
     im_grid = np.imag(meta.complex_grid)
     ax.contour(re_grid, im_grid, np.real(meta.z_value), levels=[0],
-                colors='blue', alpha=0.5, linewidth=0.5)
+                colors='blue', alpha=0.5)
     ax.contour(re_grid, im_grid, np.imag(meta.z_value), levels=[0],
-                colors='green', alpha=0.5, linewidth=0.5)
+                colors='green', alpha=0.5)
     
     roots_real = np.real(roots)
     roots_imag = np.imag(roots)
