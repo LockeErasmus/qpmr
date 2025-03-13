@@ -166,3 +166,53 @@ def poly_degree(poly: npt.NDArray, order="reversed") -> int:
         degree -= 1
     logger.debug(f"{poly=} -> degree: {degree}")
     return degree
+
+def is_neutral(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
+    """ Checks if quasipolynomial is neutral
+    
+    Args:
+        coefs (array): matrix definition of polynomial coefficients (each row
+            represents polynomial coefficients corresponding to delay)
+        delays (array): vector definition of associated delays (each delay
+            corresponds to row in `coefs`)
+        **kwargs:
+            compress (bool): if True compresses the result (converts to minimal
+                form), default True
+    
+    Returns:
+        bool - True if neutral, False if retarded
+    """
+
+    if kwargs.get("compress", True):
+        coefs, delays = compress(coefs, delays)
+    
+    # assume compressed form here, i.e. delays[0] is 0 (or smallest positive delay)
+    # first, solve empty
+    if coefs.size == 0 and delays.size == 0:
+        return False # this is not even quasipolynomial, just polynomial p(s) = 0
+    
+    if len(delays) > 1 and coefs[0,-1] != 0:
+        return True
+    else:
+        return False
+
+def create_normalized_delay_difference_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
+    """ Creates characteristic equation of the associated delay difference
+    equation
+
+    The characteristic equation is normalized (leading term = 1 and is omitted)
+        
+    returns None if does not exist
+
+    TODO
+    """
+    if kwargs.get("compress", True):
+        coefs, delays = compress(coefs, delays)
+
+    # assume compressed form here, i.e. delays[0] is 0 (or smallest positive delay)
+    # first, check neutrality
+    if is_neutral(coefs, delays, compress=False):
+        a0 = coefs[0,-1] # a0 =/= 0 IFF quasipolynomial is neutral
+        return np.abs(coefs[1:,-1]/a0), delays[1:]
+    else:
+        return None

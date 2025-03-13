@@ -94,3 +94,4 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
             abs_omega.append(wk)
     
     return mi_vec, abs_omega, None # TODO metadata
+
