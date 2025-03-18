@@ -1,8 +1,6 @@
 """
 Example 2
 """
-import logging
-
 import numpy as np
 
 region = [-4.5, 2.5, 0, 800]
