@@ -17,7 +17,7 @@ def func(s, coefs, delays):
     """
     return np.inner(coefs, np.exp(-s*delays)) - 1.
 
-def spectral_abscissa_diff(coefs, delays, **kwargs):
+def safe_upper_bound_diff(coefs, delays, **kwargs):
     """ TODO
     
     """
@@ -30,6 +30,9 @@ def spectral_abscissa_diff(coefs, delays, **kwargs):
     if diff is None:
         logger.warning("No associated delay difference equation -> cd= -INF")
         return -np.inf
+    
+    # TODO
+    
     default_kwargs = {
         # "method": 'brentq',
         "x0": 0., # initial guess

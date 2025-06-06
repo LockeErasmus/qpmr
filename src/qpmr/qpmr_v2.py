@@ -23,9 +23,17 @@ logger = logging.getLogger(__name__)
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
 def grid_size_heuristic(region) -> float:
-    """ Grid size heuristic """
-    r = (region[1] - region[0]) * (region[3] - region[2]) / 1000.
-    return r
+    """ Grid size heuristic implemented in MATLAB """
+    ds = (region[1] - region[0]) * (region[3] - region[2]) / 1000.
+    return ds
+
+def grid_size_heuristic(region: tuple[float, float, float, float], coefs: npt.NDArray, delays: npt.NDArray) -> float:
+    """ Grid size heuristic original 2009 """
+    alpha_max = np.max(delays) if delays.size > 0 else 0. # biggest delay
+    if alpha_max == 0.:
+        return (region[1] - region[0]) * (region[3] - region[2]) / 1000.
+    else:
+        return np.pi / 10 / alpha_max
 
 def find_roots(x, y) -> npt.NDArray:
     """ Finds 0-level crossings by checking consequent difference in signs, ie
@@ -144,7 +152,7 @@ def qpmr(
     e = kwargs.get("e", 1e-6)
     ds = kwargs.get("ds", None)
     if not ds:
-        ds = grid_size_heuristic(region)
+        ds = grid_size_heuristic(region, coefs, delays)
         logger.debug(f"Grid size not specified, setting as ds={ds} (solved by heuristic)")
     nbytes_max = kwargs.get("grid_nbytes_max", 250_000_000)
     numerical_method = kwargs.get("numerical_method", "newton")
@@ -170,8 +178,9 @@ def qpmr(
     if nbytes_max is None:
         logger.warning("Disabled nbytes check - this may trigger swapping etc ...")
     elif nbytes > nbytes_max:
-        raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. "
-                           "Specify smaller region, or increase `grid_nbytes_max`."))
+        raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. Specifyin smaller `region` or "
+                          f"increasing grid size `ds` is recommended. Alternatively, increase `grid_nbytes_max` to "
+                          f"allow bigger arrays."))
     else:
         logger.debug(f"Estimated size of complex grid = {nbytes} bytes")
 

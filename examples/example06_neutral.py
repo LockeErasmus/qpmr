@@ -28,7 +28,7 @@ if __name__ == "__main__":
     roots, meta = qpmr.qpmr(region, coefs, delays)
     thetas, degrees, mask = qpmr.distribution_diagram(coefs, delays)
     mi, abs_wk, _, = qpmr.chain_asymptotes(coefs, delays)
-    sol = qpmr.spectral_abscissa_diff(coefs, delays)
+    sol = qpmr.safe_upper_bound_diff(coefs, delays)
     
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
     qpmr.plot.qpmr_basic(roots, meta, ax=ax1)

@@ -93,5 +93,4 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
             # we need only the roots with unique absolute value
             abs_omega.append(wk)
     
-    return mi_vec, abs_omega, None # TODO metadata
-
+    return mi_vec, abs_omega
