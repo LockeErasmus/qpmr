@@ -1,6 +1,9 @@
 """
 Numerical methods for increasing roots precission
 """
+
+from .zero_newton import newton
+
 import logging
 from typing import Callable
 

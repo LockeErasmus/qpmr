@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     import qpmr.plot
 
-    qpmr.plot.delay_distribution_basic(x, y, mask)
+    qpmr.plot.spectrum_distribution_diagram(x, y, mask)
 
     plt.show()
 

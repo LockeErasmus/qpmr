@@ -38,8 +38,8 @@ if __name__ == "__main__":
     value = meta.z_value
     
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
-    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
-    qpmr.plot.roots_basic(roots, ax=ax2)
+    qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
+    qpmr.plot.roots(roots, ax=ax2)
     ax2.scatter([s0.real], [s0.imag], marker="o", s=80, edgecolors="b", facecolors='none', label="matlab")
     plt.show()
 

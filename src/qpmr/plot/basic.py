@@ -10,7 +10,7 @@ import numpy.typing as npt
 
 from qpmr import QpmrOutputMetadata
 
-def roots_basic(roots: npt.NDArray, ax: Axes=None, **kwargs):
+def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots roots ('x') into complex plane
 
     Roots have different color stable - green, margin of stability - blue
@@ -102,7 +102,7 @@ def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
     ax.set_ylabel(r"$\Im (\lambda)$")
     return ax
     
-def qpmr_basic(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: Axes=None, **kwargs):
+def qpmr_contour(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: Axes=None, **kwargs):
     """ Root plot with real and imaginary 0-level curves
 
     Args:

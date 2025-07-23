@@ -20,7 +20,7 @@ import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
 from .argument_principle import argument_principle
-from .qpmr_v2 import grid_size_heuristic, find_roots, QpmrOutputMetadata
+from .qpmr_v2 import grid_size_heuristic, find_crossings, QpmrOutputMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +156,7 @@ def qpmr_fractional(
         polygon_func_value = eval_fractional_qp(polygon_complex, coefs, delays, powers) 
         # find all intersections
         polygon_func_imag = np.imag(polygon_func_value)
-        crossings = find_roots(polygon_complex, polygon_func_imag)
+        crossings = find_crossings(polygon_complex, polygon_func_imag)
         if crossings.size:
             roots.append(crossings)
     

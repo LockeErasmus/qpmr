@@ -23,10 +23,10 @@ if __name__ == "__main__":
 
     roots, meta = qpmr.qpmr(region, coefs, delays, ds=0.5, numerical_method_kwargs={"tolerance":0.1})
     thetas, degrees, mask = qpmr.distribution_diagram(coefs, delays)
-    mi, abs_wk, _, = qpmr.chain_asymptotes(coefs, delays)
+    mi, abs_wk = qpmr.chain_asymptotes(coefs, delays)
 
     fig, ax = plt.subplots(1,1,figsize=(8,5))
-    #qpmr.plot.roots_basic(roots, ax=ax)
+    #qpmr.plot.roots(roots, ax=ax)
     ax.scatter(meta.roots0.real, meta.roots0.imag, marker="o", s=10, facecolors='k', label="initial")
     ax.scatter(meta.roots_numerical.real, meta.roots_numerical.imag, marker="o", s=50, edgecolors="r", facecolors='none', label="after correction")
     for x0, xstar in zip(meta.roots0, meta.roots_numerical):
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     ax.legend()
 
     fig, ax = plt.subplots(1,1,figsize=(8,5))
-    qpmr.plot.qpmr_basic(roots, meta, ax=ax)
+    qpmr.plot.qpmr_contour(roots, meta, ax=ax)
     ax.scatter(meta.roots0.real, meta.roots0.imag, marker="o", s=10, facecolors='k', label="initial", zorder=0)
     ax.legend()
 

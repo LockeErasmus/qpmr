@@ -26,7 +26,7 @@ if __name__ == "__main__":
     roots, meta = qpmr.qpmr(region, coefs, delays)
     mi, omega, _ = qpmr.chain_asymptotes(coefs, delays, assume_compressed=False)
 
-    ax = qpmr.plot.roots_basic(roots)
+    ax = qpmr.plot.roots(roots)
     qpmr.plot.chain_asymptotes(mi, omega, region, ax=ax)
     
     plt.show()

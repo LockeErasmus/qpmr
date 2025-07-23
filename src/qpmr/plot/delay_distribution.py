@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 
-def delay_distribution_basic(x, y, mask, ax: Axes=None) -> Axes:
+def spectrum_distribution_diagram(x, y, mask, ax: Axes=None) -> Axes:
     """ Plots delay distribution
 
     Args:

@@ -4,18 +4,11 @@
 import logging
 
 import numpy as np
-from scipy.optimize import root_scalar # TODO, I do not want dependency of scipy!
 
 from qpmr.quasipoly.core import compress, create_normalized_delay_difference_eq
-
+from qpmr.numerical_methods import newton
 
 logger = logging.getLogger(__name__)
-
-def func(s, coefs, delays):
-    """
-    TODO
-    """
-    return np.inner(coefs, np.exp(-s*delays)) - 1.
 
 def safe_upper_bound_diff(coefs, delays, **kwargs):
     """ TODO
@@ -26,20 +19,28 @@ def safe_upper_bound_diff(coefs, delays, **kwargs):
     
     diff = create_normalized_delay_difference_eq(coefs, delays, compress=False)
     logger.debug(f"{diff}")
-
     if diff is None:
-        logger.warning("No associated delay difference equation -> cd= -INF")
         return -np.inf
     
-    # TODO
+    diff_coefs, diff_delays = diff # unpack
     
-    default_kwargs = {
-        # "method": 'brentq',
-        "x0": 0., # initial guess
-    }
-    sol = root_scalar(func, args=diff, **default_kwargs)
-    return sol
+    # bound, f, counter = chandrupatla(
+    #     lambda s: np.inner(diff_coefs, np.exp(-s*diff_delays)) - 1.,
+    #     x1=-100,
+    #     x2=100.,
+    # )
+    bound = newton(
+        f=lambda s: np.inner(diff_coefs, np.exp(-s*diff_delays)) - 1.,
+        Df=lambda s: np.inner(-diff_delays*diff_coefs, np.exp(-s*diff_delays)),
+        x0=0.,
+        epsilon=1e-6,
+        max_iter=100,
+    )
+
+    return bound
 
     
+
+
 
 

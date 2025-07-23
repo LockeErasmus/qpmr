@@ -27,18 +27,18 @@ if __name__ == "__main__":
 
     roots, meta = qpmr.qpmr(region, coefs, delays)
     thetas, degrees, mask = qpmr.distribution_diagram(coefs, delays)
-    mi, abs_wk, _, = qpmr.chain_asymptotes(coefs, delays)
-    sol = qpmr.safe_upper_bound_diff(coefs, delays)
+    mi, abs_wk = qpmr.chain_asymptotes(coefs, delays)
+    bound = qpmr.safe_upper_bound_diff(coefs, delays)
     
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
-    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
-    qpmr.plot.roots_basic(roots, ax=ax2)
+    qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
+    qpmr.plot.roots(roots, ax=ax2)
     
     fig, ax = plt.subplots(1,1,figsize=(8,5))
     qpmr.plot.chain_asymptotes(mi, abs_wk, region, ax=ax)
-    ax.axvline(sol.root, color="blue")
-    qpmr.plot.roots_basic(roots, ax=ax)
+    ax.axvline(bound, color="blue")
+    qpmr.plot.roots(roots, ax=ax)
     
     fig, ax = plt.subplots(1,1,figsize=(8,3))
-    qpmr.plot.delay_distribution_basic(thetas, degrees, mask, ax=ax)
+    qpmr.plot.spectrum_distribution_diagram(thetas, degrees, mask, ax=ax)
     plt.show()

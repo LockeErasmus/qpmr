@@ -1,11 +1,7 @@
 """
-QPmR v2 implementation
+QPmR v3 implementation
 ----------------------
-Set of funtions implement original QPmR v2 algorithm, based on [1].
-
-[1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for large-scale
-    computation of quasi-polynomial zeros." IEEE Transactions on Automatic
-    Control 54.1 (2009): 171-177.
+New updated implementation of QPmR algorithm
 """
 from functools import cached_property
 import logging
@@ -16,7 +12,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
-from .argument_principle import argument_principle
+from .quasipoly.core import _eval_array
 from .common import find_crossings
 
 logger = logging.getLogger(__name__)
@@ -35,22 +31,6 @@ def grid_size_heuristic(region: tuple[float, float, float, float], coefs: npt.ND
         return (region[1] - region[0]) * (region[3] - region[2]) / 1000.
     else:
         return np.pi / 10 / alpha_max
-
-def create_vector_callable(coefs, delays) -> Callable:
-    num_delays, degree = np.shape(coefs)
-    def func(z):
-        shape = np.shape(z)
-        _memory = np.ones(shape, dtype=z.dtype)
-        delay_terms = np.exp(
-            (np.tile(z, (len(delays), 1))
-             * (-delays[:, np.newaxis]))
-        )
-        val = np.zeros(shape, dtype=z.dtype)
-        for d in range(degree):
-            val += np.sum(delay_terms * _memory[np.newaxis, :] * coefs[:, d][:, np.newaxis], axis=0)
-            _memory *= z
-        return val
-    return func
 
 
 class QpmrOutputMetadata:
@@ -79,7 +59,7 @@ class QpmrOutputMetadata:
         return zero_level_contours
 
 def qpmr(
-        region: list[float, float, float, float],
+        region: tuple[float, float, float, float],
         coefs: npt.NDArray,
         delays: npt.NDArray,
         **kwargs) -> tuple[npt.NDArray | None, QpmrOutputMetadata]:
@@ -201,6 +181,7 @@ def qpmr(
     
     # detecting intersection points
     roots = []
+    roots2 = []
     logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
     for polygon in zero_level_contours:
         polygon_complex = polygon[:,0] + 1j*polygon[:,1]
@@ -218,9 +199,14 @@ def qpmr(
         
         # find all intersections
         polygon_func_imag = np.imag(polygon_func_value)
-        crossings = find_crossings(polygon_complex, polygon_func_imag, interpolate=True)
+        crossings = find_crossings(polygon_complex, polygon_func_imag)
         if crossings.size:
             roots.append(crossings)
+
+        # crossing of derivative
+        crossings = find_crossings(polygon_complex[:-1], np.diff(polygon_func_imag))
+        if crossings.size:
+            roots2.append(crossings)
     
     if not roots: # no crossings found
         logger.warning(f"No contour crossings found!") # TODO better message
@@ -231,7 +217,7 @@ def qpmr(
     print(roots0)
 
     # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
-    func = create_vector_callable(coefs, delays)
+    func = lambda s: _eval_array(coefs, delays, s)
     if numerical_method:
         if numerical_method == "newton":
             roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)

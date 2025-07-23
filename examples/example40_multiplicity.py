@@ -4,8 +4,12 @@ Example 11
 
 import numpy as np
 
-region = [-20, 20, 0, 30]
-expected_roots = np.arange(1, 12, 1, dtype=np.complex128)
+import qpmr.qpmr_v3
+
+
+region = [0.5, 20, -0.1, 0.1]
+expected_roots = np.kron(np.arange(1, 3, 1, dtype=np.complex128), np.full(shape=(2,), fill_value=1))
+print(expected_roots)
 poly_coefs = np.polynomial.polynomial.polyfromroots(expected_roots)[np.newaxis, :]
 coefs = np.r_[poly_coefs, poly_coefs, poly_coefs, poly_coefs]
 delays = np.array([0., 0.001, 2, 3])
@@ -17,7 +21,7 @@ if __name__ == "__main__":
 
     logger = qpmr.init_logger(level="DEBUG", format="%(name)s - %(message)s")
 
-    roots, meta = qpmr.qpmr(region, coefs, delays)   
+    roots, meta = qpmr.qpmr_v2.qpmr(region, coefs, delays)   
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
     qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
     ax1.scatter(meta.roots0.real, meta.roots0.imag, marker="o", s=50, facecolors='k', label="initial")

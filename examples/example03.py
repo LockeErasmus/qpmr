@@ -26,16 +26,16 @@ if __name__ == "__main__":
     mi, abs_wk = qpmr.chain_asymptotes(coefs, delays)
     
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
-    qpmr.plot.qpmr_basic(roots, meta, ax=ax1)
-    qpmr.plot.roots_basic(roots, ax=ax2)
+    qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
+    qpmr.plot.roots(roots, ax=ax2)
     ax2.scatter(matlab_roots.real, matlab_roots.imag, marker="o", s=80, edgecolors="b", facecolors='none', label="matlab")
     
     fig, ax = plt.subplots(1,1,figsize=(8,5))
     qpmr.plot.chain_asymptotes(mi, abs_wk, region, ax=ax)
-    qpmr.plot.roots_basic(roots, ax=ax)
+    qpmr.plot.roots(roots, ax=ax)
     
 
     fig, ax = plt.subplots(1,1,figsize=(8,3))
-    qpmr.plot.delay_distribution_basic(thetas, degrees, mask, ax=ax)
+    qpmr.plot.spectrum_distribution_diagram(thetas, degrees, mask, ax=ax)
 
     plt.show()

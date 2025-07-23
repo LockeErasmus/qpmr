@@ -12,7 +12,7 @@ from .spectrum_distribution_diagram import distribution_diagram
 logger = logging.getLogger(__name__)
 
 def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
-    """ Forms asymptotes 
+    """ Calculates exponentials of the root chains
 
     Args:
         coefs (array): matrix definition of polynomial coefficients (each row
@@ -25,6 +25,12 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
             abs_wk_decimals_round (int): absolute value of wk is rounded to this
                 amount of decimals before selecting unique values, default 10
     
+    Returns:
+        tuple containing:
+
+            - mi_vec (array): segment slopes
+            - abs_omega (list of `array`): corresponding unique absolute values
+                of roots    
     """
     abs_wk_decimals_round = kwargs.get("abs_wk_decimals_round", 10)
     assume_compressed = kwargs.get("assume_compressed", False)
@@ -33,7 +39,6 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
     else: # perform compression and delay sorting
         coefs, delays = compress(coefs, delays)
 
-    
     # step 1 - obtain `spectrum distribution diagram` (SDD)
     thetas, degrees, mask = distribution_diagram(coefs, delays, assume_compressed=True)
 

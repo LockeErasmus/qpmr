@@ -10,7 +10,45 @@ from typing import Callable
 import numpy as np
 import numpy.typing as npt
 
+from .quasipoly.core import _eval_array
+
 logger = logging.getLogger(__name__)
+
+def _discretize_rectangular_boundary(bmin: float, bmax: float, wmin: float, wmax: float, ds: float):
+    """ Discretizes rectangular boundary contour into long complex vector
+
+    Note that first and last numbers are the same.
+
+    Args:
+        TODO
+    Returns:
+        TODO
+    """
+    n_steps_real = int((bmax - bmin) / ds) + 1
+    linspace_real = np.linspace(bmin, bmax, n_steps_real)
+    step_real = (bmax - bmin) / (n_steps_real - 1)
+
+    n_steps_imag = int((wmax - wmin) / ds) + 1
+    linspace_imag = np.linspace(wmin - ds, wmax + ds, n_steps_imag)
+    step_imag = (wmax - wmin + 2*ds) / (n_steps_imag - 1)
+
+    contour = np.r_[linspace_real + 1j*wmin,
+                    bmax + 1j*linspace_imag,
+                    np.flip(linspace_real) + 1j*wmax,
+                    bmin + 1j*np.flip(linspace_imag)]
+    contour_steps = np.r_[np.full(shape=(n_steps_real,), fill_value=step_real),
+                          np.full(shape=(n_steps_imag,), fill_value=1j*step_imag),
+                          np.full(shape=(n_steps_real,), fill_value=-step_real),
+                          np.full(shape=(n_steps_imag,), fill_value=-1j*step_imag)]
+    return contour, contour_steps
+
+def _check_no_zero_boundary(coefs: npt.NDArray, delays: npt.NDArray, region: tuple[float, float, float, float], **kwargs):
+    """ Checks that no zeros are on boundary curve
+    
+    """
+    raise NotImplementedError(".")
+
+    
 
 def argument_principle(func: Callable, region: list[float, float, float, float],
                        ds: float, eps: float) -> float:
@@ -33,22 +71,7 @@ def argument_principle(func: Callable, region: list[float, float, float, float],
     logger.debug(f"Enlarging region from {region=} to {reg=}")
 
     # prepare contour path
-    n_steps_real = int((reg[1] - reg[0]) / ds) + 1
-    linspace_real = np.linspace(reg[0], reg[1], n_steps_real)
-    step_real = (reg[1] - reg[0]) / (n_steps_real - 1)
-
-    n_steps_imag = int((reg[3] - reg[2]) / ds) + 1
-    linspace_imag = np.linspace(reg[2] - ds, reg[3] + ds, n_steps_imag)
-    step_imag = (reg[3] - reg[2] + 2*ds) / (n_steps_imag - 1)
-
-    contour = np.r_[linspace_real + 1j*reg[2],
-                    reg[1] + 1j*linspace_imag,
-                    np.flip(linspace_real) + 1j*reg[3],
-                    reg[0] + 1j*np.flip(linspace_imag)]
-    contour_steps = np.r_[np.full(shape=(n_steps_real,), fill_value=step_real),
-                          np.full(shape=(n_steps_imag,), fill_value=1j*step_imag),
-                          np.full(shape=(n_steps_real,), fill_value=-step_real),
-                          np.full(shape=(n_steps_imag,), fill_value=-1j*step_imag)]
+    contour, contour_steps = _discretize_rectangular_boundary(*reg, ds=ds)
 
     # calculate d func / dz
     func_value = func(contour)
