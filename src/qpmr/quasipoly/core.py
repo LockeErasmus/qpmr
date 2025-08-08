@@ -73,6 +73,39 @@ def _eval_array(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
     )
     return np.sum(r, axis=-1)
 
+def _eval_array_opt(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
+    """ Evaluates quasipolynomial on nD array of complex values
+
+    Leverages the fact that:
+        s^(k+1) = s * s^k,
+    i.e. it reuses powers of s in calculation.
+
+    Args:
+        coefs (array): matrix definition of polynomial coefficients (each row
+            represents polynomial coefficients corresponding to delay)
+        delays (array): vector definition of associated delays (each delay
+            corresponds to row in `coefs`)
+        s (array): nD array of complex values to evaluate quasipolynomial on
+
+    Returns:
+        array: evaluated quasipolynomial at all elements of `s`
+    """
+    
+    # TODO
+    raise NotImplementedError(".")
+    num_delays, degree = coefs.shape # TODO variables keep, move up and rework
+    func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
+    _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
+    ## prepare exp(-s*tau)
+    # TODO delays has to be (num_delays,) vector
+    delay_grid = np.exp(
+        (np.tile(complex_grid, (len(delays), 1, 1)) # N times complex grid, [0,:,:] is complex grid for delay1 etc.
+         * (-delays[:, np.newaxis, np.newaxis])) # power of broadcasting [delay1, delay2, ..., delayN]
+    )
+    for d in range(degree):
+        func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
+        _memory *= complex_grid
+
 def eval(coefs: npt.NDArray, delays: npt.NDArray, s: Any):
     """ Evaluates quasipolynomial on s
 

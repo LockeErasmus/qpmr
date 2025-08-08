@@ -38,4 +38,7 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(1,1,figsize=(8,3))
     qpmr.plot.spectrum_distribution_diagram(thetas, degrees, mask, ax=ax)
 
+    fig, ax = plt.subplots(1,1,figsize=(8,3))
+    qpmr.plot.experimental(roots, ax=ax)
+
     plt.show()

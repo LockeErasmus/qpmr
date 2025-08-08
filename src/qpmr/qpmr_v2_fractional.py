@@ -20,7 +20,7 @@ import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
 from .argument_principle import argument_principle
-from .qpmr_v2 import grid_size_heuristic, find_crossings, QpmrOutputMetadata
+from .qpmr_v2 import grid_size_heuristic, find_crossings, QpmrInfo
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ def qpmr_fractional(
         coefs: npt.NDArray,
         delays: npt.NDArray,
         powers: npt.NDArray,
-        **kwargs) -> tuple[npt.NDArray | None, QpmrOutputMetadata]:
+        **kwargs) -> tuple[npt.NDArray | None, QpmrInfo]:
     """ Fractional Quasi-polynomial Root Finder V2 TODO
 
     Attempts to find all roots of quasipolynomial in predefined region. See [1].
@@ -109,7 +109,7 @@ def qpmr_fractional(
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create metadata object
-    metadata = QpmrOutputMetadata()
+    metadata = QpmrInfo()
 
     # extend region and create meshgrid (original algorithm)
     bmin=region[0] - 3*ds

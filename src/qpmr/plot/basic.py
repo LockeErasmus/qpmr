@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 
-from qpmr import QpmrOutputMetadata
+from qpmr import QpmrInfo
 
 def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots roots ('x') into complex plane
@@ -102,13 +102,13 @@ def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
     ax.set_ylabel(r"$\Im (\lambda)$")
     return ax
     
-def qpmr_contour(roots: npt.NDArray, meta:QpmrOutputMetadata=None, ax: Axes=None, **kwargs):
+def qpmr_contour(roots: npt.NDArray, meta:QpmrInfo=None, ax: Axes=None, **kwargs):
     """ Root plot with real and imaginary 0-level curves
 
     Args:
         roots (array): array of complex roots
         ax (Axes): matplotlib Axes object, if None new figure, ax is created
-        meta (QpmrOutputMetadata): metadata obtained via qpmr(.)
+        meta (QpmrInfo): metadata obtained via qpmr(.)
     
     Returns:
         ax (Axes): matplotlib Axes object

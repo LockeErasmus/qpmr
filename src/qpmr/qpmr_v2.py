@@ -7,9 +7,8 @@ Set of funtions implement original QPmR v2 algorithm, based on [1].
     computation of quasi-polynomial zeros." IEEE Transactions on Automatic
     Control 54.1 (2009): 171-177.
 """
-from functools import cached_property
 import logging
-from typing import Callable
+from typing import overload
 
 import contourpy
 import numpy as np
@@ -18,78 +17,42 @@ import numpy.typing as npt
 from .numerical_methods import numerical_newton, secant
 from .argument_principle import argument_principle
 from .common import find_crossings
+from .quasipoly import QuasiPolynomial
+from .quasipoly.core import _eval_array
+from .grid import grid_size_heuristic
+from .qpmr_metadata import QpmrInfo
 
 logger = logging.getLogger(__name__)
 
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
-def grid_size_heuristic(region) -> float:
-    """ Grid size heuristic implemented in MATLAB """
-    ds = (region[1] - region[0]) * (region[3] - region[2]) / 1000.
-    return ds
-
-def grid_size_heuristic(region: tuple[float, float, float, float], coefs: npt.NDArray, delays: npt.NDArray) -> float:
-    """ Grid size heuristic original 2009 """
-    alpha_max = np.max(delays) if delays.size > 0 else 0. # biggest delay
-    if alpha_max == 0.:
-        return (region[1] - region[0]) * (region[3] - region[2]) / 1000.
-    else:
-        return np.pi / 10 / alpha_max
-
-def create_vector_callable(coefs, delays) -> Callable:
-    num_delays, degree = np.shape(coefs)
-    def func(z):
-        shape = np.shape(z)
-        _memory = np.ones(shape, dtype=z.dtype)
-        delay_terms = np.exp(
-            (np.tile(z, (len(delays), 1))
-             * (-delays[:, np.newaxis]))
-        )
-        val = np.zeros(shape, dtype=z.dtype)
-        for d in range(degree):
-            val += np.sum(delay_terms * _memory[np.newaxis, :] * coefs[:, d][:, np.newaxis], axis=0)
-            _memory *= z
-        return val
-    return func
-
-
-class QpmrOutputMetadata:
-    # TODO maybe dataclass? but solve cached property
-    real_range: npt.NDArray = None
-    imag_range: npt.NDArray = None
-    z_value: npt.NDArray = None
-    roots0: npt.NDArray = None
-    roots_numerical: npt.NDArray = None
-
-    contours_real: list[npt.NDArray] = None
-    # contours_imag: list[npt.NDArray] = None
-
-    @cached_property
-    def complex_grid(self) -> npt.NDArray:
-        return 1j*self.imag_range.reshape(-1, 1) + self.real_range
-    
-    @cached_property
-    def contours_imag(self) -> list[npt.NDArray]:
-        contour_generator = contourpy.contour_generator(
-            x=self.real_range,
-            y=self.imag_range,
-            z=np.imag(self.z_value),
-        )
-        zero_level_contours = contour_generator.lines(0.0)
-        return zero_level_contours
-
+@overload
 def qpmr(
-        region: list[float, float, float, float],
-        coefs: npt.NDArray,
-        delays: npt.NDArray,
-        **kwargs) -> tuple[npt.NDArray | None, QpmrOutputMetadata]:
+    region: list[float, float, float, float],
+    coefs: npt.NDArray,
+    delays: npt.NDArray,
+    **kwargs
+) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
+
+@overload
+def qpmr(
+    region: list[float, float, float, float],
+    qp: QuasiPolynomial,
+    **kwargs
+) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
+
+def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     """ Quasi-polynomial Root Finder V2
 
-    Attempts to find all roots of quasipolynomial in predefined region. See [1].
+    Attempts to find all roots of quasi-polynomial in rectangular subregion of
+    complex plane. For more details, see:
 
     [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
     large-scale computation of quasi-polynomial zeros." IEEE Transactions on
     Automatic Control 54.1 (2009): 171-177.
+
+    TODO Overload:
+        ...
 
     Args:
         region (list): definition of rectangular region in the complex plane of
@@ -110,6 +73,15 @@ def qpmr(
                 default 250e6 bytes, set to None to disregard maximum size check
                 of the grid
     """
+    # solve overload, unpack *args
+    if len(args) == 2:
+        region, qp = args
+        coefs, delays = qp.coefs, qp.delays
+    else: # len(args) == 3
+        region, coefs, delays = args
+
+    # TODO validators
+
     # region check
     assert len(region) == 4, "region is expected to be of a form [Re_min, Re_max, Im_min, Im_max]"
     assert region[0] < region[1], f"region boundaries on real axis has to fullfill {region[0]} < {region[1]}"
@@ -148,7 +120,7 @@ def qpmr(
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create metadata object
-    metadata = QpmrOutputMetadata()
+    metadata = QpmrInfo()
 
     # extend region and create meshgrid (original algorithm)
     bmin=region[0] - 3*ds
@@ -174,7 +146,9 @@ def qpmr(
     metadata.imag_range = imag_range
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
     
-    # values of function -> TODO move to separate function
+    # OPTION 1 ------------ values of function -> TODO move to separate function
+    import time
+    s = time.time()
     num_delays, degree = coefs.shape # TODO variables keep, move up and rework
     func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
     _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
@@ -186,7 +160,13 @@ def qpmr(
     )
     for d in range(degree):
         func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
-        _memory *= complex_grid 
+        _memory *= complex_grid
+    print(f"Option1 : {time.time() - s}")
+
+    # OPTION 2 ------------ values of function -> TODO move to separate function
+    s = time.time()
+    func_value = _eval_array(coefs, delays, complex_grid)
+    print(f"Option2 : {time.time() - s}")
 
     metadata.z_value = func_value
 
@@ -231,7 +211,7 @@ def qpmr(
     print(roots0)
 
     # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
-    func = create_vector_callable(coefs, delays)
+    func = lambda s: _eval_array(coefs, delays, s)
     if numerical_method:
         if numerical_method == "newton":
             roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)

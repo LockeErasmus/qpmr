@@ -33,7 +33,7 @@ def grid_size_heuristic(region: tuple[float, float, float, float], coefs: npt.ND
         return np.pi / 10 / alpha_max
 
 
-class QpmrOutputMetadata:
+class QpmrInfo:
     # TODO maybe dataclass? but solve cached property
     real_range: npt.NDArray = None
     imag_range: npt.NDArray = None
@@ -62,7 +62,7 @@ def qpmr(
         region: tuple[float, float, float, float],
         coefs: npt.NDArray,
         delays: npt.NDArray,
-        **kwargs) -> tuple[npt.NDArray | None, QpmrOutputMetadata]:
+        **kwargs) -> tuple[npt.NDArray | None, QpmrInfo]:
     """ Quasi-polynomial Root Finder V2
 
     Attempts to find all roots of quasipolynomial in predefined region. See [1].
@@ -128,7 +128,7 @@ def qpmr(
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create metadata object
-    metadata = QpmrOutputMetadata()
+    metadata = QpmrInfo()
 
     # extend region and create meshgrid (original algorithm)
     bmin=region[0] - 3*ds
