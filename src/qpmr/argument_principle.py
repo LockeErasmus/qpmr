@@ -50,7 +50,7 @@ def _check_no_zero_boundary(coefs: npt.NDArray, delays: npt.NDArray, region: tup
 
     
 
-def argument_principle(func: Callable, region: list[float, float, float, float],
+def argument_principle(func: Callable, region: tuple[float, float, float, float],
                        ds: float, eps: float) -> float:
     """ Evaluates number of roots in given rectangular region via argument
     principle
@@ -65,13 +65,8 @@ def argument_principle(func: Callable, region: list[float, float, float, float],
         n (float): rounded number of complex roots in region based on numerical
             integration and argument principle
     """
-    
-    # enlarge the region by ds to each side
-    reg = [region[0]-ds, region[1]+ds, region[2]-ds, region[3]+ds]
-    logger.debug(f"Enlarging region from {region=} to {reg=}")
-
     # prepare contour path
-    contour, contour_steps = _discretize_rectangular_boundary(*reg, ds=ds)
+    contour, contour_steps = _discretize_rectangular_boundary(*region, ds=ds)
 
     # calculate d func / dz
     func_value = func(contour)

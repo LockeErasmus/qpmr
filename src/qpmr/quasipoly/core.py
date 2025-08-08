@@ -74,7 +74,7 @@ def _eval_array(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
     return np.sum(r, axis=-1)
 
 def _eval_array_opt(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
-    """ Evaluates quasipolynomial on nD array of complex values
+    """ Evaluates quasipolynomial on nD array of complex values OPTIMIZED
 
     Leverages the fact that:
         s^(k+1) = s * s^k,
@@ -89,22 +89,31 @@ def _eval_array_opt(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
 
     Returns:
         array: evaluated quasipolynomial at all elements of `s`
+
+    Note:
+        num_delays, degree = coefs.shape # TODO variables keep, move up and rework
+        func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
+        _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
+        ## prepare exp(-s*tau)
+        # TODO delays has to be (num_delays,) vector
+        delay_grid = np.exp(
+            (np.tile(complex_grid, (len(delays), 1, 1)) # N times complex grid, [0,:,:] is complex grid for delay1 etc.
+            * (-delays[:, np.newaxis, np.newaxis])) # power of broadcasting [delay1, delay2, ..., delayN]
+        )
+        for d in range(degree):
+            func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
+            _memory *= complex_grid
     """
-    
-    # TODO
     raise NotImplementedError(".")
-    num_delays, degree = coefs.shape # TODO variables keep, move up and rework
-    func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
-    _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
-    ## prepare exp(-s*tau)
-    # TODO delays has to be (num_delays,) vector
-    delay_grid = np.exp(
-        (np.tile(complex_grid, (len(delays), 1, 1)) # N times complex grid, [0,:,:] is complex grid for delay1 etc.
-         * (-delays[:, np.newaxis, np.newaxis])) # power of broadcasting [delay1, delay2, ..., delayN]
-    )
-    for d in range(degree):
-        func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
-        _memory *= complex_grid
+    _memory = np.ones_like(s)
+    # solve degree 0
+    dels = np.exp(- _memory[..., np.newaxis] * delays[np.newaxis, ...])
+    result = np.sum(dels * coefs[:, [0]].T, -1)
+    for d in range(1, coefs.shape[1]): # solve other degrees
+        _memory *= s # elementwise multiplication
+        dels = np.exp(- _memory[..., np.newaxis] * delays[np.newaxis, ...])
+        result += np.sum(dels * coefs[:, [d]].T, -1)
+    return result
 
 def eval(coefs: npt.NDArray, delays: npt.NDArray, s: Any):
     """ Evaluates quasipolynomial on s

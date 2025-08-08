@@ -19,8 +19,10 @@ from .argument_principle import argument_principle
 from .common import find_crossings
 from .quasipoly import QuasiPolynomial
 from .quasipoly.core import _eval_array
+# from .quasipoly.core import _eval_array_opt as _eval_array
 from .grid import grid_size_heuristic
 from .qpmr_metadata import QpmrInfo
+from .qpmr_validation import validate_region, validate_qp
 
 logger = logging.getLogger(__name__)
 
@@ -80,20 +82,11 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     else: # len(args) == 3
         region, coefs, delays = args
 
-    # TODO validators
+    # Validate arguments
+    region = validate_region(region) # validates region and converts to tuple[float, float, float, float]
+    coefs, delays = validate_qp(coefs, delays)
 
-    # region check
-    assert len(region) == 4, "region is expected to be of a form [Re_min, Re_max, Im_min, Im_max]"
-    assert region[0] < region[1], f"region boundaries on real axis has to fullfill {region[0]} < {region[1]}"
-    assert region[2] < region[3], f"region boundaries on imaginary axis has to fullfill {region[2]} < {region[3]}"
-
-    # quasipolynomial definition check
-    assert len(coefs.shape) == 2, "coefs have to be matrix (2D array)"
-    assert len(delays.shape) == 1, "delays have to be vector (1D array)"
-    assert coefs.shape[0] == delays.shape[0], "number of rows in coefs has to match number of delays"
-    assert coefs.shape[1] > 0, "degree of quasipolynomial =/= 0"
-
-    # advise if region defined in un-economical way
+    # Warn if region defined in un-economical way (symetry by real axis)
     if region[2] < 0 and region[3] > 0:
         im_max = max(abs(region[2]), abs(region[3])) # better im_max
         logger.warning(
@@ -103,7 +96,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
              f"region=[{region[0]}, {region[1]}, 0, {im_max}]")
         )
     
-    # solve kwargs values
+    # Solve keyword arguments defaults
     e = kwargs.get("e", 1e-6)
     ds = kwargs.get("ds", None)
     if not ds:
@@ -133,9 +126,9 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     if nbytes_max is None:
         logger.warning("Disabled nbytes check - this may trigger swapping etc ...")
     elif nbytes > nbytes_max:
-        raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. Specifyin smaller `region` or "
-                          f"increasing grid size `ds` is recommended. Alternatively, increase `grid_nbytes_max` to "
-                          f"allow bigger arrays."))
+        raise ValueError((f"Estimated size of grid {nbytes} greater then {nbytes_max}. Specify smaller `region` or "
+                          f"increasing grid size `ds` is recommended. Alternatively, increase `grid_nbytes_max` or "
+                          f"set it to None to turn off this safeguard completely."))
     else:
         logger.debug(f"Estimated size of complex grid = {nbytes} bytes")
 
@@ -145,29 +138,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     metadata.real_range = real_range
     metadata.imag_range = imag_range
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
-    
-    # OPTION 1 ------------ values of function -> TODO move to separate function
-    import time
-    s = time.time()
-    num_delays, degree = coefs.shape # TODO variables keep, move up and rework
-    func_value = np.zeros(complex_grid.shape, dtype=complex_grid.dtype)
-    _memory = np.ones(complex_grid.shape, dtype=complex_grid.dtype) # x*x*..*x much faster than np.power(x, N)
-    ## prepare exp(-s*tau)
-    # TODO delays has to be (num_delays,) vector
-    delay_grid = np.exp(
-        (np.tile(complex_grid, (len(delays), 1, 1)) # N times complex grid, [0,:,:] is complex grid for delay1 etc.
-         * (-delays[:, np.newaxis, np.newaxis])) # power of broadcasting [delay1, delay2, ..., delayN]
-    )
-    for d in range(degree):
-        func_value += np.sum(delay_grid * _memory[np.newaxis, :, :] * coefs[:, d][:, np.newaxis, np.newaxis], axis=0)
-        _memory *= complex_grid
-    print(f"Option1 : {time.time() - s}")
-
-    # OPTION 2 ------------ values of function -> TODO move to separate function
-    s = time.time()
-    func_value = _eval_array(coefs, delays, complex_grid)
-    print(f"Option2 : {time.time() - s}")
-
+    func_value = _eval_array(coefs, delays, complex_grid) # evaluates QP at grid points
     metadata.z_value = func_value
 
     ## finding contours via contourpy library, only 0-level real contours are necessary
@@ -175,90 +146,73 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
     metadata.contours_real = zero_level_contours
 
-    if not zero_level_contours: # list is is_empty, i.e []
+    if not zero_level_contours: # no contours found -> no initial guesses
         logger.warning(f"No real 0-level contours were found in region {region}.")
-        return np.array([], dtype=np.complex128), metadata
-    
-    # detecting intersection points
-    roots = []
-    logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
-    for polygon in zero_level_contours:
-        polygon_complex = polygon[:,0] + 1j*polygon[:,1]
-        
-        # calculate value for all of these points
-        delay_terms = np.exp(
-            (np.tile(polygon_complex, (len(delays), 1))
-             * (-delays[:, np.newaxis]))
-        )
-        polygon_func_value = np.zeros(polygon_complex.shape, dtype=polygon_complex.dtype)
-        _memory = np.ones(polygon_complex.shape, dtype=polygon_complex.dtype)
-        for d in range(degree):       
-            polygon_func_value += np.sum(delay_terms * _memory[np.newaxis, :] * coefs[:, d][:, np.newaxis], axis=0)
-            _memory *= polygon_complex # _memory = np.multiply(_memory, complex_grid)
-        
-        # find all intersections
-        polygon_func_imag = np.imag(polygon_func_value)
-        crossings = find_crossings(polygon_complex, polygon_func_imag, interpolate=True)
-        if crossings.size:
-            roots.append(crossings)
-    
-    if not roots: # no crossings found
-        logger.warning(f"No contour crossings found!") # TODO better message
-        return None, metadata
-    
-    roots0 = np.hstack(roots)
-    metadata.roots0 = roots0
-    print(roots0)
+        roots0 = np.array([], dtype=np.complex128)
+    else: # detecting intersection points
+        roots = []
+        logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
+        for polygon in zero_level_contours:
+            polygon_complex = polygon[:,0] + 1j*polygon[:,1]
+            polygon_func_value = _eval_array(coefs, delays, polygon_complex)
+            # find all intersections
+            polygon_func_imag = np.imag(polygon_func_value)
+            crossings = find_crossings(polygon_complex, polygon_func_imag, interpolate=True)
+            if crossings.size:
+                roots.append(crossings)
+        if not roots: # warn that no crossings found
+            logger.warning(f"No contour crossings found!")
+        roots0 = np.hstack(roots)
 
-    # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
-    func = lambda s: _eval_array(coefs, delays, s)
-    if numerical_method:
+    metadata.roots0 = roots0
+
+    if roots0.size > 0 and numerical_method:
+        # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
+        func = lambda s: _eval_array(coefs, delays, s)
         if numerical_method == "newton":
             roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)
         elif numerical_method == "secant":
             roots, converged = secant(func, roots0, **numerical_method_kwargs)
-        
+        else:
+            raise NotImplementedError(f"Numerical method '{numerical_method}' is not supported.")
         metadata.roots_numerical = roots
         
         if not converged: # if numerical method did not converge
-            logger.info(f"'{numerical_method}' did not converged, ds <- ds / 3")
+            logger.info(f"'{numerical_method}' did not converge, ds <- ds / 3")
             modified_kwargs = kwargs.copy()
             modified_kwargs['ds'] = ds / 3.0
             return qpmr(region, coefs, delays, **modified_kwargs)
-    else:
-        # TODO warning
-        roots = roots0
-
-    np.round(roots, decimals=10, out=roots) # TODO
-
-    # filter out roots that are not in predefined region
-    mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
-            & (roots.imag >= region[2]) & (roots.imag <= region[3])) # Im bounds
-    roots = roots[mask]
-
-    # Case where roots found, but are outside of defined region
-    if roots.size == 0:
-        logger.warning(f"No roots found in region!")
-        return None, metadata # TODO this return is bold, we should still apply argument principle here
     
-    # Check the distance from the approximation of the roots less then 2*ds
-    dist = np.abs(roots - roots0[mask])
-    num_dist_violations = (dist > 2*ds).sum()
-    if num_dist_violations > 0:
-        logger.info("After numerical method, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
-        modified_kwargs = kwargs.copy()
-        modified_kwargs['ds'] = ds / 3.0
-        return qpmr(region, coefs, delays, **modified_kwargs)
-    
-    # Perform argument check
-    n = argument_principle(func, region, ds/10., eps=e/100.) # ds and eps obtained from original matlab implementation
-    smaller_region = [region[0]+ds/10., region[1]-ds/10., region[2]+ds/10.,region[3]-ds/10.]
-    n_smaller = argument_principle(func, smaller_region, ds/10., eps=e/100.)
-    if len(roots) == n or len(roots) == n_smaller:
-        pass # ok, continue
-    else:
-        logger.info(f"Argument principle: {n}, real number of roots {len(roots)}")
-        logger.info(f"Argument principle (smaller Region): {n_smaller}, real number of roots {len(roots)}")
+    else: # no numerical method applied
+        roots = np.copy(roots0)
+
+    if roots.size > 0:
+        # round and filter out roots that are not in predefined region
+        np.round(roots, decimals=10, out=roots) # TODO - questionable round decimals -> kwargs?
+        mask = ((roots.real >= region[0]) & (roots.real <= region[1]) # Re bounds
+                & (roots.imag >= region[2]) & (roots.imag <= region[3])) # Im bounds
+        roots = roots[mask]
+
+        if numerical_method:
+            # Check the distance from the approximation of the roots less then 2*ds
+            dist = np.abs(roots - roots0[mask])
+            num_dist_violations = (dist > 2*ds).sum()
+            if num_dist_violations > 0:
+                logger.info("After numerical method, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
+                modified_kwargs = kwargs.copy()
+                modified_kwargs['ds'] = ds / 3.0
+                return qpmr(region, coefs, delays, **modified_kwargs)
+
+    # Perform argument check, note regions adjusted as per in original implementation
+    region1 = (region[0]-ds, region[1]+ds, region[2]-ds, region[3]+ds)
+    region2 = (region1[0]+ds/10., region1[1]-ds/10., region1[2]+ds/10.,region1[3]-ds/10.)
+
+    n1 = argument_principle(func, region1, ds/10., eps=e/100.)
+    n2 = argument_principle(func, region2, ds/10., eps=e/100.)
+
+    if len(roots) != n1 and len(roots) != n2:
+        logger.info(f"Argument principle: {n1}, real number of roots {len(roots)}")
+        logger.info(f"Argument principle (smaller Region): {n2}, real number of roots {len(roots)}")
         modified_kwargs = kwargs.copy()
         modified_kwargs['ds'] = ds / 3.0
         return qpmr(region, coefs, delays, **modified_kwargs)
