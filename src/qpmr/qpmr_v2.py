@@ -90,7 +90,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     if region[2] < 0 and region[3] > 0:
         im_max = max(abs(region[2]), abs(region[3])) # better im_max
         logger.warning(
-            (f"Spectra of quasi-polynomials with real coefficients are"
+            (f"Spectra of quasi-polynomials with real coefficients are "
              f"symetrical by real axis, specified region {region=} is "
              f"unnecessarily large. It is advised to switch to "
              f"region=[{region[0]}, {region[1]}, 0, {im_max}]")

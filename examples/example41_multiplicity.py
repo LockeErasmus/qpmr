@@ -17,20 +17,20 @@ delays = np.array([0, 1.])
 coefs, delays = multiply(coefs, delays, coefs, delays)
 coefs, delays = multiply(coefs, delays, coefs, delays)
 # coefs, delays = multiply(coefs, delays, coefs, delays)
+# coefs, delays = multiply(coefs, delays, coefs, delays)
 print(coefs, delays)
-region = [0.5, 5, 0.1, 50]
+region = [0.5, 5, 0.1, 20]
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import qpmr
     import qpmr.plot
 
+    from qpmr.qpmr_v3 import qpmr as qpmr_v3
+
     logger = qpmr.init_logger(level="DEBUG", format="%(name)s - %(message)s")
 
-    roots, meta = qpmr.qpmr_v2.qpmr(region, coefs, delays, numerical_method_kwargs={"max_iterations": 100, "tolerance": 1e-3})
-
-    print(qpmr.zero_multiplicity.cluster_roots(roots, eps=5*1e-3))
-
+    roots, meta = qpmr_v3(region, coefs, delays, numerical_method_kwargs={"max_iterations": 100, "tolerance": 1e-2})
 
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
     qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
