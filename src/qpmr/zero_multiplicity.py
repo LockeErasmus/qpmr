@@ -37,16 +37,13 @@ def cluster_roots(roots0: npt.NDArray, eps: float) -> tuple[npt.NDArray, npt.NDA
     neighbors = [np.where(adjacency_mask[i])[0] for i in range(n)]
     cluster_id = 0
     for i in range(n):
-        print(f"    {i} " )
         if labels[i] != -1:
             continue # already classified into cluster
         
         cluster_id += 1
         labels[i] = cluster_id
         seeds = list(neighbors[i])
-        print(neighbors[i])
         seeds.remove(i)
-        
 
         while seeds:
             current = seeds.pop()

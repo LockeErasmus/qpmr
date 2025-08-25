@@ -15,11 +15,12 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
-from .argument_principle import argument_principle
+from .argument_principle import argument_principle, _argument_principle_circle
 from .zero_multiplicity import cluster_roots
 from .common import find_crossings
 from .quasipoly import QuasiPolynomial
 from .quasipoly.core import _eval_array
+from .quasipoly.operation import derivative
 # from .quasipoly.core import _eval_array_opt as _eval_array
 from .grid import grid_size_heuristic
 from .qpmr_metadata import QpmrInfo
@@ -151,7 +152,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
         logger.warning(f"No real 0-level contours were found in region {region}.")
         roots0 = np.array([], dtype=np.complex128)
     else: # detecting intersection points
-        roots = []
+        roots = [np.empty(shape=(0,), dtype=np.complex128)]
         logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
         for polygon in zero_level_contours:
             polygon_complex = polygon[:,0] + 1j*polygon[:,1]
@@ -168,6 +169,10 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     metadata.roots0 = roots0
 
     roots0, roots_multiplicity = cluster_roots(roots0, eps=2*ds)
+    uniq = np.unique_counts(roots_multiplicity)
+    logger.debug((f"Clustering roots heuristic (DBSCAN with eps={2*ds})\n"
+                  f"multiplicities: {uniq.values}\n"
+                  f"counts        : {uniq.counts}\n"))
 
     if roots0.size > 0 and numerical_method:
         # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
@@ -209,12 +214,9 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     # Perform argument check, note regions adjusted as per in original implementation
     region1 = (region[0]-ds, region[1]+ds, region[2]-ds, region[3]+ds)
     region2 = (region1[0]+ds/10., region1[1]-ds/10., region1[2]+ds/10.,region1[3]-ds/10.)
-
-    n1 = argument_principle(func, region1, ds/10., eps=e/100.)
-    n2 = argument_principle(func, region2, ds/10., eps=e/100.)
+    n1 = argument_principle(lambda s: _eval_array(coefs, delays, s), region1, ds/10., eps=e/100.)
+    n2 = argument_principle(lambda s: _eval_array(coefs, delays, s), region2, ds/10., eps=e/100.)
     n_expected = np.sum(roots_multiplicity) # TODO
-
-    print(roots, roots_multiplicity)
 
     if n_expected != n1 and n_expected != n2:
         logger.info(f"Argument principle: {n1}, real number of roots {n_expected}")
@@ -222,5 +224,30 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
         modified_kwargs = kwargs.copy()
         modified_kwargs['ds'] = ds / 3.0
         return qpmr(region, coefs, delays, **modified_kwargs)
+    
+    # Perform argument check for all multiplicities > 1
+    dcoefs, ddelays = derivative(coefs, delays)
+    for r, rm in zip(roots, roots_multiplicity):
+        if rm > 0: # perform check
+            a, b = np.real(r), np.imag(r)
+            n = argument_principle(
+                lambda s: _eval_array(coefs, delays, s),
+                (a-ds/20, a+ds/20, b-ds/20, b+ds/20), 
+                ds/200.,
+                eps=ds/2000.
+            )
+            ncircle = _argument_principle_circle( # TODO
+                f=lambda s: _eval_array(coefs, delays, s),
+                z0=r,
+                radius=ds/10,
+                # df=lambda s: _eval_array(dcoefs, ddelays, s),
+                num=1000,
+            )
 
+            if n != rm:
+                print(f"root={r} {region=}| {n=} ({rm})")
+                modified_kwargs = kwargs.copy()
+                modified_kwargs['ds'] = ds / 3.0
+                return qpmr(region, coefs, delays, **modified_kwargs)
+            
     return roots, metadata

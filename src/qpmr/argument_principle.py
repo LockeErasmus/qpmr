@@ -48,6 +48,28 @@ def _check_no_zero_boundary(coefs: npt.NDArray, delays: npt.NDArray, region: tup
     """
     raise NotImplementedError(".")
 
+
+def _argument_principle_circle(f: Callable, z0: complex, radius: float, df: Callable=None, num: int=1000):
+    # solve callable
+    # parametrize circle contour
+    t = np.linspace(0., 2*np.pi, num=num+1, endpoint=False)
+    contour = z0 + radius * np.exp(1j * t)
+
+    vals = f(contour)
+    if df is None:
+        eps = 1e-8
+        dvals = (f(contour - eps)
+                - f(contour + eps)
+                + 1j*f(contour +1j*eps)
+                - 1j*f(contour -1j*eps)) / 4. / eps
+    else:
+        dvals = df(contour)
+
+    n_raw = np.abs(np.real(1 / (2 * np.pi * 1j) * np.sum( (np.roll(contour, -1) - contour) * dvals / vals )))
+    n = np.round(n_raw)
+    logger.debug(f"Using argument principle (CIRCLE({z0=}, {radius=})), contour integral = {n_raw} | rounded to {n}")
+    return n
+
     
 
 def argument_principle(func: Callable, region: tuple[float, float, float, float],

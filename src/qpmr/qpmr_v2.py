@@ -150,7 +150,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
         logger.warning(f"No real 0-level contours were found in region {region}.")
         roots0 = np.array([], dtype=np.complex128)
     else: # detecting intersection points
-        roots = []
+        roots = [np.empty(shape=(0,), dtype=np.complex128)]
         logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
         for polygon in zero_level_contours:
             polygon_complex = polygon[:,0] + 1j*polygon[:,1]

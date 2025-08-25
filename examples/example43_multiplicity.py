@@ -9,22 +9,22 @@ from qpmr.quasipoly import multiply
 
 import qpmr.zero_multiplicity
 
-
+c = 3
+degree = 6
+scale = 10.
+coefs = ( (scale * np.poly1d([1, -c])) ** degree - 1 ).coeffs[::-1]
+coefs1 = coefs[None, :]
+delays1 = np.array([0.])
 
 coefs = np.array([[1,0],[0,1.]])
 delays = np.array([0, 1.])
+coefs2, delays2 = multiply(coefs, delays, coefs, delays)
+coefs2, delays2 = multiply(coefs2, delays2, coefs, delays)
 
-c, d = multiply(coefs, delays, coefs, delays)
-c, d = multiply(c, d, coefs, delays)
-# c, d = multiply(c, d, coefs, delays)
 
-coefs, delays = c, d
-# coefs, delays = multiply(coefs, delays, coefs, delays)
-# coefs, delays = multiply(coefs, delays, coefs, delays)
-# coefs, delays = multiply(coefs, delays, coefs, delays)
+coefs, delays = multiply(coefs1, delays1, coefs2, delays2)
 
-print(coefs, delays)
-region = [0.5, 5, 0.1, 100]
+region = (0, 10, 0, 50)
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     logger = qpmr.init_logger(level="DEBUG", format="%(name)s - %(message)s")
 
-    roots, meta = qpmr_v3(region, coefs, delays, numerical_method_kwargs={"max_iterations": 100, "tolerance": 1e-3})
+    roots, meta = qpmr_v3(region, coefs, delays, numerical_method_kwargs={"max_iterations": 100, "tolerance": 1e-4})
 
     fig, (ax1, ax2) = plt.subplots(1,2,figsize=(8,5))
     qpmr.plot.qpmr_contour(roots, meta, ax=ax1)
