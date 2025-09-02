@@ -5,6 +5,7 @@ Basic root plots
 
 from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import numpy as np
 import numpy.typing as npt
 
@@ -136,3 +137,21 @@ def qpmr_contour(roots: npt.NDArray, meta:QpmrInfo=None, ax: Axes=None, **kwargs
     ax.set_ylabel(r"$\Im (\lambda)$")
     
     return ax
+
+def argument_principle_circle(roots: npt.NDArray, ds: float, ax: Axes=None):
+    """ TODO """
+
+    alpha=0.3
+    color="red"
+
+    if ax is None:
+        _, ax = plt.subplots()
+
+    for r in roots:
+        circle = patches.Circle((r.real, r.imag), radius=ds/5., alpha=alpha, color=color)
+        ax.add_patch(circle)
+    
+    return ax
+
+
+

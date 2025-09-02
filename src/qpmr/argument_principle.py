@@ -14,6 +14,55 @@ from .quasipoly.core import _eval_array
 
 logger = logging.getLogger(__name__)
 
+def rectangular_contour(re_min, re_max, im_min, im_max) -> Callable:
+    x0, y0, width, height = re_min, im_min, re_max-re_min, im_max-im_min
+    
+    def gamma(t):
+        t = np.asarray(t)
+        z = np.zeros_like(t, dtype=np.complex128)
+
+        # Segment 1: bottom (left to right)
+        mask1 = (0 <= t) & (t < 1)
+        z[mask1] = x0 + (t[mask1] - 0) * width + 1j * y0
+
+        # Segment 2: right (bottom to top)
+        mask2 = (1 <= t) & (t < 2)
+        z[mask2] = x0 + width + 1j * (y0 + (t[mask2] - 1) * height)
+
+        # Segment 3: top (right to left)
+        mask3 = (2 <= t) & (t < 3)
+        z[mask3] = x0 + width - (t[mask3] - 2) * width + 1j * (y0 + height)
+
+        # Segment 4: left (top to bottom)
+        mask4 = (3 <= t) & (t <= 4)
+        z[mask4] = x0 + 1j * (y0 + height - (t[mask4] - 3) * height)
+
+        return z
+    
+    def gamma_prime(t):
+        z = np.zeros_like(t, dtype=np.complex128)
+        mask = (0 <= t) & (t < 1)
+        z[mask] = width
+        mask = (1 <= t) & (t < 2)
+        z[mask] = 1j * height
+        mask = (2 <= t) & (t < 3)
+        z[mask] = -width
+        mask = (3 <= t) & (t <= 4)
+        z[mask] = -1j * height
+
+        return z
+    
+    return gamma, gamma_prime, (0, 4)
+
+def circle_contour(center: complex, radius: float):
+    """ TODO
+    """
+    def gamma(t):
+        return center + radius * np.exp(1j * t)
+    def gamma_prime(t):
+        return 1j * radius * np.exp(1j * t)
+    return gamma, gamma_prime, (0, 2*np.pi)
+
 def _discretize_rectangular_boundary(bmin: float, bmax: float, wmin: float, wmax: float, ds: float):
     """ Discretizes rectangular boundary contour into long complex vector
 
@@ -48,31 +97,41 @@ def _check_no_zero_boundary(coefs: npt.NDArray, delays: npt.NDArray, region: tup
     """
     raise NotImplementedError(".")
 
+def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_prime: Callable,  a: float, b: float, n_points: int=1000):
+    """
+    Compute (N - P) using the Argument Principle with vectorized integrand.
 
-def _argument_principle_circle(f: Callable, z0: complex, radius: float, df: Callable=None, num: int=1000):
-    # solve callable
-    # parametrize circle contour
-    t = np.linspace(0., 2*np.pi, num=num+1, endpoint=False)
-    contour = z0 + radius * np.exp(1j * t)
+    Parameters:
+    - f: function f(z)
+    - df: derivative f'(z)
+    - contour: function γ(t) that defines the contour in complex plane
+    - a, b: parameter domain for the contour
+    - n_points: number of discretization points
 
-    vals = f(contour)
-    if df is None:
-        eps = 1e-8
-        dvals = (f(contour - eps)
-                - f(contour + eps)
-                + 1j*f(contour +1j*eps)
-                - 1j*f(contour -1j*eps)) / 4. / eps
-    else:
-        dvals = df(contour)
+    Returns:
+    - Approximation to number of zeros - number of poles inside contour
+    """
+    t = np.linspace(a, b, n_points)
 
-    n_raw = np.abs(np.real(1 / (2 * np.pi * 1j) * np.sum( (np.roll(contour, -1) - contour) * dvals / vals )))
-    n = np.round(n_raw)
-    logger.debug(f"Using argument principle (CIRCLE({z0=}, {radius=})), contour integral = {n_raw} | rounded to {n}")
-    return n
+    z = gamma(t)
+    dz = gamma_prime(t)
 
+    fz = f(z)
+    dfz = f_prime(z)
+
+    with np.errstate(divide='ignore', invalid='ignore'):
+        integrand = np.where(fz != 0, dfz / fz * dz, 0.0)
+
+    # TODO warning
+    num_zeros = np.count_nonzero(fz == 0)
+    if num_zeros > 0:
+        print(f"Warning: encountered {num_zeros} zeros of f(z) on the contour.") # TODO
+
+    integral = np.trapz(integrand, t)
+    return integral / (2j * np.pi)
     
 
-def argument_principle(func: Callable, region: tuple[float, float, float, float],
+def argument_principle(f: Callable, region: tuple[float, float, float, float],
                        ds: float, eps: float) -> float:
     """ Evaluates number of roots in given rectangular region via argument
     principle
@@ -88,17 +147,39 @@ def argument_principle(func: Callable, region: tuple[float, float, float, float]
             integration and argument principle
     """
     # prepare contour path
-    contour, contour_steps = _discretize_rectangular_boundary(*region, ds=ds)
+    re_min, re_max, im_min, im_max = region
+    gamma, gamma_prime, (a,b) = rectangular_contour(re_min, re_max, im_min, im_max)
 
-    # calculate d func / dz
-    func_value = func(contour)
-    func_value_derivative = (func(contour - eps)
-                             - func(contour + eps)
-                             + 1j*func(contour +1j*eps)
-                             - 1j*func(contour -1j*eps)) / 4. / eps
+    def f_prime(s):
+        dvals = (f(s - eps) - f(s + eps) + 1j*f(s +1j*eps)
+                    - 1j*f(s -1j*eps)) / 4. / eps
+        return dvals
+    
+    n_points = round(2*(re_max - re_min + im_max - im_min)/ds + 4)
+    res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
 
     # use argument principle and round
-    n_raw = np.abs(np.real(1 / (2 * np.pi * 1j) * np.sum(func_value_derivative / func_value * contour_steps)))
+    n_raw = np.abs(np.real( res ))
+    n = np.round(n_raw)
+    logger.debug(f"Using argument principle, contour integral = {n_raw} | rounded to {n}")
+
+    return n
+
+def argument_principle_circle(f, circle: tuple[complex, float], ds: float, eps:float):
+    # prepare contour path
+    center, radius = circle
+    gamma, gamma_prime, (a, b) = circle_contour(center, radius)
+
+    def f_prime(s):
+        dvals = (f(s - eps) - f(s + eps) + 1j*f(s +1j*eps)
+                    - 1j*f(s -1j*eps)) / 4. / eps
+        return dvals
+    
+    n_points = max(round(2*np.pi/ds) + 1, 1000)
+    res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
+
+    # use argument principle and round
+    n_raw = np.abs(np.real( res ))
     n = np.round(n_raw)
     logger.debug(f"Using argument principle, contour integral = {n_raw} | rounded to {n}")
 

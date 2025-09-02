@@ -4,6 +4,7 @@ QPmR Info object
 
 """
 
+from anytree import NodeMixin, RenderTree
 from functools import cached_property
 import contourpy
 import numpy as np
@@ -33,3 +34,59 @@ class QpmrInfo:
         )
         zero_level_contours = contour_generator.lines(0.0)
         return zero_level_contours
+    
+
+class QpmrSubInfo(QpmrInfo, NodeMixin):
+
+    region: tuple = None
+    ds: float = None
+    e: float = None
+    status: str = "UNPROCESSED" # TODO enum, unprocessed, failed, solved
+    status_message: str = None
+    roots: npt.NDArray = None
+
+    def __init__(self, parent=None):
+        self.parent = parent  # This establishes the tree hierarchy
+
+    @property
+    def name(self) -> str:
+        return f"QPmR[{self.status}-{self.status_message}] {self.region} ds={self.ds}"
+    
+class QpmrRecursionContext:
+    """ stuff that does not change in recursion + memory for results """
+    
+    grid_nbytes_max: int = 64_000_000 # 250_000_000
+    recursion_level_max: int = 5
+    ds: float = None
+
+    def __init__(self, coefs, delays):
+        self.coefs = coefs
+        self.delays = delays
+        
+        self.solution = [] # TODO delete
+        
+        self.solution_tree: QpmrSubInfo = None
+        self.node: QpmrSubInfo = None # current node
+    
+    @property
+    def render_tree(self) -> str:
+        s = ""
+        if self.solution_tree:
+            for pre, fill, node in RenderTree(self.solution_tree):
+                s += f"{pre}{node.name}\n"
+            # TODO delete last two chars
+        return s
+    
+    @property
+    def roots(self) -> npt.NDArray:
+        if self.solution_tree is None:
+            return None
+        
+        # TODO it can be None if FAILED
+        return np.concatenate([leaf.roots for leaf in self.solution_tree.leaves], axis=0)
+
+    @property
+    def zeros(self) -> npt.NDArray:
+        """ alias for `roots` """
+        return self.roots
+    
