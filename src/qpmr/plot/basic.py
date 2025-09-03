@@ -148,7 +148,7 @@ def argument_principle_circle(roots: npt.NDArray, ds: float, ax: Axes=None):
         _, ax = plt.subplots()
 
     for r in roots:
-        circle = patches.Circle((r.real, r.imag), radius=ds/5., alpha=alpha, color=color)
+        circle = patches.Circle((r.real, r.imag), radius=ds/20., alpha=alpha, color=color)
         ax.add_patch(circle)
     
     return ax

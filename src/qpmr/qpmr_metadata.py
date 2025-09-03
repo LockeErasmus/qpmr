@@ -61,13 +61,17 @@ class QpmrRecursionContext:
     
     grid_nbytes_max: int = 128_000_000 # 250_000_000
     recursion_level_max: int = 5
+    multiplicity_heuristic: bool = False
+    
+    # numerical method
+    numerical_method: str = None # TODO Enum
+    numerical_method_kwargs: dict = {}
+
     ds: float = None
 
     def __init__(self, coefs, delays):
         self.coefs = coefs
         self.delays = delays
-        
-        self.solution = [] # TODO delete
         
         self.solution_tree: QpmrSubInfo = None
         self.node: QpmrSubInfo = None # current node

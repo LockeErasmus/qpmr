@@ -29,7 +29,7 @@ def safe_upper_bound_diff(coefs, delays, **kwargs):
     #     x1=-100,
     #     x2=100.,
     # )
-    bound = newton(
+    bound, converged = newton(
         f=lambda s: np.inner(diff_coefs, np.exp(-s*diff_delays)) - 1.,
         Df=lambda s: np.inner(-diff_delays*diff_coefs, np.exp(-s*diff_delays)),
         x0=0.,

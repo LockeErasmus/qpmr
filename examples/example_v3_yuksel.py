@@ -9,7 +9,7 @@ import qpmr.quasipoly.examples as examples
 
 coefs, delays = examples.yuksel2023distributed()
 region = (-12, 1, -0.1, 5000)
-region = (-12, 1, -0.1, 500)
+# region = (-12, 1, -0.1, 500)
 
 
 if __name__ == "__main__":

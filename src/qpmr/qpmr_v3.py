@@ -14,7 +14,7 @@ import contourpy
 import numpy as np
 import numpy.typing as npt
 
-from .numerical_methods import numerical_newton, secant
+from .numerical_methods import numerical_newton, secant, newton
 from .argument_principle import argument_principle, argument_principle_circle
 from .zero_multiplicity import cluster_roots
 from .common import find_crossings
@@ -45,11 +45,6 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
         # TODO custom ERROR? : recursion error hit
         # TODO message for advices
         raise ValueError(f"Maximum level of allowed splitting recursion hit!")
-
-    # hyperparameters
-    numerical_method = kwargs.get("numerical_method", "newton")
-    numerical_method_kwargs = kwargs.get("numerical_method_kwargs", dict())
-    multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
 
     # create metadata object: TODO - this will need to be more nice
     if ctx.solution_tree is None:
@@ -89,7 +84,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
         for subregion in subregions:
             metadata.status = "FAILED"
             ctx.node.status_message = "GRID"
-            ctx.node = metadata # set correct parent
+            ctx.node = metadata # re-set correct parent node
             _qpmr(ctx, subregion, e_new, ds_new, recursion_level+1)
         
         return
@@ -100,7 +95,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     metadata.real_range = real_range
     metadata.imag_range = imag_range
     complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
-    func_value = _eval_array(ctx.coefs, ctx.delays, complex_grid) # evaluates QP at grid points
+    func_value = ctx.f(complex_grid) # evaluates QP at grid points
     metadata.z_value = func_value
 
     ## finding contours via contourpy library, only 0-level real contours are necessary
@@ -116,9 +111,8 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
         logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
         for polygon in zero_level_contours:
             polygon_complex = polygon[:,0] + 1j*polygon[:,1]
-            polygon_func_value = _eval_array(ctx.coefs, ctx.delays, polygon_complex)
             # find all intersections
-            polygon_func_imag = np.imag(polygon_func_value)
+            polygon_func_imag = np.imag(ctx.f(polygon_complex))
             crossings = find_crossings(polygon_complex, polygon_func_imag, interpolate=True)
             if crossings.size:
                 roots.append(crossings)
@@ -128,7 +122,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
 
     metadata.roots0 = roots0
 
-    if multiplicity_heuristic:
+    if ctx.multiplicity_heuristic:
         roots0, roots_multiplicity = cluster_roots(roots0, eps=2*ds)
         multiplicity_unique, multiplicity_counts = np.unique(roots_multiplicity, return_counts=True)
         logger.debug((f"Clustering roots heuristic (DBSCAN with eps={2*ds})\n"
@@ -137,24 +131,24 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     else:
         roots_multiplicity = np.full_like(roots0, fill_value=1, dtype=np.int64)
     
-    if roots0.size > 0 and numerical_method:
+    if roots0.size > 0 and ctx.numerical_method:
         # apply numerical method to increase precission - TODO move to separate function `apply_numerical_method` ?
-        func = lambda s: _eval_array(ctx.coefs, ctx.delays, s)
-        if numerical_method == "newton":
-            roots, converged = numerical_newton(func, roots0, **numerical_method_kwargs)
-        elif numerical_method == "secant":
-            roots, converged = secant(func, roots0, **numerical_method_kwargs)
+        # func = lambda s: _eval_array(ctx.coefs, ctx.delays, s)
+        if ctx.numerical_method == "newton":
+            roots, converged = numerical_newton(ctx.f, roots0, **ctx.numerical_method_kwargs)
+            # roots, converged = _newton_array(ctx.f, ctx.f_prime, roots0) # TODO kwargs
+        elif ctx.numerical_method == "secant":
+            roots, converged = secant(ctx.f, roots0, **ctx.numerical_method_kwargs)
         else:
-            raise NotImplementedError(f"Numerical method '{numerical_method}' is not supported.")
+            raise NotImplementedError(f"Numerical method '{ctx.numerical_method}' is not supported.")
         metadata.roots_numerical = roots
         
         if not converged: # if numerical method did not converge
             # TODO status
-            logger.info(f"'{numerical_method}' did not converge, ds <- ds / 3")
-            modified_kwargs = kwargs.copy()
+            logger.info(f"'{ctx.numerical_method}' did not converge, ds <- ds / 3")
             ctx.node.status = "FAILED"
             ctx.node.status_message = "NUM_EPS"
-            _qpmr(ctx, region, e, ds/2, recursion_level, **modified_kwargs)
+            _qpmr(ctx, region, e, ds/2, recursion_level)
             return
     
     else: # no numerical method applied
@@ -168,17 +162,15 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
         roots = roots[mask]
         roots_multiplicity = roots_multiplicity[mask]
 
-        if numerical_method:
+        if ctx.numerical_method:
             # Check the distance from the approximation of the roots less then 2*ds
             dist = np.abs(roots - roots0[mask])
             num_dist_violations = (dist > 2*ds).sum()
             if num_dist_violations > 0:
-                # TODO status
                 logger.info("After numerical method, MAX |roots0 - roots| > 2 * ds, ds <- ds / 3")
-                modified_kwargs = kwargs.copy()
                 ctx.node.status = "FAILED"
                 ctx.node.status_message = "NUM_DS"
-                _qpmr(ctx, region, e, ds/2, recursion_level, **modified_kwargs)
+                _qpmr(ctx, region, e, ds/2, recursion_level)
                 return
     
     # Perform argument check, note regions adjusted as per in original implementation
@@ -190,7 +182,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     ]
     for region_to_check in regions_to_check:
         n_argp = argument_principle(
-            lambda s: _eval_array(ctx.coefs, ctx.delays, s),
+            ctx.f,
             region_to_check,
             ds/10.,
             eps=e/100.
@@ -203,38 +195,29 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     if argp_ok:
         logger.debug(f"Argument principle success {n_argp}, expected: {n_expected} for region={region}")
     else:
-        modified_kwargs = kwargs.copy()
         ctx.node.status = "FAILED"
         ctx.node.status_message = "ARGP"
-        _qpmr(ctx, region, e, ds/2, recursion_level, **modified_kwargs)
+        _qpmr(ctx, region, e, ds/2, recursion_level)
         return
     
     # Perform argument check for all multiplicities > 1
     # dcoefs, ddelays = derivative(coefs, delays)
-    if multiplicity_heuristic:
-        for r, rm in zip(roots, roots_multiplicity):
-            if rm > 0: # perform check
-                a, b = np.real(r), np.imag(r)
-                # n = argument_principle(
-                #     lambda s: _eval_array(ctx.coefs, ctx.delays, s),
-                #     (a-ds/20, a+ds/20, b-ds/20, b+ds/20), 
-                #     ds/200.,
-                #     eps=ds/2000.
-                # )
-                n = argument_principle_circle(
+    if ctx.multiplicity_heuristic:
+        for i in np.where(roots_multiplicity > 1)[0]:
+            r, rm = roots[i], roots_multiplicity[i]
+            n = argument_principle_circle(
                     ctx.f,
-                    (r, ds/5.),
-                    ds/200.,
-                    eps=ds/2000.,
+                    (r, ds/20.),
+                    ds/800.,
+                    eps=ds/8000.,
                     f_prime=ctx.f_prime,
                 )
-                if n != rm:
-                    logger.debug(f"MULTIPLICITY HEURISTIC ERROR: root={r}| {n=} ({rm})")
-                    modified_kwargs = kwargs.copy()
-                    ctx.node.status = "FAILED"
-                    ctx.node.status_message = "MULT_HEURISTIC"
-                    _qpmr(ctx, region, e, ds/2, recursion_level, **modified_kwargs)
-                    return
+            if n != rm:
+                logger.debug(f"MULTIPLICITY HEURISTIC ERROR: root={r}| {n=} ({rm})")
+                ctx.node.status = "FAILED"
+                ctx.node.status_message = "MULT_HEURISTIC"
+                _qpmr(ctx, region, e, ds/2, recursion_level)
+                return
 
     # SOLVED: add solution to tree TODO
     ctx.node.status = "SOLVED"
@@ -316,10 +299,8 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     if not ds:
         ds = grid_size_heuristic(region, coefs, delays)
         logger.debug(f"Grid size not specified, setting as ds={ds} (solved by heuristic)")
-    nbytes_max = kwargs.get("grid_nbytes_max", 250_000_000)
+
     numerical_method = kwargs.get("numerical_method", "newton")
-    numerical_method_kwargs = kwargs.get("numerical_method_kwargs", dict())
-    multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
 
     # kwargs check
     assert isinstance(e, float) and e > 0.0, "error 'e' numerical accuracy"
@@ -331,9 +312,18 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     # create context - TODO
     ctx = QpmrRecursionContext(coefs, delays)
     ctx.ds = ds
+    ctx.grid_nbytes_max = kwargs.get("grid_nbytes_max", 128_000_000)
+    ctx.multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
+    ctx.numerical_method = kwargs.get("numerical_method", "newton")
+    ctx.numerical_method_kwargs = kwargs.get("numerical_method_kwargs", dict())
+
+    # validate context - TODO
+
+
+
 
 
     # run recursive QPmR algorithm
-    _qpmr(ctx, region, e, ds, recursion_level=0, **kwargs)
+    _qpmr(ctx, region, e, ds, recursion_level=0)
 
     return ctx.roots, ctx # TODO
