@@ -165,15 +165,13 @@ def argument_principle(f: Callable, region: tuple[float, float, float, float],
 
     return n
 
-def argument_principle_circle(f, circle: tuple[complex, float], ds: float, eps:float):
+def argument_principle_circle(f, circle: tuple[complex, float], ds: float, eps:float, f_prime: Callable=None):
     # prepare contour path
     center, radius = circle
     gamma, gamma_prime, (a, b) = circle_contour(center, radius)
 
-    def f_prime(s):
-        dvals = (f(s - eps) - f(s + eps) + 1j*f(s +1j*eps)
-                    - 1j*f(s -1j*eps)) / 4. / eps
-        return dvals
+    if f_prime is None:
+        f_prime = lambda s: ( f(s + eps) - f(s - eps)) / 2 / eps
     
     n_points = max(round(2*np.pi/ds) + 1, 1000)
     res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)

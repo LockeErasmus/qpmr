@@ -45,19 +45,21 @@ def derivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.N
                 corresponds to row in `coefs`)
     """
     n, m = coefs.shape
-    ddelays = np.copy(delays)
-    if m == 0:
-        dcoefs = np.copy(coefs)
-    if m == 1:
-        dcoefs = (coefs.T * -delays).T
-    else:
-        dcoefs = (coefs.T * -delays).T
-        dcoefs[:,:-1] = coefs[:,1:] * np.arange(1,m,1)
+    coefs_prime = np.zeros_like(coefs)
+    delays_prime = np.copy(delays)
+
+    # iterate over column
+    # first column is special
+    coefs_prime[:, 0] -= delays * coefs[:, 0]
+    # columns 1 ... m
+    for j in range(1, m):
+        coefs_prime[:, j-1] += j * coefs[:, j]
+        coefs_prime[:, j] -= delays * coefs[:, j]
     
     if kwargs.get("compress", True):
-        dcoefs, ddelays = compress(dcoefs, ddelays)
+        coefs_prime, delays_prime = compress(coefs_prime, delays_prime)
     
-    return dcoefs, ddelays
+    return coefs_prime, delays_prime
 
 def antiderivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
     """ Antiderivative of quasipolynomial

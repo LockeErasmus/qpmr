@@ -4,11 +4,15 @@ QPmR Info object
 
 """
 
+from typing import Callable
 from anytree import NodeMixin, RenderTree
 from functools import cached_property
 import contourpy
 import numpy as np
 import numpy.typing as npt
+
+from qpmr.quasipoly import derivative
+from qpmr.quasipoly.core import _eval_array
 
 class QpmrInfo:
     # TODO maybe dataclass? but solve cached property
@@ -55,7 +59,7 @@ class QpmrSubInfo(QpmrInfo, NodeMixin):
 class QpmrRecursionContext:
     """ stuff that does not change in recursion + memory for results """
     
-    grid_nbytes_max: int = 64_000_000 # 250_000_000
+    grid_nbytes_max: int = 128_000_000 # 250_000_000
     recursion_level_max: int = 5
     ds: float = None
 
@@ -89,4 +93,24 @@ class QpmrRecursionContext:
     def zeros(self) -> npt.NDArray:
         """ alias for `roots` """
         return self.roots
+
+    @cached_property
+    def _qp_prime(self) -> tuple[npt.NDArray, npt.NDArray]:
+        return derivative(self.coefs, self.delays)
     
+    @property
+    def coefs_prime(self) -> npt.NDArray:
+        return self._qp_prime[0]
+
+    @property
+    def delays_prime(self) -> npt.NDArray:
+        return self._qp_prime[1]
+    
+    @cached_property
+    def f(self) -> Callable:
+        return lambda s: _eval_array(self.coefs, self.delays, s)
+
+    @cached_property
+    def f_prime(self) -> Callable:
+        return lambda s: _eval_array(self.coefs_prime, self.delays_prime, s)
+

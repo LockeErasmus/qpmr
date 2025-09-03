@@ -222,10 +222,11 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
                 #     eps=ds/2000.
                 # )
                 n = argument_principle_circle(
-                    lambda s: _eval_array(ctx.coefs, ctx.delays, s),
+                    ctx.f,
                     (r, ds/5.),
                     ds/200.,
                     eps=ds/2000.,
+                    f_prime=ctx.f_prime,
                 )
                 if n != rm:
                     logger.debug(f"MULTIPLICITY HEURISTIC ERROR: root={r}| {n=} ({rm})")

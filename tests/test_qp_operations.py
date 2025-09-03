@@ -4,6 +4,8 @@ Set of tests for usefull operations on quasipolynomials
 
 import numpy as np
 
+import pytest
+
 from qpmr.quasipoly import compress
 from qpmr.quasipoly.arithmetic import add, multiply
 
