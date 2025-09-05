@@ -2,9 +2,11 @@
 Quasipolynomial examples
 ------------------------
 
-Notes:
-    1. quasipolynomials from articles are named as a code from bibtex
-
+This file contains various examples of quasi-polynomials taken from literature.
+Some examples are parametrizable, in these cases, calling without passing
+arguments is always possible and results in article supplied values. Callables
+constructing quasi-polynomials are named using citation key, for the whole
+reference and notes read docstring of individual callables.
 """
 
 import numpy as np
@@ -17,10 +19,10 @@ def mazanti2021multiplicity(kappa: float=1.964, k: float=-0.67036, tau0: float=0
     dominant real pole of multiplicity 6: s = −6.021
 
     Args:
-        kappa (float)
-        k (float)
-        tau0 (float): should be positive
-        tau1 (float): should be positive
+        kappa (float): parameter from article
+        k (float): parameter from article
+        tau0 (float): delay from article, should be positive
+        tau1 (float): delay from article, should be positive
 
     Returns:
         tuple containing:
@@ -88,6 +90,7 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
             1 + C(s) * ( G_i(s) * exp(-s*tau) - G_m(s) * exp(-s*tau_m))
 
     we are interested in showing zeros and poles of S(s).
+    
     The model is considered in the form of non delayd LTI as
 
                     K
@@ -95,12 +98,12 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
                 T*s + 1
 
     Plant Gi(s) was identified as a non delayed LTI of 3rd order and controller
+    
     C(s) is given by
 
                   1
         C(s) = --------- * D(s)
                 Gm(s)
-
     with:
                 1
         D(s) = --- (a_0 + a_1 * exp(-s * theta) + ... a_N * exp(-s * N * theta))
@@ -110,7 +113,7 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
     
     >>> region = (-12, 1, -0.1, 5000)
 
-    Numerator is expected to have zeros:
+    Numerator is expected to have purely imaginary zeros:
 
     >>> expected_zeros = np.array([4,8,12,16,20,24,28,32]) * 1j * 2 * np.pi
     """
@@ -131,6 +134,7 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
     N = 60
     tau_vector = theta * np.arange(0, N, 1, dtype=np.float64)
 
+    # gains obtained directly from main author
     gains = np.array([3.18419888499517, -8.55006730630735, 7.20804319626175, 20.8242855731446,
                     -6.98819718206270, -20.1849552841814, 2.55098297500236, 5.35346406689096,
                     -5.66728253720343, 1.76092216986347, 2.95360281683304, -4.28799405248918,
@@ -169,7 +173,6 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
         return tf.denum.coefs, tf.denum.delays
     else:
         return tf.num.coefs, tf.num.delays
-
 
 def vyhlidal2014qpmr_01() -> tuple[npt.NDArray, npt.NDArray]:
     """ TODO """
