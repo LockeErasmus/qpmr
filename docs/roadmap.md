@@ -2,7 +2,16 @@
 
 ## Concrete fixes
 
-- truncating roots to certain precision ???
+1. ~~truncating roots to certain precision ???~~
+1. 
+
+## Features
+
+1. Allow for **not-storing** partial results in no-leaf nodes
+1. Evaluate argument principle at the begining to disregard subregions
+1. Custom Errors (for instance newton did not converge) and their handling, to allow return results eventhough one leaf fails
+
+
 
 ## Task to implement
  - quasipolynomial arithmetic operations

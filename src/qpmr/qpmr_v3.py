@@ -177,8 +177,8 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     argp_ok = False
     n_expected = np.sum(roots_multiplicity)
     regions_to_check = [
-        region,
-        (region[0]+ds/10., region[1]-ds/10., region[2]+ds/10.,region[3]-ds/10.), # smaller region
+        (region[0]-ds, region[1]+ds, region[2]-ds,region[3]+ds), # region expanded by ds
+        (region[0]-0.9*ds, region[1]+0.9*ds, region[2]-0.9*ds,region[3]+0.9*ds), # region expaneded by 0.9ds
     ]
     for region_to_check in regions_to_check:
         n_argp = argument_principle(

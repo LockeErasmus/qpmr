@@ -193,6 +193,7 @@ def poly_degree(poly: npt.NDArray, order="reversed") -> int:
     logger.debug(f"{poly=} -> degree: {degree}")
     return degree
 
+
 def is_neutral(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
     """ Checks if quasipolynomial is neutral
     
@@ -242,3 +243,11 @@ def create_normalized_delay_difference_eq(coefs: npt.NDArray, delays: npt.NDArra
         return np.abs(coefs[1:,-1]/a0), delays[1:]
     else:
         return None
+    
+
+def _compress2(coefs, delays, **kwargs):
+    """
+
+    """
+    
+
