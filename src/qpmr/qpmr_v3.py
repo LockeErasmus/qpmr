@@ -241,7 +241,7 @@ def qpmr(
 ) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
 
 def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionContext]:
-    """ Quasi-polynomial Root Finder V2
+    """ Quasi-polynomial Root Finder V3
 
     Attempts to find all roots of quasi-polynomial in rectangular subregion of
     complex plane. For more details, see:

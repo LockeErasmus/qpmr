@@ -204,6 +204,35 @@ def vyhlidal2014qpmr_03() -> tuple[npt.NDArray, npt.NDArray]:
                       [3, 0, 0, 0, 0]])
     return coefs, delays
 
+def vyhlidal2014qpmr(example: str | int=1):
+    match int(example):
+        case 1:
+            return vyhlidal2014qpmr_01()
+        case 2:
+            return vyhlidal2014qpmr_02()
+        case 3:
+            return vyhlidal2014qpmr_03()
+        case _:
+            allowed_examples = [1, 2, 3]
+            raise ValueError(f"Example '{example}' is not supported. Supported list of examples: {', '.join(allowed_examples)}")
+
+def appeltans2023analysis(example: str=None, **kwargs):
+    """ TODO """
+    allowed_examples = ["2.6"]
+    
+    if example not in allowed_examples:
+        raise ValueError(f"Example '{example}' is not supported. Supported list of examples: {', '.join(allowed_examples)}")
+    
+    if example == "2.6":
+        tau = kwargs.get("tau2", 2.0)
+        coefs = np.array([[-1/4, 1.],
+                          [1/3, -3/4],
+                          [0, 1/2]])
+        delays = np.array([0., 1, tau], dtype=float)
+    
+    return coefs, delays
+
+
 def self_inverse_polynomial(center: float=0., radius: float=1.0, degree: int=6):
     coefs = ( (1 / radius * np.poly1d([1, -center])) ** degree - 1 ).coeffs[None, ::-1]
     delays = np.array([0.])

@@ -15,3 +15,11 @@ def grid_size_heuristic(region: tuple[float, float, float, float], coefs: npt.ND
         return (region[1] - region[0]) * (region[3] - region[2]) / 1000.
     else:
         return np.pi / 10 / alpha_max
+
+def complex_grid_rect(region: tuple, ds: float):
+    """ Creates complex grid from rectangular region """
+    
+    bmin, bmax, wmin, wmax = region
+    real_range = np.arange(bmin, bmax, ds)
+    imag_range = np.arange(wmin, wmax, ds)
+    return 1j*imag_range.reshape(-1, 1) + real_range

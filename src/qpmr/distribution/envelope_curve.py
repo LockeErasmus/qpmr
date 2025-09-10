@@ -27,7 +27,14 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
     norms = np.zeros_like(delays, dtype=float)
     for k in range(len(delays)):
         if k == 0:
-            norms[k] = np.max(np.abs(np.roots(coefs[k,:-1][::-1])))
+            monic_coefs = coefs[k,:-1][::-1] # without leading 1
+            if len(monic_coefs) == 0:
+                norms[k] = 0
+            elif len(monic_coefs) == 1:
+                norms[k] = abs(monic_coefs[0])
+            else:
+                roots = np.roots(coefs[k,:-1][::-1])
+                norms[k] = np.max(np.abs(roots))                
         else:
             norms[k] = np.linalg.norm(coefs[k,:-1], ord=2)
     return norms
@@ -45,6 +52,10 @@ def _envelope_real_axis_crossing(spectral_norms: npt.NDArray, delays: npt.NDArra
         return x_star
     
     raise ValueError(f"Newton did not converge")
+
+def _envelope_imag_axis_crossing(spectral_norms: npt.NDArray) -> float:
+    """ symetrical by real axis of course """
+    return np.sum(spectral_norms)
 
 def _envelope_eval(real: npt.NDArray, norms: npt.NDArray, delays: npt.NDArray):
 
