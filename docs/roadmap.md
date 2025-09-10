@@ -7,6 +7,13 @@
 
 ## Features
 
+1. Automatic `region` selection, by default, it should capture `50` rightmost roots
+    - `im_min=0` by default
+    - obtain `re_max` from envelope
+    - point (`re_min`, `im_max`) obtained from guessing number of roots via asymptote of the root chains, core idea:
+        - for each asymptote, find point where the approximating asymptote is "close" (we will use this, because after we hit "close" we will assume certain distribution of roots on the asymptote)
+        - before this point is hit, maybe argument principle?
+    - if neutral, use safe upper bound also for right point
 1. Allow for **not-storing** partial results in no-leaf nodes
 1. Evaluate argument principle at the begining to disregard subregions
 1. Custom Errors (for instance newton did not converge) and their handling, to allow return results eventhough one leaf fails
