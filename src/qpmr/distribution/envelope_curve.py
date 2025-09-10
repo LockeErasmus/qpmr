@@ -33,8 +33,12 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
             elif len(monic_coefs) == 1:
                 norms[k] = abs(monic_coefs[0])
             else:
-                roots = np.roots(coefs[k,:-1][::-1])
-                norms[k] = np.max(np.abs(roots))                
+                n = len(delays) - 1
+                A0 = np.zeros(shape=(n, n))
+                A0[-1,:] = -coefs[k,:-1]
+                A0[:-1, 1:] = np.eye(n-1)
+                # roots = np.roots(coefs[k,:-1][::-1])
+                norms[k] = np.linalg.norm(A0, ord=2)
         else:
             norms[k] = np.linalg.norm(coefs[k,:-1], ord=2)
     return norms
