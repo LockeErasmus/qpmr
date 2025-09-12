@@ -5,7 +5,7 @@ QPmR Info object
 """
 
 from typing import Callable
-from anytree import NodeMixin, RenderTree
+from anytree import NodeMixin, RenderTree, Node
 from functools import cached_property
 import contourpy
 import numpy as np
@@ -40,7 +40,7 @@ class QpmrInfo:
         return zero_level_contours
     
 
-class QpmrSubInfo(QpmrInfo, NodeMixin):
+class QpmrSubInfo(Node):
 
     region: tuple = None
     ds: float = None
@@ -49,9 +49,49 @@ class QpmrSubInfo(QpmrInfo, NodeMixin):
     status_message: str = None
     roots: npt.NDArray = None
 
+    z_value: npt.NDArray = None
+    roots0: npt.NDArray = None
+    roots_numerical: npt.NDArray = None
+
+    contours_real: list[npt.NDArray] = None
+
     def __init__(self, parent=None):
         self.parent = parent  # This establishes the tree hierarchy
 
+    @property
+    def expanded_region(self) -> tuple[float, float, float, float]:
+        r = (
+            self.region[0] - 3*self.ds,
+            self.region[1] + 3*self.ds,
+            self.region[2] - 3*self.ds,
+            self.region[3] + 3*self.ds,
+        )
+        return r
+
+    @cached_property
+    def real_range(self) -> npt.NDArray:
+        bmin, bmax, _, _ = self.expanded_region
+        return np.arange(bmin, bmax, self.ds)
+    
+    @cached_property
+    def imag_range(self) -> npt.NDArray:
+        _, _, wmin, wmax = self.expanded_region
+        return np.arange(wmin, wmax, self.ds)
+    
+    @cached_property
+    def complex_grid(self) -> npt.NDArray:
+        return 1j*self.imag_range.reshape(-1, 1) + self.real_range
+    
+    @cached_property
+    def contours_imag(self) -> list[npt.NDArray]:
+        contour_generator = contourpy.contour_generator(
+            x=self.real_range,
+            y=self.imag_range,
+            z=np.imag(self.z_value),
+        )
+        zero_level_contours = contour_generator.lines(0.0)
+        return zero_level_contours
+    
     @property
     def name(self) -> str:
         return f"QPmR[{self.status}-{self.status_message}] {self.region} ds={self.ds}"

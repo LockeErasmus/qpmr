@@ -9,7 +9,7 @@ import pytest
 import qpmr.quasipoly.examples as examples
 from qpmr.quasipoly import eval, derivative, compress
 from qpmr.distribution.psi_curve import psi_comensurate_0_kappa, psi_commensurate_kappa
-from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_real_axis_crossing, _envelope_imag_axis_crossing
+from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_real_axis_crossing, _envelope_imag_axis_crossing, _envelope_eval
 from qpmr.qpmr_v3 import qpmr as qpmr_v3
 from qpmr.qpmr_v3 import QpmrSubInfo, QpmrRecursionContext
 import qpmr.plot
@@ -17,7 +17,7 @@ import qpmr.plot
 @pytest.mark.parametrize(
     argnames="qp, base_delay, params",
     argvalues=[
-        (examples.vyhlidal2014qpmr_02(), 0.01, {"grid_points": 1}),
+        (examples.vyhlidal2014qpmr_02(), 0.1, {"grid_points": 1}),
         (examples.vyhlidal2014qpmr_03(), 0.01, {"grid_points": 10}),
     ],
     ids=[
@@ -71,18 +71,21 @@ def test_psi_commensurate(qp, base_delay, params: dict, enable_plot: bool):
         ax.scatter(points_psi_kappa.reshape(-1).real, points_psi_kappa.reshape(-1).imag, alpha=0.3, color="blue")
 
         # plot envelope
-        real_range = np.arange(-2, re_star+5, 0.01)
-        imag_range = np.arange(-im_star*1.1+1, im_star-1.1+1, 0.01)
-        complex_grid = 1j*imag_range.reshape(-1, 1) + real_range
-        r = np.sum(np.exp(-np.real(complex_grid)[:,:,None]*delays[None,:])*norms, axis=-1) - np.abs(complex_grid)
-        contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=r)
-        zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
+        # real_range = np.arange(-2, re_star+5, 0.01)
+        # imag_range = np.arange(-im_star*1.1+1, im_star-1.1+1, 0.01)
+        # complex_grid = 1j*imag_range.reshape(-1, 1) + real_range
+        # r = np.sum(np.exp(-np.real(complex_grid)[:,:,None]*delays[None,:])*norms, axis=-1) - np.abs(complex_grid)
+        # contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=r)
+        # zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
 
-        ax.axhline(0, alpha=0.5, color="black", linestyle="-.")
-        ax.axvline(0, alpha=0.5, color="black", linestyle="-.")
+        # ax.axhline(0, alpha=0.5, color="black", linestyle="-.")
+        # ax.axvline(0, alpha=0.5, color="black", linestyle="-.")
 
-        for i, c in enumerate(zero_level_contours): # there should be only one, but plot all
-            ax.plot(c[:,0], c[:,1], color="b", alpha=0.5, label=f"envelope (0-contour ix:{i})")
+        # for i, c in enumerate(zero_level_contours): # there should be only one, but plot all
+        #     ax.plot(c[:,0], c[:,1], color="b", alpha=0.5, label=f"envelope (0-contour ix:{i})")
+        x = np.linspace(0, re_star, 1000)
+        y = _envelope_eval(x, norms, delays)
+        ax.plot(x,y,label="envelope")
         ax.axvline(re_star, color="r", alpha=0.5, label="re*")
         ax.plot([0,0], [-im_star, im_star], marker="o", color="r", alpha=0.5, label="im*")
 

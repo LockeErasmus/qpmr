@@ -6,6 +6,10 @@ Set of funtions implement original QPmR v2 algorithm, based on [1].
 [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for large-scale
     computation of quasi-polynomial zeros." IEEE Transactions on Automatic
     Control 54.1 (2009): 171-177.
+
+
+TODO:
+    1. @overload docstring
 """
 import logging
 from typing import overload
@@ -15,7 +19,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant, newton
-from .argument_principle import argument_principle, argument_principle_circle
+from .argument_principle import argument_principle, argument_principle_circle, argument_principle_rectangle
 from .zero_multiplicity import cluster_roots
 from .common import find_crossings
 from .quasipoly import QuasiPolynomial
@@ -32,7 +36,7 @@ IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
 
 def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], e: float, ds: float, recursion_level: int, **kwargs):
-    """
+    """ TODO
     
     Args:
 
@@ -46,23 +50,32 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
         # TODO message for advices
         raise ValueError(f"Maximum level of allowed splitting recursion hit!")
 
-    # create metadata object: TODO - this will need to be more nice
+    # create node object: TODO - this will need to be more nice
     if ctx.solution_tree is None:
         ctx.solution_tree = QpmrSubInfo()
         ctx.node = ctx.solution_tree
-        metadata = ctx.solution_tree
     else:
         ctx.node = QpmrSubInfo(parent=ctx.node)
-        metadata = ctx.node
     
-    metadata.region = region
-    metadata.ds = ds
+    ctx.node.region = region
+    ctx.node.ds = ds
 
     # TODO: if ds < machine precission
 
-    # solve grid
-    bmin, bmax = region[0] - 3*ds, region[1] + 3*ds
-    wmin, wmax = region[2] - 3*ds, region[3] + 3*ds
+    # first, check if a little bit bigger region has roots
+    perturbed_region = (region[0]-ds, region[1]+ds, region[2]-ds,region[3]+ds) # region expanded by ds
+    
+    n_argp = argument_principle_rectangle(ctx.f, perturbed_region, ds/10., eps=e/100., f_prime=ctx.f_prime)
+    # n_argp = argument_principle(ctx.f, perturbed_region, ds/10., eps=e/100., f_prime=ctx.f_prime)
+    if n_argp == 0:
+        ctx.node.status = "SOLVED"
+        ctx.node.status_message = "ARGP=0"
+        ctx.node.roots = np.array([], dtype=np.complex128)
+        logger.debug(f"SUCCESFULLY FINISHED BRANCH (ARGP=0)")
+        return 
+
+    # use region expanded by 3ds to each direction
+    bmin, bmax, wmin, wmax = ctx.node.expanded_region
 
     # estimate size of array in bytes np.complex128
     grid_nbytes = ((bmax - bmin) // ds + 1) * ((wmax - wmin) // ds + 1) * 16 # 128 / 8 = bytes per complex number
@@ -81,27 +94,25 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
             (region[0] + 0.5*width + e, region[1], region[2], region[2] + 0.5*height), # right-bottom
             (region[0] + 0.5*width + e, region[1], region[2] + 0.5*height + e, region[3]), # right-top
         ]
+        correct_node = ctx.node
         for subregion in subregions:
-            metadata.status = "FAILED"
+            ctx.node.status = "FAILED"
             ctx.node.status_message = "GRID"
-            ctx.node = metadata # re-set correct parent node
             _qpmr(ctx, subregion, e_new, ds_new, recursion_level+1)
-        
+            ctx.node = correct_node # re-set correct parent node before next iteration
         return
     
     # construct grid, add to metadata - grid is cached
-    real_range = np.arange(bmin, bmax, ds)
-    imag_range = np.arange(wmin, wmax, ds)
-    metadata.real_range = real_range
-    metadata.imag_range = imag_range
-    complex_grid = metadata.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
+    real_range = ctx.node.real_range
+    imag_range = ctx.node.imag_range
+    complex_grid = ctx.node.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
     func_value = ctx.f(complex_grid) # evaluates QP at grid points
-    metadata.z_value = func_value
+    ctx.node.z_value = func_value
 
     ## finding contours via contourpy library, only 0-level real contours are necessary
     contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value.real)
     zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
-    metadata.contours_real = zero_level_contours
+    ctx.node.contours_real = zero_level_contours
 
     if not zero_level_contours: # no contours found -> no initial guesses
         logger.warning(f"No real 0-level contours were found in region {region}.")
@@ -120,7 +131,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
             logger.warning(f"No contour crossings found!")
         roots0 = np.hstack(roots)
 
-    metadata.roots0 = roots0
+    ctx.node.roots0 = roots0
 
     if ctx.multiplicity_heuristic:
         roots0, roots_multiplicity = cluster_roots(roots0, eps=2*ds)
@@ -141,7 +152,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
             roots, converged = secant(ctx.f, roots0, **ctx.numerical_method_kwargs)
         else:
             raise NotImplementedError(f"Numerical method '{ctx.numerical_method}' is not supported.")
-        metadata.roots_numerical = roots
+        ctx.node.roots_numerical = roots
         
         if not converged: # if numerical method did not converge
             # TODO status
@@ -176,25 +187,18 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     # Perform argument check, note regions adjusted as per in original implementation
     argp_ok = False
     n_expected = np.sum(roots_multiplicity)
-    regions_to_check = [
-        (region[0]-ds, region[1]+ds, region[2]-ds,region[3]+ds), # region expanded by ds
-        (region[0]-0.9*ds, region[1]+0.9*ds, region[2]-0.9*ds,region[3]+0.9*ds), # region expaneded by 0.9ds
-    ]
-    for region_to_check in regions_to_check:
-        n_argp = argument_principle(
-            ctx.f,
-            region_to_check,
-            ds/10.,
-            eps=e/100.
-        )
-        if n_argp == n_expected:
-            argp_ok = True
-            break
-        logger.debug(f"Argument principle failed: {n_argp}, expected: {n_expected}")
-    
-    if argp_ok:
-        logger.debug(f"Argument principle success {n_argp}, expected: {n_expected} for region={region}")
+    if n_expected == n_argp: # check if number matches expected number
+        logger.debug(f"Argument principle success {n_argp}, expected: {n_expected} for region={perturbed_region}")
+        argp_ok = True
     else:
+        # try little  bit pertubed contour
+        perturbed_region = (region[0]-0.9*ds, region[1]+0.9*ds, region[2]-0.9*ds,region[3]+0.9*ds)
+        n_argp = argument_principle_rectangle(ctx.f, perturbed_region, ds/10., eps=e/100., f_prime=ctx.f_prime)
+        if n_expected == n_argp: # check if number matches expected number
+            logger.debug(f"Argument principle success {n_argp}, expected: {n_expected} for perturbed region={perturbed_region}")
+            argp_ok = True
+
+    if not argp_ok:
         ctx.node.status = "FAILED"
         ctx.node.status_message = "ARGP"
         _qpmr(ctx, region, e, ds/2, recursion_level)
@@ -221,22 +225,22 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
 
     # SOLVED: add solution to tree TODO
     ctx.node.status = "SOLVED"
-    ctx.node.status_message = None
+    ctx.node.status_message = "QPmR"
     ctx.node.roots = roots
-    logger.debug(f"SUCCESFULLY FINISHED BRANCH")
+    logger.debug(f"SUCCESFULLY FINISHED BRANCH (QPmR)")
 
 @overload
 def qpmr(
-    region: list[float, float, float, float],
     coefs: npt.NDArray,
     delays: npt.NDArray,
+    region: tuple[float, float, float, float]=None,
     **kwargs
 ) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
 
 @overload
 def qpmr(
-    region: list[float, float, float, float],
     qp: QuasiPolynomial,
+    region: tuple[float, float, float, float]=None,
     **kwargs
 ) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
 
@@ -244,45 +248,98 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     """ Quasi-polynomial Root Finder V3
 
     Attempts to find all roots of quasi-polynomial in rectangular subregion of
-    complex plane. For more details, see:
+    complex plane using Quasi-polynomial Root Finder [1].
 
-    [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
-    large-scale computation of quasi-polynomial zeros." IEEE Transactions on
-    Automatic Control 54.1 (2009): 171-177.
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
 
-    TODO Overload:
-        ...
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+    
+    region : tuple of float, optional
+        Definition of the rectangular region in the complex plane, specified as
+        [Re_min, Re_max, Im_min, Im_max]. Defaults to None, which selects the
+        region such that QPmR caputres 50 rightmost roots.
 
-    Args:
-        region (list): definition of rectangular region in the complex plane of
-            a form [Re_min, Re_max, Im_min, Im_max]
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
+    e : float, optional
+        Computation accuracy. Defaults to 1e-6.
 
-        **kwargs:
-            e (float) - computation accuracy, default = 1e-6
-            ds (float) - grid step, default obtained by heuristic
-            numerical_method (str) - numerical method for increasing precission
-                of roots, default "newton", other options: "secant"
-            numerical_method_kwargs (dict) - keyword arguments for numerical
-                method, default None
-            grid_nbytes_max (int): maximal allowed size of grid in bytes,
-                default 250e6 bytes, set to None to disregard maximum size check
-                of the grid
+    ds : float, optional
+        Grid step. If not provided, a heuristic will be used to determine the step size.
+
+    numerical_method : {'newton', 'secant'}, optional
+        Numerical method used to refine the roots. Defaults to 'newton'.
+
+    numerical_method_kwargs : dict, optional
+        Additional keyword arguments passed to the numerical method. Defaults to None.
+
+    grid_nbytes_max : int or None, optional
+        Maximum allowed grid size in bytes. Defaults to 250e6. Set to None to disable
+        the size check.
+
+    Returns
+    -------
+    roots : ndarray
+        Matrix of polynomial coefficients. Each row corresponds to a delay value.
+
+    ctx : QpmrRecursionContext
+        Tree-like object containing the computation metadata
+
+        Attributes
+        ----------
+        TODO
+    
+    Notes
+    -----
+
+    .. math::
+
+        h(s) = \sum_{i=0}^n p_i(s)e^{-s\tau_i}
+
+    TODO
+
+    References
+    ----------
+    .. [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
+           large-scale computation of quasi-polynomial zeros." IEEE 
+           Transactions on Automatic Control 54.1 (2009): 171-177.
+
+    Examples
+    --------
+    
+    Example 1 from [1], i.e. quasi-polynomial :math: h(s) = s + e^{-s}``
+
+    >>> import numpy as np
+    >>> import qpmr
+    >>> coefs = np.array([[0, 1],[1, 0.]])
+    >>> delays = np.array([0, 1.])
+    >>> roots, ctx = qpmr.qmpr(coefs, delays, region=(-10, 2, 0, 30))
+
+    Visualize roots:
+
+    >>> import matplotlib.pyplot as plt
+    >>> import qpmr.plot
+    >>> qpmr.plot.roots(roots)
+    >>> plt.show()
     """
     # solve overload, unpack *args
     if len(args) == 2:
-        region, qp = args
+        qp, region = args
         coefs, delays = qp.coefs, qp.delays
     else: # len(args) == 3
-        region, coefs, delays = args
+        coefs, delays, region = args
 
-    # Validate arguments
-    region = validate_region(region) # validates region and converts to tuple[float, float, float, float]
+    # Validate quasi-polynomial definition, TODO: consider to not run validation when class is passed as qp
     coefs, delays = validate_qp(coefs, delays)
-
+    if region is None:
+        # TODO heuristic
+        raise NotImplementedError(f"Heuristic for rightmost root region is not implemented yet.")
+    else:
+        region = validate_region(region) # validates region and converts to tuple[float, float, float, float]
+    
     # Warn if region defined in un-economical way (symetry by real axis)
     if region[2] < 0 and region[3] > 0:
         im_max = max(abs(region[2]), abs(region[3])) # better im_max
@@ -308,7 +365,6 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     if numerical_method and numerical_method not in IMPLEMENTED_NUMERICAL_METHODS:
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
-
     # create context - TODO
     ctx = QpmrRecursionContext(coefs, delays)
     ctx.ds = ds
@@ -316,14 +372,12 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     ctx.multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
     ctx.numerical_method = kwargs.get("numerical_method", "newton")
     ctx.numerical_method_kwargs = kwargs.get("numerical_method_kwargs", dict())
-
+    ctx.recursion_level_max = kwargs.get("recursion_level_max", 5)
+    
     # validate context - TODO
-
-
-
-
 
     # run recursive QPmR algorithm
     _qpmr(ctx, region, e, ds, recursion_level=0)
 
+    logger.debug(f"QPmR recursive solution tree:\n {ctx.render_tree}")
     return ctx.roots, ctx # TODO

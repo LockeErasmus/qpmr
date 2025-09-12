@@ -62,9 +62,5 @@ def _envelope_imag_axis_crossing(spectral_norms: npt.NDArray) -> float:
     return np.sum(spectral_norms)
 
 def _envelope_eval(real: npt.NDArray, norms: npt.NDArray, delays: npt.NDArray):
-
-
-    # r = np.sum(np.exp(-np.real(complex_grid)[:,:,None]*delays[None,:])*alphas, axis=-1) - np.abs(complex_grid)
-    raise NotImplementedError
-
+    return np.sqrt( np.square(np.sum(np.exp(-real[:, None] * delays[None, :]) * norms[None, :], axis=1)) - np.square(real) )
 

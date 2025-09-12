@@ -2,8 +2,13 @@
 Pytest configuration
 """
 
+import logging
 import os
 import sys
+
+logging.getLogger("matplotlib").setLevel(logging.WARNING)
+logging.getLogger("PIL").setLevel(logging.WARNING)
+
 
 from _pytest.config.argparsing import Parser
 
@@ -26,7 +31,3 @@ import pytest
 def enable_plot(request: pytest.FixtureRequest) -> bool:
     return request.config.getoption("--plot")
 
-
-# TODO logger via parser
-from qpmr import init_logger
-init_logger("DEBUG")

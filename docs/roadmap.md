@@ -3,7 +3,7 @@
 ## Concrete fixes
 
 1. ~~truncating roots to certain precision ???~~
-1. 
+
 
 ## Features
 
@@ -41,9 +41,7 @@
 
 ## Questions for Tomas
 
-- argument principle and zeros located precisely on boundaries
-- what is the reason for ds <- 1/3*ds rule
-- where is the proof for grid heuristic?
+
 
 ## Simillar python libraries
 

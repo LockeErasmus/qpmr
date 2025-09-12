@@ -165,6 +165,42 @@ def argument_principle(f: Callable, region: tuple[float, float, float, float],
 
     return n
 
+def argument_principle_rectangle(f: Callable, region: tuple[float, float, float, float],
+                                 ds: float, eps: float, f_prime=None) -> float:
+    """ Evaluates number of roots in given rectangular region via argument
+    principle
+
+    Args:
+        func (Callable): vector-suitable callable for quassipolynomial
+        region (list of `float`): region in complex plane
+        ds (float): grid stepsize
+        eps (float): step for finite difference method
+
+    Returns:
+        n (float): rounded number of complex roots in region based on numerical
+            integration and argument principle
+    """
+    # prepare contour path
+    re_min, re_max, im_min, im_max = region
+    gamma, gamma_prime, (a,b) = rectangular_contour(re_min, re_max, im_min, im_max)
+
+    if f_prime is None:
+        f_prime = lambda s: ( f(s + eps) - f(s - eps)) / 2 / eps
+        # def f_prime(s):
+        #     dvals = (f(s - eps) - f(s + eps) + 1j*f(s +1j*eps)
+        #                 - 1j*f(s -1j*eps)) / 4. / eps
+        #     return dvals
+    
+    n_points = max(round(2*(re_max - re_min + im_max - im_min)/ds + 4), 1000)
+    res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
+
+    # use argument principle and round
+    n_raw = np.abs(np.real( res ))
+    n = np.round(n_raw)
+    logger.debug(f"Using argument principle, contour integral = {n_raw} | rounded to {n}")
+
+    return n
+
 def argument_principle_circle(f, circle: tuple[complex, float], ds: float, eps:float, f_prime: Callable=None):
     # prepare contour path
     center, radius = circle

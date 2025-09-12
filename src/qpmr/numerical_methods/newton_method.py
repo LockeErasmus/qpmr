@@ -88,6 +88,8 @@ def newton(f: Callable, f_prime: Callable, x0: float | npt.NDArray, m: float | n
 
         - x (ndarray): roots with increased precission
         - converged (bool): True if successful, False otherwise
+
+    
     """
     if isinstance(x0, (float, int)):
         return _newton_scalar(f, f_prime, x0, m=m, tol=tol, max_iter=max_iter)
