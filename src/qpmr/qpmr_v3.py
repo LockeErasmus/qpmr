@@ -316,7 +316,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     >>> import qpmr
     >>> coefs = np.array([[0, 1],[1, 0.]])
     >>> delays = np.array([0, 1.])
-    >>> roots, ctx = qpmr.qmpr(coefs, delays, region=(-10, 2, 0, 30))
+    >>> roots, ctx = qpmr.qpmr(coefs, delays, region=(-10, 2, 0, 30))
 
     Visualize roots:
 

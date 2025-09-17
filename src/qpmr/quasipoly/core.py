@@ -9,29 +9,7 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-
 logger = logging.getLogger(__name__)
-
-def _check_qp(coefs: npt.NDArray, delays: npt.NDArray, raise_error=True) -> bool:
-    """ Checks if quasipolynomial definition is valid
-
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-    """
-    # TODO
-    assert isinstance(coefs, np.ndarray)
-    assert coefs.ndim == 2
-
-    assert isinstance(delays, np.ndarray)
-    assert coefs.ndim == 1
-
-    assert coefs.shape[0] == delays.shape[0]
-
-    return True
-    
 
 def _eval_scalar(coefs: npt.NDArray, delays: npt.NDArray, s: int|float|complex):
     """ Evaluates quasipolynomial on complex value
@@ -173,6 +151,58 @@ def compress(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.
 
     return coefs_compressed, delays_compressed
 
+def normalize(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
+    """ Creates normalized quasi-polynomial representation
+
+    Normalized quasi-polynomial is the quasi-polynomial with the same spectrum
+    as the original one, but it's representation is compressed (i.e. unique
+    `delays` sorted in ascending order, no ending zero-column in `coefs`). First
+    delay is 0.0 and the leading coefficient is 1.0 (leading coefficient is the 
+    coefficient with highest power of :math:`s` and smallest delay).
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+
+    Returns
+    -------
+    ccoefs : ndarray
+        Matrix of normalized polynomial coefficients. Each row represents the
+        coefficients corresponding to a specific delay.
+
+    ddelays : ndarray
+        Vector of delays associated with each row in `coefs`, non-negative,
+        sorted in ascending order, if non-empty first delay is 0
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import qpmr.quasipoly
+    >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
+    >>> delays = np.array([-1., 1, 1])
+    >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
+    >>> coefs
+    array([[0. , 0.5, 1. ],
+           [0.5, 0.5, 2. ]])
+    >>> delays
+    array([0., 2.])
+
+    """
+    ccoefs, cdelays = compress(coefs, delays)
+
+    # cdelays.size == 0 --> trivial case representing h(s) = 0
+    if cdelays.size >= 0:
+        cdelays -= np.min(cdelays)
+        nonzero_ix = np.nonzero(ccoefs[:,-1])[0] # this should be always non-empty!
+        ccoefs /= float(ccoefs[nonzero_ix[0], -1]) # this should be always non-zero
+    
+    return ccoefs, cdelays
+
 def poly_degree(poly: npt.NDArray, order="reversed") -> int:
     """ assumes 1D array as input
     
@@ -243,11 +273,3 @@ def create_normalized_delay_difference_eq(coefs: npt.NDArray, delays: npt.NDArra
         return np.abs(coefs[1:,-1]/a0), delays[1:]
     else:
         return None
-    
-
-def _compress2(coefs, delays, **kwargs):
-    """
-
-    """
-    
-

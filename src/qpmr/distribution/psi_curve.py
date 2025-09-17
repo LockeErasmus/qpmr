@@ -60,6 +60,29 @@ cubic_spline_b = interpolate.CubicSpline(THETA, B_THETA)
 cubic_spline_a_rect = interpolate.CubicSpline(THETA_RECT, A_THETA_RECT)
 cubic_spline_b_rect = interpolate.CubicSpline(THETA_RECT, B_THETA_RECT)
 
+
+
+
+def psi_comensurate_0_kappa(coefs, n_k, grid_points: int=20):
+    """
+    TODO
+    """
+    n, m = coefs.shape
+
+    jhh = np.pi / (grid_points * n_k[-1])
+    W = np.zeros(shape=(n-1, n-1), dtype=np.complex128)
+    W[1:, :-1] = np.eye(n - 2)
+
+    gk = []
+    for k in range(grid_points*n_k[-1]):
+        # sigma = np.roots( np.sum( coefs * np.exp(1j*k*jhh*n_k), axis=1) )
+        a = np.sum( coefs * np.exp(1j*k*jhh*n_k), axis=1) # [a_0, a_1, ..., a_n=1]
+        W[0:, -1] = - a[:-1]
+        r, _ = np.linalg.eig(W)
+        gk.append(np.conjugate(r))
+    
+    return np.concatenate(gk)
+
 def psi_comensurate_0_kappa(coefs, n_k, grid_points: int=20):
     """
     TODO
@@ -96,7 +119,6 @@ def psi_commensurate_kappa(coefs, n_k, base_delay, si, grid_points: int=20):
         gk.append(np.conjugate(r))
     
     return np.concatenate(gk)
-
 
 
 

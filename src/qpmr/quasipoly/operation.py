@@ -15,6 +15,39 @@ from .core import compress
 
 logger = logging.getLogger(__name__)
 
+
+def _retarded_qp2ss(coefs: npt.NDArray, delays: npt.NDArray):
+
+    # TODO empty arrays
+    # TODO assert that arrays are normalized and compressed
+
+    n, d = coefs.shape
+    A = np.zeros(shape=(n-1, n-1, d), dtype=coefs.dtype)
+    
+    A[1:, :-1, 0] = np.eye(n-2)
+    A[-1, :, :] = -coefs[:, :-1].T
+
+    return A, delays
+
+
+# def _shift_matrix(a: float, order: int):
+#     """ """
+#     if order == 0:
+#         raise NotImplementedError
+    
+
+# def shift(coefs, delays, **kwargs)-> tuple[npt.NDArray, npt.NDArray]:
+#     """ shifts quasipolynomial in real direction 
+    
+    
+#     Notes
+#     -----
+
+#     Assuming input is quasi-polynomial :math:h(s) then the result is 
+    
+#     """
+
+
 def derivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
     """ Derivative of quasipolynomial
 
@@ -60,27 +93,6 @@ def derivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.N
         coefs_prime, delays_prime = compress(coefs_prime, delays_prime)
     
     return coefs_prime, delays_prime
-
-
-
-
-def _solve_upper_triangular(A, b):
-    """
-    Solves Ax = b for x, where A is an upper triangular matrix.
-    No external dependencies.
-    """
-    n = len(b)
-    x = np.zeros_like(b, dtype=float)
-
-    for i in reversed(range(n)):
-        
-        if A[i, i] == 0:
-            raise ValueError(f"Zero on diagonal at index {i}; system is singular.")
-        
-        
-        sum_ax = np.dot(A[i, i+1:], x[i+1:])
-        x[i] = (b[i] - sum_ax) / A[i, i]
-    return x
 
 def antiderivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
     """ Antiderivative of quasipolynomial

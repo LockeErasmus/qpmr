@@ -42,6 +42,7 @@ def test_envelope_real_axis_crossing(qp, expected: float, params: dict, enable_p
         import contourpy
 
         fig, ax = plt.subplots()
+        
         real_range = np.arange(-2, re_star+5, 0.01)
         imag_range = np.arange(-im_star*1.1+1, im_star-1.1+1, 0.01)
         complex_grid = 1j*imag_range.reshape(-1, 1) + real_range

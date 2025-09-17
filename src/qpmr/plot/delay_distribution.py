@@ -8,6 +8,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 
+from . import utils
+
+from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_eval, _envelope_real_axis_crossing
+
 def spectrum_distribution_diagram(x, y, mask, ax: Axes=None) -> Axes:
     """ Plots delay distribution
 
@@ -51,3 +55,21 @@ def chain_asymptotes(mi: npt.NDArray, abs_wk: list[npt.NDArray], region: tuple, 
     ax.set_xlim(region[0], region[1])
     ax.set_ylim(region[2], region[3])
     return ax
+
+@utils.matplotlib_axes_default
+def spectrum_envelope(norms: npt.NDArray, delays: npt.NDArray, region: tuple, ax: Axes) -> Axes:
+    
+    re_max = _envelope_real_axis_crossing(norms, delays)
+    
+    x = np.linspace(region[0], min(region[1], re_max), 1000)
+    y = _envelope_eval(x, norms, delays)
+
+    ax.plot(x, y, color="blue", alpha=0.5)
+
+    ax.set_xlabel(r"$\Re (\lambda)$")
+    ax.set_ylabel(r"$\Im (\lambda)$")
+    ax.set_xlim(region[0], region[1])
+    ax.set_ylim(region[2], region[3])
+    return ax
+
+    
