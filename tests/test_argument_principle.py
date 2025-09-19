@@ -6,7 +6,7 @@ import pytest
 
 import qpmr
 
-from qpmr.argument_principle import argument_principle2 as argument_principle, circle_contour, rectangular_contour, _argument_principle
+from qpmr.argument_principle import circle_contour, rectangular_contour, _argument_principle
 from qpmr.quasipoly.core import eval
 from qpmr.quasipoly.examples import mazanti2021multiplicity, self_inverse_polynomial
 
@@ -42,6 +42,7 @@ from qpmr.quasipoly.examples import mazanti2021multiplicity, self_inverse_polyno
             },
         )
     ],
+    
     ids=[
         "mazanti2021multiplicity_circ01",
         "mazanti2021multiplicity_rect01",

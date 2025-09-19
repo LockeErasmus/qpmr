@@ -46,6 +46,7 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
 def _envelope_real_axis_crossing(spectral_norms: npt.NDArray, delays: npt.NDArray, **newton_kwargs):
     """
     TODO
+    
 
     """
     f = lambda x: x - np.inner(spectral_norms, np.exp(-x*delays))

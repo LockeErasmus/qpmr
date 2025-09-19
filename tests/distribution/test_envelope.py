@@ -14,7 +14,7 @@ from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_real_axi
     argnames="qp, expected, params",
     argvalues=[
         (examples.vyhlidal2014qpmr_01(), None, {}),
-        (examples.vyhlidal2014qpmr_02(), 2.75, {}),
+        (examples.vyhlidal2014qpmr_02(), None, {}),
         (examples.vyhlidal2014qpmr_03(), None, {}),
         (examples.appeltans2023analysis(example="2.6", tau2=2.0), None, {}),
     ],

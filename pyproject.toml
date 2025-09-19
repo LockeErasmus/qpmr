@@ -5,10 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "qpmr"
 dynamic = ["version"]
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 dependencies = [
-    "numpy>=1.24.2",
+    "numpy>=2.0",
     "contourpy>=1.0.0",
+    "anytree",
 ]
 description = "Quassi polynomial root finder"
 authors = [

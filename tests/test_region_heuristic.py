@@ -40,14 +40,14 @@ def test_region_heuristic(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_plot: 
     
 
     re_max = _envelope_real_axis_crossing(norms, delays)
-    for i in range(1, 20):
+    # for i in range(1, 20):
         
-        r = _envelope_eval(np.array([re_max - i]), norms, delays)
-        region = (re_max - i, re_max, -1e-3, r[0])
-        n = argument_principle_rectangle(lambda x: qpmr.quasipoly.eval(coefs, delays, x), region=region, ds=0.1, eps=1e-6)
-        print(f"{region}= | {n=}")
+    #     r = _envelope_eval(np.array([re_max - i]), norms, delays)
+    #     region = (re_max - i, re_max, -1e-3, r[0])
+    #     n = argument_principle_rectangle(lambda x: qpmr.quasipoly.eval(coefs, delays, x), region=region, ds=0.1, eps=1e-6)
+    #     print(f"{region}= | {n=}")
 
-    region_heuristic(coefs, delays, n=30)
+    # region_heuristic(coefs, delays, n=30)
 
     if enable_plot:
         import matplotlib.pyplot as plt

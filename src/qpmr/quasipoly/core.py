@@ -6,6 +6,7 @@ TODO:
 import logging
 from typing import Any
 
+import math
 import numpy as np
 import numpy.typing as npt
 
@@ -202,6 +203,77 @@ def normalize(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt
         ccoefs /= float(ccoefs[nonzero_ix[0], -1]) # this should be always non-zero
     
     return ccoefs, cdelays
+
+def shift(coefs: npt.NDArray, delays: npt.NDArray, origin: float|complex) -> tuple[npt.NDArray, npt.NDArray]:
+    """ Shifts quasi-polynomial to new origin
+
+    Input quasi-polynomial :math:`h(s)` is shifted to new origin
+    :math:`a` resulting in quasi-polynomial
+
+    ..math::
+
+        g(s) = h(s-a)
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+
+    origin : float or complex
+        New origin of complex plane
+
+    Returns
+    -------
+    ccoefs : ndarray
+        Matrix of shifted polynomial coefficients. Each row represents the
+        coefficients corresponding to a specific delay.
+
+    ddelays : ndarray
+        Vector of delays associated with each row in `coefs`, it is identical
+        to input
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import qpmr.quasipoly
+    >>> coefs = np.array([[0., 1], [0, 1]])
+    >>> delays = np.array([0., 1])
+    >>> ccoefs, ddelays = qpmr.quasipoly.shift(coefs, delays, 1)
+    >>> ccoefs
+    array([[-1.        ,  1.        ],
+           [-2.71828183,  2.71828183]])
+    
+    Try to shift back to the original origin and check the results
+
+    >>> ccoefs, ddelays = qpmr.quasipoly.shift(ccoefs, ddelays, -1)
+    >>> ccoefs
+    array([[0., 1.],
+           [0., 1.]])
+
+    """
+    # TODO solve trivial cases like empty... etc
+    # TODO solve complex origin
+    if isinstance(origin, complex):
+        dtype = np.complex128
+    else:
+        dtype = coefs.dtype
+
+    n, d = coefs.shape
+    
+    # prepare shift matrix T - TODO separate function?
+    shift_matrix = np.zeros(shape=(d, d), dtype=dtype)
+    for i in range(d): # rows
+        for j in range(i+1): # columns
+            shift_matrix[i,j] = math.comb(i, j) * (-origin)**(i-j)
+    
+    ccoefs = (coefs @ shift_matrix) * np.exp(origin*delays)[:, None]
+    ddelays = np.copy(delays)
+
+    return ccoefs, ddelays
 
 def poly_degree(poly: npt.NDArray, order="reversed") -> int:
     """ assumes 1D array as input

@@ -5,7 +5,7 @@ QPmR Info object
 """
 
 from typing import Callable
-from anytree import NodeMixin, RenderTree, Node
+from anytree import RenderTree, Node
 from functools import cached_property
 import contourpy
 import numpy as np
