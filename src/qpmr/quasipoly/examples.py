@@ -232,8 +232,12 @@ def appeltans2023analysis(example: str=None, **kwargs):
     
     return coefs, delays
 
-
 def self_inverse_polynomial(center: float=0., radius: float=1.0, degree: int=6):
     coefs = ( (1 / radius * np.poly1d([1, -center])) ** degree - 1 ).coeffs[None, ::-1]
     delays = np.array([0.])
     return coefs, delays
+
+def empty():
+    """ Constructs emtpy quasi-polynomial representation -> h(s) = 0 """
+    return np.array([[]], dtype=np.float64), np.array([], dtype=np.float64)
+

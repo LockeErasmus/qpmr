@@ -7,7 +7,7 @@ import numpy.typing as npt
 import pytest
 
 import qpmr.quasipoly.examples as examples
-from qpmr.quasipoly import eval, derivative, compress
+from qpmr.quasipoly import eval, derivative, compress, shift
 from qpmr.distribution.psi_curve import psi_comensurate_0_kappa, psi_commensurate_kappa
 from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_real_axis_crossing, _envelope_imag_axis_crossing, _envelope_eval
 from qpmr.qpmr_v3 import qpmr as qpmr_v3
@@ -17,17 +17,25 @@ import qpmr.plot
 @pytest.mark.parametrize(
     argnames="qp, base_delay, params",
     argvalues=[
+        (examples.vyhlidal2014qpmr_01(), 0.01, {"grid_points": 20, "shift": -1}),
         (examples.vyhlidal2014qpmr_02(), 0.1, {"grid_points": 1}),
         (examples.vyhlidal2014qpmr_03(), 0.01, {"grid_points": 10}),
     ],
     ids=[
+        "vyhlidal2014qpmr-01",
         "vyhlidal2014qpmr-02",
         "vyhlidal2014qpmr-03",
     ],
 )
 def test_psi_commensurate(qp, base_delay, params: dict, enable_plot: bool):    
     
+    
     coefs, delays = qp # unpack quasipolynomial
+    print(coefs, delays)
+    if s:=params.get("shift", None) is not None:
+        coefs, delays = shift(coefs, delays, origin=s)
+
+    print(coefs, delays)
     coefs, delays = compress(coefs, delays)
     coefs /= coefs[0, -1] # normalize
 

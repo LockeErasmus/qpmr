@@ -24,6 +24,7 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
     Notes:
         1. assumes quasipolynomial is in minimal, sorted and normalized form
     """
+    
     norms = np.zeros_like(delays, dtype=float)
     for k in range(len(delays)):
         if k == 0:

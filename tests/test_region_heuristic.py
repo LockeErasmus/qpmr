@@ -30,16 +30,17 @@ def test_region_heuristic(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_plot: 
     import numpy as np
     
     coefs, delays = qp
-    region=(-10, 10, 0, 100)
+    region=(-10, 20, 0, 100)
 
     coefs, delays = qpmr.quasipoly.compress(coefs, delays)
 
     mi_vec, abs_omega = chain_asymptotes(coefs, delays)
     norms = _spectral_norms(coefs, delays)
-
     
 
     re_max = _envelope_real_axis_crossing(norms, delays)
+
+
     # for i in range(1, 20):
         
     #     r = _envelope_eval(np.array([re_max - i]), norms, delays)

@@ -38,6 +38,7 @@ def region_heuristic(coefs, delays, n: int=50):
     # jhh = np.pi / (grid_points * n_k[-1])
 
     # n_k = np.round(delays / base_delay, decimals=0).astype(int)
+    
 
     # A, delays = _retarded_qp2ss(coefs, delays)
 

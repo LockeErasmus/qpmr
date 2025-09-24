@@ -18,7 +18,7 @@ import contourpy
 import numpy as np
 import numpy.typing as npt
 
-from .numerical_methods import numerical_newton, secant, newton
+from .numerical_methods import numerical_newton, secant, newton, mueller
 from .argument_principle import argument_principle, argument_principle_circle, argument_principle_rectangle
 from .zero_multiplicity import cluster_roots
 from .common import find_crossings

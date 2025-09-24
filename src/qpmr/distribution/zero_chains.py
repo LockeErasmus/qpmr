@@ -59,7 +59,9 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
 
     logger.debug(f"Number of segments: {n_segments}") # TODO what if one delay only
     for k in range(n_segments): # iterate over all segments
-        logger.debug(f"Working on segment L_{k} = [P_{ix[k]}, ... , P_{ix[k+1]}]")
+        point_start = (thetas[ix[k]], degrees[ix[k]])
+        point_end = (thetas[ix[k+1]], degrees[ix[k+1]])
+        logger.debug(f"Working on segment L_{k} = [P_{ix[k]}={point_start}, ... , P_{ix[k+1]}]={point_end}")
 
         # TODO: vectorize
         segment_mi = (degrees[ix[k+1]] - degrees[ix[k]]) / (thetas[ix[k+1]] - thetas[ix[k]]) # slope
@@ -71,7 +73,35 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
             poly_fw.append(np.array([], dtype=np.float64))
             roots.append(np.array([], dtype=np.float64))
             abs_omega.append(np.array([], dtype=np.float64))
-        else:
+        elif segment_mi < 0: # advanced segment
+            m_end = degrees[ix[k+1]] # degree of P_{k+1} (right, ending point)
+            segment_rel_deg = degrees[ix[k]:ix[k+1]+1] - m_end
+            segment_coef_all = coef_hdeg[ix[k]:ix[k+1]+1]
+
+            logger.debug(f"relative degrees: {segment_rel_deg}")
+
+            segment_coef = np.zeros(shape=(np.abs(np.max(segment_rel_deg)) + 1))
+            # pick correct coefficients and form polynomial fr(w) representation
+            prev_d = -1 # first d=0
+            for d, c in zip(segment_rel_deg[::-1], segment_coef_all[::-1]):
+                if d > prev_d:
+                    # adding to representation
+                    segment_coef[d] = c
+                    prev_d = d
+            
+            # TODO minimal form of polynomial ? or unnecessary?
+            segment_roots = np.roots(segment_coef[::-1]) # TODO
+            wk = np.round(np.abs(segment_roots), decimals=abs_wk_decimals_round)
+            wk = np.unique(wk)
+            logger.debug(f"{segment_coef=}, {segment_roots=}, |wk|={wk}")
+            poly_fw.append(segment_coef)
+            roots.append(segment_roots)
+
+            # we need only the roots with unique absolute value
+            abs_omega.append(wk)
+
+
+        else: # retarded segment
             # construct coefficients of polynomial fr(w)
             m0 = degrees[ix[k]] # degree of left P
             # all Points P with relative degrees and coefficients associated
@@ -79,14 +109,17 @@ def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
             segment_rel_deg = degrees[ix[k]:ix[k+1]+1] - m0
             segment_coef_all = coef_hdeg[ix[k]:ix[k+1]+1]
 
-            segment_coef = np.zeros(shape=(np.max(segment_rel_deg)+1))
+            logger.debug(f"relative degrees: {segment_rel_deg}")
+
+            segment_coef = np.zeros(shape=(np.abs(np.max(segment_rel_deg[1:])) + 1))
             # pick correct coefficients and form polynomial fr(w) representation
             prev_d = -1 # first d=0
-            for d,c in zip(segment_rel_deg, segment_coef_all):
+            for d, c in zip(segment_rel_deg, segment_coef_all):
                 if d > prev_d:
                     # adding to representation
                     segment_coef[d] = c
                     prev_d = d
+            
             # TODO minimal form of polynomial ? or unnecessary?
             segment_roots = np.roots(segment_coef[::-1])
             wk = np.round(np.abs(segment_roots), decimals=abs_wk_decimals_round)
