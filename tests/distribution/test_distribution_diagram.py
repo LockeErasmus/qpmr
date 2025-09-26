@@ -32,10 +32,26 @@ import qpmr.plot
             (),
             {},
         ),
+        (
+            (
+                np.array([
+                    [1., 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                    [1., 1, 0, 0, 0, 0, 0, 0, 1, 0.3, 0],
+                    [1., 1, 0, 0, 0, 0, 0, 1, 0.8, 0, 0],
+                    [1., 1, 0, 0, 0, 0, 1, 2.1, 0, 0, 0],
+                    [1., 1, 0, 0, 0, 0, 4.6, 0, 0, 0, 0],
+                    [1., 1, 0, 0, 0, 0.12, 0, 0, 0, 0, 0],
+                ]),
+                np.array([0., 0.6 , 1.7, 2.8, 3.9, 5])
+            ),
+            (),
+            {},
+        ),
         (examples.vyhlidal2014qpmr_02(), (), {}),
     ],
     ids=[
         "advanced",
+        "artificial02",
         "vyhlidal2014qpmr-02",
     ],
 )
@@ -49,8 +65,7 @@ def test_distribution_diagram(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_pl
     coefs, delays = qpmr.quasipoly.compress(coefs, delays)
 
     x, y, mask = distribution_diagram(coefs, delays)
-    mi, wk_abs = chain_asymptotes(coefs, delays)
-    
+    mi, wk_abs, gl_s = chain_asymptotes(coefs, delays)
 
     roots, meta = qpmr_v3(coefs, delays, region)
 
@@ -61,6 +76,5 @@ def test_distribution_diagram(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_pl
         
         qpmr.plot.roots(roots, ax=ax2)
         qpmr.plot.chain_asymptotes(mi, wk_abs, region, ax=ax2)
-
 
         plt.show()

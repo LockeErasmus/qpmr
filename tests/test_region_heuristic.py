@@ -9,7 +9,7 @@ import qpmr.quasipoly.examples as examples
 from qpmr.region_heuristic import region_heuristic
 from qpmr.qpmr_v3 import qpmr as qpmr_v3
 from qpmr.qpmr_v3 import QpmrSubInfo, QpmrRecursionContext
-from qpmr.distribution.zero_chains import chain_asymptotes
+from qpmr.distribution.zero_chains import chain_asymptotes, chain_asymptotes2
 from qpmr.argument_principle import argument_principle_rectangle
 import qpmr.quasipoly
 
@@ -34,11 +34,15 @@ def test_region_heuristic(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_plot: 
 
     coefs, delays = qpmr.quasipoly.compress(coefs, delays)
 
-    mi_vec, abs_omega = chain_asymptotes(coefs, delays)
+    # mi_vec, abs_omega = chain_asymptotes(coefs, delays)
     norms = _spectral_norms(coefs, delays)
-    
-
     re_max = _envelope_real_axis_crossing(norms, delays)
+
+
+    mi_vec, abs_omega, gl_s = chain_asymptotes2(coefs, delays)
+    print(coefs)
+    for g in gl_s:
+        print(g[0])
 
 
     # for i in range(1, 20):
@@ -52,10 +56,58 @@ def test_region_heuristic(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_plot: 
 
     if enable_plot:
         import matplotlib.pyplot as plt
-        fig, ax = plt.subplots()
+        # fig, ax = plt.subplots()
 
-        qpmr.plot.chain_asymptotes(mi_vec, abs_omega, region=region, ax=ax)
-        qpmr.plot.spectrum_envelope(norms, delays, region=region, ax=ax)
+        # qpmr.plot.chain_asymptotes(mi_vec, abs_omega, region=region, ax=ax)
+        # qpmr.plot.spectrum_envelope(norms, delays, region=region, ax=ax)
+
+
+        im_end = 300
+        n = 100_000
+
+        for mu, abs_w, gl in zip(mi_vec, abs_omega, gl_s):
+            
+            gl_coefs, gl_delays = gl
+
+            ddelays = delays # - np.max(delays)
+
+            print(gl_delays, ddelays)
+
+            # fig, axx = plt.subplots()
+            for w in abs_w:
+                im_start = w * np.exp(-1/mu*re_max)
+                print(re_max, im_start, w)
+                # ax.scatter([re_max], [im_start])
+                # ax.scatter([0], [w])
+
+                # contour phi
+                y = np.linspace(im_start, im_end, n)
+                x = -mu * np.log(1./w * y)
+                # y = w * np.exp(-1/mu*x)
+
+                # ax.plot(x,y, "-x", alpha=0.2)
+
+                
+
+                hs = qpmr.quasipoly.eval(coefs, ddelays, x + 1j*y)
+                gls = qpmr.quasipoly.eval(gl_coefs, gl_delays, x + 1j*y)
+
+                
+
+                plt.plot(y, np.log10(1e-10 + np.abs(hs)), label=f"{mu=}-|w|={w}-g")
+                plt.plot(y, np.log10(1e-10 + np.abs(gls)), label=f"{mu=}-|w|={w}-gl")
+
+                # plt.plot(y, np.log10(1e-10 + np.abs(hs - gls)), label=f"{mu=}-|w|={w}")
+
+                # plt.plot(y, np.abs(hs - gls))
+
+                # axx.plot(y, hs.real)
+                # axx.plot(y, hs.imag)
+                # axx.set_ylim(-1, 100)
+
+            
+
                 
         # qpmr.plot.qpmr_solution_tree(ctx, ax=ax)
+        plt.legend()
         plt.show()
