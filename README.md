@@ -1,4 +1,4 @@
-# QPmR - Quasi-Polynomial Mapping Based Rootfinder
+# QPmR Python Package
 
 <p align="center">
     <!-- <a href="https://github.com/LockeErasmus/qpmr/actions">
@@ -33,7 +33,21 @@ Editors: Vyhídal T., Lafay J.F., Sipahi R., Sringer 2014.
 
 Please, keep in mind that thisproject is still **under development**.
 
-## QPmR algorithm
+## Metadata
+
+```
+Title: QPmR Python Package
+ID: QPmRpythonPackage
+Version: 1.0
+Project: Robotics and Advanced Industrial Production
+Project No.: CZ.02.01.01/00/22_008/0004590
+Project RO: 1.1-Optimal control of interconnected time-delay systems
+Date: 20.9.2025
+Authors: Adam Peichl; Tomas Vyhlidal
+Keywords: rootfinding algorithm, exponential polynomial, quasi-polynomial, time delay system, spectrum
+```
+
+## Introduction
 
 The `QPmR v2` algorithm is designed to find all roots of the quasi-polynomial
 
