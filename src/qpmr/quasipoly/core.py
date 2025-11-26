@@ -204,6 +204,133 @@ def normalize(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt
     
     return ccoefs, cdelays
 
+def normalize_exponent(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray, float]:
+    """ Creates normalized quasi-polynomial representation - TODO
+
+    Normalized quasi-polynomial is the quasi-polynomial with the same spectrum
+    as the original one, but it's representation is compressed (i.e. unique
+    `delays` sorted in ascending order, no ending zero-column in `coefs`). First
+    delay is 0.0 and the leading coefficient is 1.0 (leading coefficient is the 
+    coefficient with highest power of :math:`s` and smallest delay).
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+
+    Returns - TODO
+    -------
+    ccoefs : ndarray
+        Matrix of normalized polynomial coefficients. Each row represents the
+        coefficients corresponding to a specific delay.
+
+    ddelays : ndarray
+        Vector of delays associated with each row in `coefs`, non-negative,
+        sorted in ascending order, if non-empty first delay is 0
+
+    Examples - TODO
+    --------
+    >>> import numpy as np
+    >>> import qpmr.quasipoly
+    >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
+    >>> delays = np.array([-1., 1, 1])
+    >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
+    >>> coefs
+    array([[0. , 0.5, 1. ],
+           [0.5, 0.5, 2. ]])
+    >>> delays
+    array([0., 2.])
+
+    """
+    if delays.size == 0:
+        return np.copy(coefs), np.copy(delays), 0
+    
+    ndelays = np.copy(delays) - np.min(delays) # all delays >= 0.0, tau0 == 0
+    tau_max = np.max(ndelays)
+    if tau_max == 0.0:
+        raise NotImplementedError
+        # return
+    
+    _, d = coefs.shape
+
+    ncoefs = coefs * np.power(1./tau_max, np.arange(0, d, 1))
+    ndelays /= tau_max
+
+    return ncoefs, ndelays, tau_max
+
+
+def factorize_power(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray, int]:
+    """ Factor out powers of `s` from quasi-polynomial
+
+    Where original quasi-polynomial is of a form
+    ..math::
+
+        h(s) = s^n g(s)
+
+    such that :math:`g(s)` is quasi-polynomial such that at least one trailing
+    coefficient of polynomials associated with :math:`g(s)` is non-zero.
+
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+
+    Returns
+    -------
+    ccoefs : ndarray
+        Matrix of normalized polynomial coefficients. Each row represents the
+        coefficients corresponding to a specific delay.
+
+    ddelays : ndarray
+        Vector of delays associated with each row in `coefs`, non-negative,
+        sorted in ascending order, if non-empty first delay is 0
+
+    spower : int
+        Power of s in factorization
+
+    Examples - TODO
+    --------
+    >>> import numpy as np
+    >>> import qpmr.quasipoly
+    >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
+    >>> delays = np.array([-1., 1, 1])
+    >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
+    >>> coefs
+    array([[0. , 0.5, 1. ],
+           [0.5, 0.5, 2. ]])
+    >>> delays
+    array([0., 2.])
+
+    """
+
+    if delays.size == 0:
+        return np.copy(coefs), np.copy(delays), 0
+    
+    n, d = coefs.shape
+    mask = np.any(coefs!=0.0, axis=0) # mask representing if col =/= 0
+    
+    if not np.any(mask):
+        # this was just a representation of h(s) = 0, which was not compressed
+        return np.empty(shape=(0, 0), dtype=coefs.dtype), np.array([], dtype=delays.dtype), 0
+    
+    ix = np.argmax(mask)
+    ccoefs = np.copy(coefs[:, ix:])
+    ddelays = np.copy(delays)
+    return ccoefs, ddelays, ix
+
+    
+
+
+
 def shift(coefs: npt.NDArray, delays: npt.NDArray, origin: float|complex) -> tuple[npt.NDArray, npt.NDArray]:
     """ Shifts quasi-polynomial to new origin
 

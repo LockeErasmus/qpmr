@@ -6,10 +6,12 @@ import numpy as np
 from qpmr.quasipoly import examples
 from qpmr.quasipoly import eval
 
+import settings
 
 coefs, delays = examples.self_inverse_polynomial(-1, radius=0.01, degree=6)
 region = (-1.1, 0.9, -0.1, 0.1)
 ds = 0.08
+ds = 0.20
 
 # solve grid
 bmin, bmax = region[0] - 3*ds, region[1] + 3*ds
@@ -26,8 +28,9 @@ z_value = eval(coefs, delays, complex_grid)
 
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(settings.LINE_WIDTH, settings.LINE_WIDTH))
 
+ax.scatter(complex_grid.flatten().real, complex_grid.flatten().imag, alpha=0.3, color="gray")
 ax.contour(re_grid, im_grid, np.real(z_value), levels=[0],
             colors='blue', alpha=0.5)
 ax.contour(re_grid, im_grid, np.imag(z_value), levels=[0],
@@ -36,4 +39,6 @@ ax.contour(re_grid, im_grid, np.imag(z_value), levels=[0],
 ax.set_xlabel(r"$\Re (\lambda)$")
 ax.set_ylabel(r"$\Im (\lambda)$")
 
-plt.show()
+# plt.show()
+
+# settings.save_figure(fig, name="test2")

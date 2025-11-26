@@ -13,8 +13,8 @@ import qpmr.plot
 @pytest.mark.parametrize(
     argnames="qp, region, qpmr_args, qpmr_kwargs",
     argvalues=[
-        (examples.vyhlidal2014qpmr_01(), (-10, 2, 0, 30), (), {}),
-        (examples.vyhlidal2014qpmr_02(), (-4.5, 2.5, 0, 50), (), {}),
+        (examples.vyhlidal2014qpmr_01(), None, (), {}),
+        (examples.vyhlidal2014qpmr_02(), None, (), {}),
         (examples.vyhlidal2014qpmr_03(), (-6, 2, 0, 200), (), {}),
         (examples.mazanti2021multiplicity(), (-15, 30, 0, 200), (), {"multiplicity_heuristic": True, "recursion_level_max": 5}),
         (examples.mazanti2021multiplicity(), (-20, 100, 0, 200), (), {"multiplicity_heuristic": True, "recursion_level_max": 8}),

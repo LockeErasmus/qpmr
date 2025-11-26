@@ -14,6 +14,10 @@ import numpy.typing as npt
 from qpmr.quasipoly import derivative
 from qpmr.quasipoly.core import _eval_array
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class QpmrInfo:
     # TODO maybe dataclass? but solve cached property
     real_range: npt.NDArray = None
@@ -107,6 +111,10 @@ class QpmrRecursionContext:
     numerical_method: str = None # TODO Enum
     numerical_method_kwargs: dict = {}
 
+    # s
+    complex_plane_shift: complex = 0 + 0j
+    complex_plane_scale: float = 1.0
+
     ds: float = None
 
     def __init__(self, coefs, delays):
@@ -127,11 +135,20 @@ class QpmrRecursionContext:
     
     @property
     def roots(self) -> npt.NDArray:
+        result = self._roots
+        if result is None:
+            return None
+        return self.complex_plane_scale * (result - self.complex_plane_shift)
+    
+    @property
+    def _roots(self) -> npt.NDArray:
+        """ raw rooots """
         if self.solution_tree is None:
             return None
         
         # TODO it can be None if FAILED
         return np.concatenate([leaf.roots for leaf in self.solution_tree.leaves], axis=0)
+
 
     @property
     def zeros(self) -> npt.NDArray:
@@ -140,6 +157,7 @@ class QpmrRecursionContext:
 
     @cached_property
     def _qp_prime(self) -> tuple[npt.NDArray, npt.NDArray]:
+        logger.debug(f"Creating quasi-polynomial representation of derivative, caching the arrays")
         return derivative(self.coefs, self.delays)
     
     @property

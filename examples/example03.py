@@ -42,3 +42,5 @@ if __name__ == "__main__":
     qpmr.plot.experimental(roots, ax=ax)
 
     plt.show()
+
+    print( qpmr.safe_upper_bound_diff(coefs, delays))

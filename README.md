@@ -13,16 +13,27 @@
     <a href="https://github.com/LockeErasmus/qpmr/blob/master/LICENSE">
         <img alt="License" src=https://img.shields.io/badge/license-%20%20GNU%20GPLv3%20-green?style=plastic>
     </a>
-    <br/>
 </p>
 
-QPmR is python implementation of *quasi-polynomial based rootfinder*, algorithm for finding roots of given quasi polynomial in given rectangular region in complex plane [[1]](#1), [[2]](#2).
+This Python package consists of: 
+
+1. enhanced implementation of *quasi-polynomial based rootfinder*, algorithm for finding roots of given quasi polynomial in given rectangular region in complex plane [[1]](#1), [[2]](#2) enhanced with root-multiplicity heuristic and (in some cases) automatic region selection
+1. Spectral distribution properties of quasi-polynomials: (i) delay distribution diagram, (ii) exponential asymptotes of root chains, (iii) safe upper bound of neutral spectrum and (iv) spectrum envelope
+1. quasi-polynomial (and transfer function) algebra
+1. various functions for quickly visualizing results
+
+For original MATLAB® implementation of old QPmR algorithm from 2012, we refer to [this page](https://control.fs.cvut.cz/en/qpmr/).
+
+<a id="1">[1]</a>
+Vyhlidal, T., and Zítek, P. (2009). Mapping based algorithm for large-scale computation of quasi-polynomial zeros. IEEE Transactions on Automatic Control, 54(1), 171-177.
+
+<a id="2">[2]</a>
+Vyhlidal, T. and Zitek, P. (2014). QPmR-Quasi-polynomial root-finder: Algorithm update and examples
+Editors: Vyhídal T., Lafay J.F., Sipahi R., Sringer 2014.
 
 Please, keep in mind that thisproject is still **under development**.
 
-For original MATLAB® implementation, we refer to [this page](https://control.fs.cvut.cz/en/qpmr/).
-
-## Introduction
+## QPmR algorithm
 
 The `QPmR v2` algorithm is designed to find all roots of the quasi-polynomial
 
@@ -44,16 +55,9 @@ The following table may clarify quasi-polynomial representation:
 \end{array}
 ```
 
-<a id="1">[1]</a>
-Vyhlidal, T., and Zítek, P. (2009). Mapping based algorithm for large-scale computation of quasi-polynomial zeros. IEEE Transactions on Automatic Control, 54(1), 171-177.
-
-<a id="2">[2]</a>
-Vyhlidal, T. and Zitek, P. (2014). QPmR-Quasi-polynomial root-finder: Algorithm update and examples
-Editors: Vyhídal T., Lafay J.F., Sipahi R., Sringer 2014.
-
 ### Examples
 
-We will follow 3 examples from the 2014 paper. Please not that `matplotlib` is not required (as `qpmr` is built on `contourpy`, which is dependency of `matplotlib`).
+This repository contains growing number of [examples](./examples/), we will follow with one from 2014 paper. Please note that `matplotlib` is not required (as `qpmr` is built on `contourpy`, which is dependency of `matplotlib`).
 
 ### Example 1
 
@@ -159,7 +163,7 @@ Alternatively, this chapter of book
 
 ### Installing with `pip`
 
-Using pipy
+Using pipy (check the version as software is being developed)
 ```bash
 pip install qpmr
 ```
@@ -185,10 +189,6 @@ install from source with `-e`
 ```bash
 pip install -e qpmr
 ```
-
-## Usage
-
-TODO <- move examples and additional comments to this section.
 
 ## License
 

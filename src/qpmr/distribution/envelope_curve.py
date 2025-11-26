@@ -3,7 +3,7 @@ Envelope curve
 --------------
 TODO
 """
-
+import itertools
 import numpy as np
 import numpy.typing as npt
 
@@ -66,3 +66,40 @@ def _envelope_imag_axis_crossing(spectral_norms: npt.NDArray) -> float:
 def _envelope_eval(real: npt.NDArray, norms: npt.NDArray, delays: npt.NDArray):
     return np.sqrt( np.square(np.sum(np.exp(-real[:, None] * delays[None, :]) * norms[None, :], axis=1)) - np.square(real) )
 
+
+
+def _predictor(p, delays, x: float):
+
+    # p = [1, p1, p2, ...]
+    # delays = [0, tau1, tau2, ...]
+
+    # form problem as minimization
+    # maximize 1 / |f(\theta)| => minimize |f(\theta)|
+    
+    n_theta = len(delays) - 1
+    
+    n = 20 # discretization
+    theta_discretization = np.linspace(0, np.pi, n) # the problem is symetrical
+
+    vec1 = p * np.exp(-x*delays)
+    val_star = np.inf
+    for th in itertools.product(theta_discretization, repeat=n_theta):
+        vec2 = np.exp(1j * np.array(th, dtype=np.complex128))
+        val = np.abs(1 - np.inner(vec1, vec2))
+        if val < val_star:
+            val_star = val
+    
+    return
+    
+
+
+def _predictor_commensurate():
+    raise NotImplementedError
+
+
+def envelope_real_axis_crossing(coefs, delays):
+    """
+    """
+
+    # TODO: coefs and delays are compressed and normalized and neutral or retarded
+    pass

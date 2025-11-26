@@ -14,7 +14,7 @@ from .quasipoly.core import _eval_array
 
 logger = logging.getLogger(__name__)
 
-def rectangular_contour(re_min, re_max, im_min, im_max) -> Callable:
+def rectangular_contour(re_min, re_max, im_min, im_max) -> tuple[Callable, Callable, tuple[float, float]]:
     x0, y0, width, height = re_min, im_min, re_max-re_min, im_max-im_min
     
     def gamma(t):

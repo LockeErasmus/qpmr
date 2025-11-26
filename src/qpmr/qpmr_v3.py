@@ -22,6 +22,9 @@ from .numerical_methods import numerical_newton, secant, newton, mueller
 from .argument_principle import argument_principle, argument_principle_circle, argument_principle_rectangle
 from .zero_multiplicity import cluster_roots
 from .common import find_crossings
+
+from . import quasipoly
+
 from .quasipoly import QuasiPolynomial
 from .quasipoly.core import _eval_array
 from .quasipoly.operation import derivative
@@ -29,6 +32,7 @@ from .quasipoly.operation import derivative
 from .grid import grid_size_heuristic
 from .qpmr_metadata import QpmrInfo, QpmrSubInfo, QpmrRecursionContext
 from .qpmr_validation import validate_region, validate_qp
+from .region_heuristic import region_heuristic
 
 logger = logging.getLogger(__name__)
 
@@ -334,9 +338,9 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
 
     # Validate quasi-polynomial definition, TODO: consider to not run validation when class is passed as qp
     coefs, delays = validate_qp(coefs, delays)
-    if region is None:
-        # TODO heuristic
-        raise NotImplementedError(f"Heuristic for rightmost root region is not implemented yet.")
+    if region is None: # try to propose region by heuristic
+        region = region_heuristic(coefs, delays, n=100)
+        logger.debug(f"Region proposed via heuristic: {region=}")
     else:
         region = validate_region(region) # validates region and converts to tuple[float, float, float, float]
     
@@ -349,13 +353,29 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
              f"unnecessarily large. It is advised to switch to "
              f"region=[{region[0]}, {region[1]}, 0, {im_max}]")
         )
+
+    # transform to better form, such that spectrum of transformed
+    # quasi-polynomial (+ possibly origin s=0) is equivalent to spectrum of
+    # original quasi-polynomial TODO TODO TODO
+
+    ccoefs, ddelays = quasipoly.compress(coefs, delays)
+    # ccoefs, ddelays, spower = quasipoly.factorize_power(ccoefs, ddelays)
+    # ccoefs, ddelays, tau_max = quasipoly.normalize_exponent(ccoefs, ddelays)
+    tau_max = 1.0 # TODO
+    # TODO what if representation trivial -> trivial result
+
+    # adjust region
+    if tau_max != 0:
+        rregion = [z/tau_max for z in region]
     
     # Solve keyword arguments defaults
     e = kwargs.pop("e", 1e-6)
     ds = kwargs.pop("ds", None)
     if not ds:
-        ds = grid_size_heuristic(region, coefs, delays)
+        ds = grid_size_heuristic(rregion, ccoefs, ddelays)
         logger.debug(f"Grid size not specified, setting as ds={ds} (solved by heuristic)")
+    else:
+        ds = ds / tau_max if tau_max !=0 else ds
 
     numerical_method = kwargs.get("numerical_method", "newton")
 
@@ -366,7 +386,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create context - TODO
-    ctx = QpmrRecursionContext(coefs, delays)
+    ctx = QpmrRecursionContext(ccoefs, ddelays)
     ctx.ds = ds
     ctx.grid_nbytes_max = kwargs.get("grid_nbytes_max", 128_000_000)
     ctx.multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
@@ -377,7 +397,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     # validate context - TODO
 
     # run recursive QPmR algorithm
-    _qpmr(ctx, region, e, ds, recursion_level=0)
+    _qpmr(ctx, rregion, e, ds, recursion_level=0)
 
     logger.debug(f"QPmR recursive solution tree:\n {ctx.render_tree}")
     return ctx.roots, ctx # TODO
