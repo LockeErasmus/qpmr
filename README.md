@@ -173,6 +173,10 @@ Alternatively, this chapter of book
 }
 ```
 
+## Acknowledgments
+
+This work was supported by the European Union under the project Robotics and Advanced Industrial Production, reg. no. CZ.02.01.01/00/22_008/0004590; by the project 24-10301S of the Czech Science Foundation; and by by the Grant Agency of the Czech Technical University in Prague, grant No. SGS24/125/0HK2/3T/12.
+
 ## Installation
 
 ### Installing with `pip`
