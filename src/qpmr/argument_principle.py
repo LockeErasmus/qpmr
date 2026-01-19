@@ -91,12 +91,6 @@ def _discretize_rectangular_boundary(bmin: float, bmax: float, wmin: float, wmax
                           np.full(shape=(n_steps_imag,), fill_value=-1j*step_imag)]
     return contour, contour_steps
 
-def _check_no_zero_boundary(coefs: npt.NDArray, delays: npt.NDArray, region: tuple[float, float, float, float], **kwargs):
-    """ Checks that no zeros are on boundary curve
-    
-    """
-    raise NotImplementedError(".")
-
 def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_prime: Callable,  a: float, b: float, n_points: int=1000):
     """
     Compute (N - P) using the Argument Principle with vectorized integrand.
@@ -129,6 +123,51 @@ def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_p
 
     integral = np.trapz(integrand, t)
     return integral / (2j * np.pi)
+
+def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: float, n_points: int=1000):
+    """
+    Compute (N - P) using the Argument Principle with tracking of argument changes.
+
+    Parameters:
+     TODO
+    """
+    raise NotImplementedError(".")
+
+def _argument_principle_robust(f: Callable, gamma: Callable, a: float, b: float, n_points_0: int=256, n_max: int=1e12,
+                               phase_tol: float=np.pi/2, zero_tol: float=1e-12):
+    """ Compute (N - P) using the Argument Principle with adaptive refinement
+
+    Parameters:
+     TODO
+    """
+    
+    n_points = n_points_0
+    success = False
+    while n_points < n_max:
+        t = np.linspace(a, b, n_points)
+        z = gamma(t)
+        fz = f(z)
+
+        # check proximity to zero
+        if np.any(np.abs(fz) < zero_tol):
+            logger.error("Function values too close to zero on contour for reliable argument principle evaluation.")
+            break
+
+        theta = np.unwrap(np.angle(fz))
+        dtheta = np.diff(theta)
+
+        if np.all(np.abs(dtheta) < phase_tol):
+            success = True
+            break
+
+        n_points *= 2  # double the number of points for finer discretization
+        
+    if not success:
+        logger.error("Failed to achieve desired phase change tolerance within maximum number of points.")
+        return np.nan
+    
+    n = int(np.round( (theta[-1] - theta[0]) / (2*np.pi)))
+    return n
     
 
 def argument_principle(f: Callable, region: tuple[float, float, float, float],

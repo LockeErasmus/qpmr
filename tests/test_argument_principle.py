@@ -6,9 +6,9 @@ import pytest
 
 import qpmr
 
-from qpmr.argument_principle import circle_contour, rectangular_contour, _argument_principle
+from qpmr.argument_principle import circle_contour, rectangular_contour, _argument_principle, _argument_principle_robust
 from qpmr.quasipoly.core import eval
-from qpmr.quasipoly.examples import mazanti2021multiplicity, self_inverse_polynomial
+import qpmr.quasipoly.examples as examples
 
 
 
@@ -16,34 +16,41 @@ from qpmr.quasipoly.examples import mazanti2021multiplicity, self_inverse_polyno
     argnames="qp, contour, expected, params",
     argvalues=[
         (
-            mazanti2021multiplicity,
+            examples.vyhlidal2014qpmr,
+            rectangular_contour(-13.040391824936004, 0.8813024303938415, -0.3141592653589793, 628.6326899833176),
+            100,
+            {
+                "example":{"args": (1,), "kwargs": {}},
+            },
+        ),
+        (
+            examples.mazanti2021multiplicity,
             circle_contour(-6.021, 0.1),
             6,
             {},
         ),
         (
-            mazanti2021multiplicity,
+            examples.mazanti2021multiplicity,
             rectangular_contour(-15.08, 1.08, -0.08, 50.08),
             8,
             {}
         ),
         (
-            mazanti2021multiplicity,
+            examples.mazanti2021multiplicity,
             rectangular_contour(-15., 1., 0., 50),
             7,
             {}
         ),
         (
-            self_inverse_polynomial(0, 0.01, 8),
+            examples.self_inverse_polynomial(0, 0.01, 8),
             circle_contour(0., 0.01001),
             8,
-            {
-                "use_analytical_derivative": False,
-            },
+            {},
         )
     ],
     
     ids=[
+        "vyhlidal2014qpmr_01_rectangle01",
         "mazanti2021multiplicity_circ01",
         "mazanti2021multiplicity_rect01",
         "mazanti2021multiplicity_rect02",
@@ -55,7 +62,9 @@ def test_argument_principle(qp, contour, expected: int, params):
     if isinstance(qp, qpmr.QuasiPolynomial):
         coefs, delays = qp.coefs, qp.delays
     elif callable(qp):
-        coefs, delays = qp()
+        args = params.get("example", {}).get("args", ())
+        kwargs = params.get("example", {}).get("kwargs", {})
+        coefs, delays = qp(*args, **kwargs)
     elif isinstance(qp, tuple):
         coefs, delays = qp
 
@@ -72,8 +81,9 @@ def test_argument_principle(qp, contour, expected: int, params):
     gamma, gamma_prime, (a,b) = contour
     
     n = _argument_principle(f, f_prime, gamma, gamma_prime, a, b)
+    n_robust = _argument_principle_robust(f, gamma, a, b, n_points_0=1000)
 
-    print(f"Argument principle {n=}, {expected=}")
+    print(f"Argument principle {n=}, {n_robust=}, {expected=}")
 
     
 

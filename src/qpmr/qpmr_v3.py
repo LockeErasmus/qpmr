@@ -139,6 +139,7 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
 
     if ctx.multiplicity_heuristic:
         roots0, roots_multiplicity = cluster_roots(roots0, eps=2*ds)
+        logger.debug(f"{roots0}\n{roots_multiplicity}")
         multiplicity_unique, multiplicity_counts = np.unique(roots_multiplicity, return_counts=True)
         logger.debug((f"Clustering roots heuristic (DBSCAN with eps={2*ds})\n"
                     f"    multiplicities: {multiplicity_unique}\n"
