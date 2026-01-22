@@ -1,0 +1,5 @@
+sphinx >= 7.0
+sphinx-autodoc-typehints
+sphinx-gallery # Gallery of examples - carefull with compatibility with themes)
+sphinxcontrib-bibtex # For citations
+pydata-sphinx-theme # I have selected this theme, modern and nice gallery support
