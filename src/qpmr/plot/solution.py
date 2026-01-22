@@ -12,7 +12,7 @@ from . import basic
 
 
 
-def qpmr_solution_tree(ctx: QpmrRecursionContext, ax: Axes):
+def qpmr_solution_tree(ctx: QpmrRecursionContext, ax: Axes, **kwargs):
     """ """
     if ax is None:
         _, ax = plt.subplots()
@@ -29,7 +29,7 @@ def qpmr_solution_tree(ctx: QpmrRecursionContext, ax: Axes):
                 )
                 basic.qpmr_contour(leaf.roots, leaf, ax=ax)
         
-            if True: # argument principle heuristic was turn on
+            if True: # argument principle heuristic was turn on TODO
                 basic.argument_principle_circle(leaf.roots, leaf.ds, ax=ax)
         
         elif leaf.status == "FAILED":

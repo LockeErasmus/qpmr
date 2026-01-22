@@ -59,6 +59,7 @@ def cluster_roots(roots0: npt.NDArray, eps: float) -> tuple[npt.NDArray, npt.NDA
     for i in range(1, cluster_id+1):
         cluster_mask = labels == i
         centers[i-1] = np.mean( roots0[cluster_mask] )
+        logger.debug(roots0[cluster_mask])
         multiplicities[i-1] = np.sum(cluster_mask)
 
     return centers, multiplicities

@@ -1,0 +1,37 @@
+name: documentation
+
+on: [workflow_dispatch]
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install QPmR package
+        run: |
+          pip install .
+
+      - name: Install documentation dependencies
+        run: |
+          pip install -r docs/requirements.txt
+
+      - name: Build HTML Sphinx docs
+        run: |
+          sphinx-build -b html docs/source docs/_build/html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: docs/_build/html
+          force_orphan: true

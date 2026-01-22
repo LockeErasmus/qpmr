@@ -15,10 +15,12 @@
         - before this point is hit, maybe argument principle?
     - if neutral, use safe upper bound also for right point
 1. Allow for **not-storing** partial results in no-leaf nodes
-1. Evaluate argument principle at the begining to disregard subregions
+1. ~~Evaluate argument principle at the begining to disregard subregions~~
 1. Custom Errors (for instance newton did not converge) and their handling, to allow return results eventhough one leaf fails
 
-
+1. argument principle
+    1. implement robust adaptive variant using `np.unwrap(.)` with error handling
+    1. implement logic which handles zeros located on rectangular contour (most likely bigger region?)
 
 ## Task to implement
  - quasipolynomial arithmetic operations
