@@ -44,6 +44,43 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
             norms[k] = np.linalg.norm(coefs[k,:-1], ord=2)
     return norms
 
+def theta_grid_generator(m: int, n_grid_points:int=10):
+    """ Generator for m-dimensional space grid points in [0, 2*pi)^{m} """
+    if m < 1:
+        raise ValueError("m must be >= 1")
+
+    theta_vec = np.linspace(0., 2*np.pi, n_grid_points, endpoint=False)
+    vec = np.ones(shape=(m+1,), dtype=theta_vec.dtype)
+
+    for sample in itertools.product(theta_vec, repeat=m):
+        vec[1:] = sample # first element is always 1.0, next are rotations
+        yield vec
+
+def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: int):
+    """ TODO 
+    coefs: vector representing coefficients of DIFF equation
+    """
+    # assumes non-zero real vector p with at least 2 elements
+    # vector of delays [0, tau1, tau2, ...]
+    # x complex scalar, n >> 0, n has to be even !!!
+
+    vec1 = coefs * np.exp(-x * delays)
+    n_var = len(coefs) - 1 # first rotation is arbitrary
+
+    fval_star = np.inf
+    for augmented_theta_vec in theta_grid_generator(n_var, n):
+        # [1, theta_1, theta_2, ... theta_{n_var}]
+        fval = np.abs( np.inner(vec1, np.exp(1j*augmented_theta_vec)) )
+        if fval < fval_star:
+            fval_star = fval
+    
+    return 1.0 / fval_star
+
+def _neutral_envelope_real_axis_crossing():
+    ...
+
+
+
 def _envelope_real_axis_crossing(spectral_norms: npt.NDArray, delays: npt.NDArray, **newton_kwargs):
     """
     TODO
@@ -65,36 +102,6 @@ def _envelope_imag_axis_crossing(spectral_norms: npt.NDArray) -> float:
 
 def _envelope_eval(real: npt.NDArray, norms: npt.NDArray, delays: npt.NDArray):
     return np.sqrt( np.square(np.sum(np.exp(-real[:, None] * delays[None, :]) * norms[None, :], axis=1)) - np.square(real) )
-
-
-
-def _predictor(p, delays, x: float):
-
-    # p = [1, p1, p2, ...]
-    # delays = [0, tau1, tau2, ...]
-
-    # form problem as minimization
-    # maximize 1 / |f(\theta)| => minimize |f(\theta)|
-    
-    n_theta = len(delays) - 1
-    
-    n = 20 # discretization
-    theta_discretization = np.linspace(0, np.pi, n) # the problem is symetrical
-
-    vec1 = p * np.exp(-x*delays)
-    val_star = np.inf
-    for th in itertools.product(theta_discretization, repeat=n_theta):
-        vec2 = np.exp(1j * np.array(th, dtype=np.complex128))
-        val = np.abs(1 - np.inner(vec1, vec2))
-        if val < val_star:
-            val_star = val
-    
-    return
-    
-
-
-def _predictor_commensurate():
-    raise NotImplementedError
 
 
 def envelope_real_axis_crossing(coefs, delays):
