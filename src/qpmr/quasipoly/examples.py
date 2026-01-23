@@ -241,3 +241,7 @@ def empty():
     """ Constructs emtpy quasi-polynomial representation -> h(s) = 0 """
     return np.array([[]], dtype=np.float64), np.array([], dtype=np.float64)
 
+def ndiff_01():
+    delays = np.array([0.0, 1, np.sqrt(5), np.pi*3, np.e * 6, 10])
+    coefs = np.array([[-0.2], [0.998], [0.5], [1.0], [-0.3], [0.1]])
+    return coefs, delays

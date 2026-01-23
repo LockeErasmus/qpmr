@@ -4,10 +4,11 @@ Envelope curve
 TODO
 """
 import itertools
+from venv import logger
 import numpy as np
 import numpy.typing as npt
 
-from qpmr.numerical_methods import newton
+from qpmr.numerical_methods import newton, secant
 
 def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
     """ Calculate spectral norm associated with polynomials
@@ -57,7 +58,7 @@ def theta_grid_generator(m: int, n_grid_points:int=10):
         yield vec
 
 def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: int):
-    """ TODO 
+    """ TODO does not work this function properly
     coefs: vector representing coefficients of DIFF equation
     """
     # assumes non-zero real vector p with at least 2 elements
@@ -73,13 +74,13 @@ def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: i
         fval = np.abs( np.inner(vec1, np.exp(1j*augmented_theta_vec)) )
         if fval < fval_star:
             fval_star = fval
-    
     return 1.0 / fval_star
 
-def _neutral_envelope_real_axis_crossing():
-    ...
-
-
+def _neutral_envelope_real_axis_crossing(norms, ndiff_coefs, ndiff_delays, **kwargs):
+    """TODO"""
+    f = lambda x: x - _coef_neutral_part(ndiff_coefs, ndiff_delays, x, n=kwargs.get("n", 10)) * np.inner(norms, np.exp(-x*ndiff_delays))
+    x_star, converged = secant(f, x0=kwargs.get("x0", 0.0), x1=kwargs.get("x1", 1.0), tol=kwargs.get("tol", 1e-6), max_iter=kwargs.get("max_iter", 100))
+    return 1.0 # TODO
 
 def _envelope_real_axis_crossing(spectral_norms: npt.NDArray, delays: npt.NDArray, **newton_kwargs):
     """

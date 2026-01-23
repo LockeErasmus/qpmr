@@ -2,6 +2,7 @@
 Spectrum distribution diagram
 -----------------------------
 """
+from dataclasses import dataclass
 import logging
 
 import numpy as np
@@ -66,7 +67,7 @@ def _concave_envelope(x: npt.NDArray, y: npt.NDArray) -> npt.NDArray:
     _concave_envelope_inplace(x,y,mask)
     return mask
 
-
+@dataclass
 class SpectrumDistributionDiagramMetadata:
     # TODO consider moving to dataclass implementation
     P_theta: npt.NDArray = None

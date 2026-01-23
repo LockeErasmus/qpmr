@@ -331,14 +331,18 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     >>> plt.show()
     """
     # solve overload, unpack *args
-    if len(args) == 2:
-        qp, region = args
+    if len(args) == 1 and isinstance(args[0], QuasiPolynomial):
+        qp = args[0]
         coefs, delays = qp.coefs, qp.delays
-    else: # len(args) == 3
-        coefs, delays, region = args
+    elif len(args) == 2 and isinstance(args[0], np.ndarray) and isinstance(args[1], np.ndarray):
+        coefs, delays = args[0], args[1]
+    else:
+        raise ValueError("Invalid arguments, expected (QuasiPolynomial) or (ndarray, ndarray)")
 
     # Validate quasi-polynomial definition, TODO: consider to not run validation when class is passed as qp
     coefs, delays = validate_qp(coefs, delays)
+
+    region = kwargs.get("region", None)
     if region is None: # try to propose region by heuristic
         region = region_heuristic(coefs, delays, n=100)
         logger.debug(f"Region proposed via heuristic: {region=}")

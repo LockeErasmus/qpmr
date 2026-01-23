@@ -11,7 +11,6 @@ from qpmr.numerical_methods import newton
 logger = logging.getLogger(__name__)
 
 
-
 def _safe_upper_bound(coefs, delays, x0, tol, max_iter):
     coefs_abs = np.abs(coefs)
     bound, converged = newton(
@@ -23,6 +22,21 @@ def _safe_upper_bound(coefs, delays, x0, tol, max_iter):
     )
     return bound
 
+def _neutral_strip_bounds(ndiff_coefs, ndiff_delays, **kwargs) -> tuple[float, float]:
+    """
+    Docstring for delay_difference_eq_bounds
+
+    :param ndiff_coefs: Description
+    :param ndiff_delays: Description
+    :param kwargs: Description
+
+    assumes coefs, delays define normalized delay-difference equation
+    returns bounds for vertical strip associated with neutral segment
+
+    """
+    ub = _safe_upper_bound(ndiff_coefs, ndiff_delays, 0, 1e-6, 100)
+    lb = -_safe_upper_bound(ndiff_coefs[:-1]/ndiff_coefs[-1], -ndiff_delays[:-1] + ndiff_delays[-1], 0, 1e-6, 100)
+    return lb, ub
 
 def safe_upper_bound_diff(coefs, delays, **kwargs):
     """ TODO
