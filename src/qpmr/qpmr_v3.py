@@ -21,7 +21,7 @@ import numpy.typing as npt
 from .numerical_methods import numerical_newton, secant, newton, mueller
 from .argument_principle import argument_principle, argument_principle_circle, argument_principle_rectangle
 from .zero_multiplicity import cluster_roots
-from .common import find_crossings
+from .core.mapping import _spectrum_mapping
 
 from . import quasipoly
 
@@ -112,29 +112,8 @@ def _qpmr(ctx: QpmrRecursionContext, region: tuple[float, float, float, float], 
     complex_grid = ctx.node.complex_grid # 1j*imag_range.reshape(-1, 1) + real_range
     func_value = ctx.f(complex_grid) # evaluates QP at grid points
     ctx.node.z_value = func_value
-
-    ## finding contours via contourpy library, only 0-level real contours are necessary
-    contour_generator = contourpy.contour_generator(x=real_range, y=imag_range, z=func_value.real)
-    zero_level_contours = contour_generator.lines(0.0) # find all 0-level real contours
-    ctx.node.contours_real = zero_level_contours
-
-    if not zero_level_contours: # no contours found -> no initial guesses
-        logger.warning(f"No real 0-level contours were found in region {region}.")
-        roots0 = np.array([], dtype=np.complex128)
-    else: # detecting intersection points
-        roots = [np.empty(shape=(0,), dtype=np.complex128)]
-        logger.debug(f"Num. Re 0-level contours: {len(zero_level_contours)}")
-        for polygon in zero_level_contours:
-            polygon_complex = polygon[:,0] + 1j*polygon[:,1]
-            # find all intersections
-            polygon_func_imag = np.imag(ctx.f(polygon_complex))
-            crossings = find_crossings(polygon_complex, polygon_func_imag, interpolate=True)
-            if crossings.size:
-                roots.append(crossings)
-        if not roots: # warn that no crossings found
-            logger.warning(f"No contour crossings found!")
-        roots0 = np.hstack(roots)
-
+    
+    roots0 = _spectrum_mapping(ctx.f, real_range, imag_range)
     ctx.node.roots0 = roots0
 
     if ctx.multiplicity_heuristic:

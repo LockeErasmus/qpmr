@@ -1,5 +1,7 @@
 """
 Compilation of mathematical utility functions
+
+TODO: delete, moved to core.mapping
 """
 
 import logging
