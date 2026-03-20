@@ -16,6 +16,7 @@ delays = np.array([0, 1.])
 
 c, d = multiply(coefs, delays, coefs, delays)
 c, d = multiply(c, d, coefs, delays)
+
 # c, d = multiply(c, d, coefs, delays)
 
 coefs, delays = c, d

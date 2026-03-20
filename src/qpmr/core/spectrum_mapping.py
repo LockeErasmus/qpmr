@@ -10,6 +10,8 @@ import contourpy
 import numpy as np
 import numpy.typing as npt
 
+from . import quasipolynomial
+
 def _find_crossings(x: npt.NDArray, y: npt.NDArray,
                     remove_consequent: bool=True,
                     interpolate: bool=False) -> npt.NDArray:
@@ -53,5 +55,18 @@ def _spectrum_mapping(f: Callable, re_range: npt.NDArray, im_range: npt.NDArray)
             roots.append(crossings)
     return np.hstack(roots)
 
-def spectrum_mapping(f: Callable, rectangle: tuple[float, float, float, float], ds: float):
-    raise NotImplementedError("...")
+def spectrum_mapping(coefs: npt.NDArray, delays: npt.NDArray, rectangle: tuple[float, float, float, float], ds: float) -> npt.NDArray:
+    # TODO validation
+    # TODO docstring
+
+    roots = _spectrum_mapping(
+        lambda s: quasipolynomial._eval_array(coefs, delays, s),
+        re_range=np.arange(rectangle[0], rectangle[1], ds),
+        im_range=np.arange(rectangle[2], rectangle[3], ds),
+    )
+
+    return roots
+
+
+    
+    

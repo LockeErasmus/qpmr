@@ -14,11 +14,13 @@ import qpmr.plot
     argnames="qp, args, kwargs",
     argvalues=[
         (examples.vyhlidal2014qpmr_01(), (), {}),
+        (examples.vyhlidal2014qpmr_02(), (), {}),
         (examples.vyhlidal2014qpmr_03(), (), {}),
         (examples.ndiff_01(), (), {"n_roots": 700}),
     ],
     ids=[
         "vyhlidal2014qpmr-01",
+        "vyhlidal2014qpmr-02",
         "vyhlidal2014qpmr-03",
         "ndiff-01",
     ],
@@ -30,9 +32,7 @@ def test_region_heuristic(qp, args: tuple, kwargs: dict, enable_plot: bool):
     region = region_heuristic(coefs, delays, *args, **kwargs)
     
     print(region)
-    
-    roots, info = qpmr.qpmr(coefs, delays, region=region)
-    
+        
     if enable_plot:
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots()

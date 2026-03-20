@@ -10,7 +10,7 @@ from typing import Callable
 import numpy as np
 import numpy.typing as npt
 
-from .quasipoly.core import _eval_array
+from .quasipolynomial import _eval_array
 
 logger = logging.getLogger(__name__)
 
@@ -124,14 +124,24 @@ def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_p
     integral = np.trapz(integrand, t)
     return integral / (2j * np.pi)
 
-def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: float, n_points: int=1000):
+def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: float, n_points: int=1000, zero_tol: float=1e-8):
     """
     Compute (N - P) using the Argument Principle with tracking of argument changes.
 
     Parameters:
      TODO
     """
-    raise NotImplementedError(".")
+    t = np.linspace(a, b, n_points)
+    z = gamma(t)
+    fz = f(z)
+
+    mask = np.abs(fz) < zero_tol
+    if np.any(mask):
+        logger.warning("Function values too close to zero on contour for reliable argument principle evaluation.")
+    
+    theta = np.unwrap(np.angle(fz))
+    n = int(np.round( (theta[-1] - theta[0]) / (2*np.pi)))
+    return n
 
 def _argument_principle_robust(f: Callable, gamma: Callable, a: float, b: float, n_points_0: int=256, n_max: int=1e12,
                                phase_tol: float=np.pi/2, zero_tol: float=1e-12):
@@ -231,7 +241,8 @@ def argument_principle_rectangle(f: Callable, region: tuple[float, float, float,
         #     return dvals
     
     n_points = max(round(2*(re_max - re_min + im_max - im_min)/ds + 4), 1000)
-    res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
+    # res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
+    res = _argument_principle_tracking(f, gamma, a, b, n_points=n_points)
 
     # use argument principle and round
     n_raw = np.abs(np.real( res ))

@@ -78,12 +78,14 @@ def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, floa
     # re_min is obtained as the left-most crossing of im_max with all the
     # chain asymptotes
     mu, w = chain_asymptotes(coefs, delays)
-    re_min = -np.inf
+    re_min = np.inf
     for i in range(len(mu)):
         for ww in w[i]:
             c = -mu[i] * np.log(im_max/ww)
-            if c > re_min:
+            print(c)
+            if c < re_min:
                 re_min = c
+    print(f"{re_min=}, {re_max=}")
 
     if np.any(coefs[1:, -1] != 0.): # quasi-polynomial is neutral
         # obtain reprezentation of normalized delay-difference equation
@@ -100,5 +102,5 @@ def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, floa
         re_max = max(re_max, cdp)
         re_min = min(re_min, cdm)
 
-    region = (re_min - 1.05 * abs(re_max - re_min), re_max, 0, im_max)
+    region = (re_min - 0.05 * abs(re_max - re_min), re_max, 0, im_max)
     return region
