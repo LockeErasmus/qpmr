@@ -121,7 +121,7 @@ def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_p
     if num_zeros > 0:
         print(f"Warning: encountered {num_zeros} zeros of f(z) on the contour.") # TODO
 
-    integral = np.trapz(integrand, t)
+    integral = np.trapezoid(integrand, t)
     return integral / (2j * np.pi)
 
 def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: float, n_points: int=1000, zero_tol: float=1e-8):
@@ -242,7 +242,7 @@ def argument_principle_rectangle(f: Callable, region: tuple[float, float, float,
     
     n_points = max(round(2*(re_max - re_min + im_max - im_min)/ds + 4), 1000)
     # res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
-    res = _argument_principle_tracking(f, gamma, a, b, n_points=n_points)
+    res = _argument_principle(f, f_prime, gamma, gamma_prime, a, b, n_points=n_points)
 
     # use argument principle and round
     n_raw = np.abs(np.real( res ))

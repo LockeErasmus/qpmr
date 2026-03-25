@@ -11,6 +11,7 @@ reference and notes read docstring of individual callables.
 
 import numpy as np
 import numpy.typing as npt
+import numpy.polynomial
 
 from .obj import QuasiPolynomial, TransferFunction
 
@@ -217,7 +218,16 @@ def vyhlidal2014qpmr(example: str | int=1):
             raise ValueError(f"Example '{example}' is not supported. Supported list of examples: {', '.join(allowed_examples)}")
 
 def appeltans2023analysis(example: str=None, **kwargs):
-    """ TODO """
+    """ TODO 
+    
+    Example 2.6:
+        **kwargs:
+            tau2 (float): delay tau2, should be positive, default 2.0   
+    
+    """
+    if not isinstance(example, str):
+        example = str(example)
+
     allowed_examples = ["2.6"]
     
     if example not in allowed_examples:
@@ -232,6 +242,12 @@ def appeltans2023analysis(example: str=None, **kwargs):
     
     return coefs, delays
 
+def qp_from_roots(roots: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
+    """ Constructs quasi-polynomial from roots and multiplicities
+    """
+    coefs = np.polynomial.polynomial.polyfromroots(np.asarray(roots))
+    return np.real(coefs[None,:]), np.array([0.])
+
 def self_inverse_polynomial(center: float=0., radius: float=1.0, degree: int=6):
     coefs = ( (1 / radius * np.poly1d([1, -center])) ** degree - 1 ).coeffs[None, ::-1]
     delays = np.array([0.])
@@ -242,6 +258,13 @@ def empty():
     return np.array([[]], dtype=np.float64), np.array([], dtype=np.float64)
 
 def ndiff_01():
+    """ Artifical neutral delay difference equation example
+    
+    Delays are 'highly' non-commensurate, this means that the roots will be 
+    distributed in the vertical strip of complex plane in a rich manner. As a
+    a consequence, this example can be a good test for the robustness of the
+    algorithm.
+    """
     delays = np.array([0.0, 1, np.sqrt(5), np.pi*3, np.e * 6, 10])
     coefs = np.array([[-0.2], [0.998], [0.5], [1.0], [-0.3], [0.1]])
     return coefs, delays

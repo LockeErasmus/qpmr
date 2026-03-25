@@ -19,7 +19,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant, newton, mueller
-from .core.argument_principle import argument_principle, argument_principle_circle, argument_principle_rectangle
+from .core.argument_principle import argument_principle_circle, argument_principle_rectangle
 from .zero_multiplicity import cluster_roots
 from .core.spectrum_mapping import _spectrum_mapping
 
@@ -503,15 +503,17 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
 
     roots_solution = []
     for i in range(100):
-        logger.debug(f"Recursion level: {i}, queue size: {len(queue)}, current ds: {queue[0].ds if queue else 'N/A'}")
+        logger.info(f"Recursion level: {i}, queue size: {len(queue)}, current ds: {queue[0].ds if queue else 'N/A'}")
         if not queue:
             break # solved succesfully
 
         node = queue.popleft()
 
         # 128 / 8 = bytes per complex number
-        grid_nbytes = (((node.region[1] - node.region[0]) // ds + 1) 
-                       * ((node.region[3] - node.region[2]) // ds + 1) * 16)
+        grid_nbytes = (((node.region[1] - node.region[0]) // node.ds + 1) 
+                       * ((node.region[3] - node.region[2]) // node.ds + 1) * 16)
+        logger.debug(f"Estimated grid size in bytes: {grid_nbytes}, max allowed: {grid_nbytes_max}")
+        
         if grid_nbytes > grid_nbytes_max:
             queue.extend([
                 QPmRNode((node.region[0], node.region[0] + 0.5*(node.region[1] - node.region[0]), node.region[2], node.region[2] + 0.5*(node.region[3] - node.region[2])), node.ds), # left-bottom
@@ -524,6 +526,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
         roots, meta = _qpmr_solve_node(f, f_prime, node.region, e, node.ds, **kwargs)
 
         if roots is None:
+            logger.debug(f"Failed to solve node with region={node.region}, ds={node.ds}, meta={meta}")
             # TODO handle different meta messages
             queue.append(QPmRNode(node.region, node.ds/2.))
         else:

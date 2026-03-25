@@ -15,7 +15,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
-from .argument_principle import argument_principle
+from .core.argument_principle import argument_principle
 from .common import find_crossings
 from .quasipoly import QuasiPolynomial
 from .quasipoly.core import _eval_array
