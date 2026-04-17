@@ -68,6 +68,9 @@ def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: i
     vec1 = coefs * np.exp(-x * delays)
     n_var = len(coefs) - 1 # first rotation is arbitrary
 
+    if n_var == 0:
+        return 1.0
+
     fval_star = np.inf
     for augmented_theta_vec in theta_grid_generator(n_var, n):
         # [1, theta_1, theta_2, ... theta_{n_var}]

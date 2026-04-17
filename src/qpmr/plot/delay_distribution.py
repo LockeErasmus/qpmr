@@ -31,8 +31,8 @@ def spectrum_distribution_diagram(x, y, mask, ax: Axes=None) -> Axes:
     ax.plot(x[mask], y[mask], "o-", color="blue")
     
     ax.yaxis.grid(True)
-    ax.set_xlabel(r"$\vartheta_i = \tau_{max} - \tau_i $")
-    ax.set_ylabel(r"degree of $p_i$")
+    ax.set_xlabel(r"$\vartheta_i$")
+    ax.set_ylabel(r"$m_i$")
 
     return ax
 

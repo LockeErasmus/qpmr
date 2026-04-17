@@ -117,9 +117,10 @@ class QpmrRecursionContext:
 
     ds: float = None
 
-    def __init__(self, coefs, delays):
+    def __init__(self, coefs, delays, region):
         self.coefs = coefs
         self.delays = delays
+        self.region = region
         
         self.solution_tree: QpmrSubInfo = None
         self.node: QpmrSubInfo = None # current node

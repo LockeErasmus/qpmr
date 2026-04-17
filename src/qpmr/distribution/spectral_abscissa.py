@@ -67,6 +67,21 @@ def safe_upper_bound_diff(coefs, delays, **kwargs):
 
     return bound
 
+def bounds_neutral_strip(coefs, delays, **kwargs):
+    """ TODO
+    
+    """
+    if kwargs.get("compress", True):
+        coefs, delays = compress(coefs, delays)
+    
+    diff = create_normalized_delay_difference_eq(coefs, delays, compress=False)
+    logger.debug(f"{diff}")
+    if diff is None:
+        return -np.inf, np.inf
+    
+    diff_coefs, diff_delays = diff # unpack
+    return _neutral_strip_bounds(diff_coefs, diff_delays, **kwargs)
+
     
 
 

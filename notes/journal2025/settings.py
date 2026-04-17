@@ -8,19 +8,24 @@ import os
 
 
 plt.rcParams.update({
-    "font.size": 12,            # Default font size
-    "axes.titlesize": 14,       # Axes title font size
-    "axes.labelsize": 12,       # X/Y axis labels
-    "xtick.labelsize": 10,      # X tick labels
-    "ytick.labelsize": 10,      # Y tick labels
-    "legend.fontsize": 10,      # Legend font size
-    "figure.titlesize": 16,     # Figure title
+    "font.size": 8,            # Default font size
+    "axes.titlesize": 8,       # Axes title font size
+    "axes.labelsize": 8,       # X/Y axis labels
+    "xtick.labelsize": 7,      # X tick labels
+    "ytick.labelsize": 7,      # Y tick labels
+    "legend.fontsize": 7,      # Legend font size
+    "figure.titlesize": 8,     # Figure title
     "text.usetex": True,
+    "text.latex.preamble": r"\usepackage{amsmath}",
     "font.family": "serif",
 })
 
 # TWO column article -> LINE_WIDTH = one column width
 LINE_WIDTH = 252.0 / 72 # 1 pt = 1/72 inches
+
+SMALL_HEIGHT = LINE_WIDTH * 0.35
+MEDIUM_HEIGHT = LINE_WIDTH * 1.0
+LARGE_HEIGHT = LINE_WIDTH * 1.8
 
 
 # TODO save figure routine

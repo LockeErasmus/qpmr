@@ -1,6 +1,6 @@
 """
-Quasi-polynomial functionalities
---------------------------------
+Operations on quasi-polynomials
+-------------------------------
 
 """
 

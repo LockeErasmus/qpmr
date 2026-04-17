@@ -7,7 +7,7 @@ logger.addHandler(logging.NullHandler())
 
 from .qpmr_v2 import QpmrInfo
 from .qpmr_v3 import qpmr
-from .distribution import distribution_diagram, chain_asymptotes, safe_upper_bound_diff
+from .distribution import distribution_diagram, chain_asymptotes, safe_upper_bound_diff, bounds_neutral_strip
 from .utils import init_qpmr_logger
 from .utils import init_qpmr_logger as init_logger
 

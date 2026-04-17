@@ -7,7 +7,6 @@ Set of funtions implement original QPmR v2 algorithm, based on [1].
     computation of quasi-polynomial zeros." IEEE Transactions on Automatic
     Control 54.1 (2009): 171-177.
 
-
 TODO:
     1. @overload docstring
 """
@@ -47,7 +46,7 @@ def _qpmr_solve_node(f: Callable, f_prime: Callable, region: tuple[float, float,
     """ TODO """
 
     multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
-    numerical_method = kwargs.get("numerical_method", None)
+    numerical_method = kwargs.get("numerical_method", "newton")
 
     # TODO: what if region is so big I cannot even evaluate argument principle on it?
     #  - this is currently handled by recursion level and grid size rules,
@@ -535,4 +534,4 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrRecursionCont
     if queue:
         logger.warning(f"QPmR finished with non-empty queue, some branches were not solved, remaining branches: {len(queue)}")
     
-    return np.hstack(roots_solution), QpmrRecursionContext(coefs, delays)
+    return np.hstack(roots_solution), QpmrRecursionContext(coefs, delays, region=region)
