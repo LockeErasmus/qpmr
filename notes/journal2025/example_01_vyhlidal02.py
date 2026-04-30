@@ -48,7 +48,6 @@ ax.set_ylabel(r"$\Im (\lambda)$")
 ax.set_xlim(region[0], region[1])
 ax.set_ylim(region[2], region[3])
 
-
 qpmr.plot.roots(roots, ax=ax)
 settings.save_figure(fig, "example_02_vyhlidal_roots")
 
