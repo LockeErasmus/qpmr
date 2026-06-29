@@ -1,38 +1,4 @@
 {
- "coefs": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
-  }
- ],
- "delays": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
-  }
- ],
- "meta": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "qpmr.qpmr_metadata",
-   "module_short": "qpmr.qpmr_metadata",
-   "name": "QpmrRecursionContext"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "qpmr",
-   "module_short": "qpmr",
-   "name": "QpmrRecursionContext"
-  }
- ],
  "np.array": [
   {
    "is_class": false,
@@ -69,13 +35,6 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
    "module": "qpmr.plot",
    "module_short": "qpmr.plot",
    "name": "roots"
@@ -92,25 +51,9 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
    "module": "qpmr",
    "module_short": "qpmr",
    "name": "qpmr"
-  }
- ],
- "roots": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
   }
  ]
 }

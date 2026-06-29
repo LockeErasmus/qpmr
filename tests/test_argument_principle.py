@@ -6,7 +6,8 @@ import pytest
 
 import qpmr
 
-from qpmr.argument_principle import circle_contour, rectangular_contour, _argument_principle, _argument_principle_robust
+from qpmr.core.argument_principle import circle_contour, rectangular_contour, \
+    _argument_principle, _argument_principle_robust
 from qpmr.quasipoly.core import eval
 import qpmr.quasipoly.examples as examples
 

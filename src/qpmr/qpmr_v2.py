@@ -7,6 +7,7 @@ Set of funtions implement original QPmR v2 algorithm, based on [1].
     computation of quasi-polynomial zeros." IEEE Transactions on Automatic
     Control 54.1 (2009): 171-177.
 """
+from functools import cached_property
 import logging
 from typing import overload
 
@@ -16,17 +17,41 @@ import numpy.typing as npt
 
 from .numerical_methods import numerical_newton, secant
 from .core.argument_principle import argument_principle
-from .common import find_crossings
+from .core.mapping import _find_crossings as find_crossings
 from .quasipoly import QuasiPolynomial
 from .quasipoly.core import _eval_array
 # from .quasipoly.core import _eval_array_opt as _eval_array
 from .grid import grid_size_heuristic
-from .qpmr_metadata import QpmrInfo
 from .qpmr_validation import validate_region, validate_qp
 
 logger = logging.getLogger(__name__)
 
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
+
+class QpmrInfo:
+    # TODO maybe dataclass? but solve cached property
+    real_range: npt.NDArray = None
+    imag_range: npt.NDArray = None
+    z_value: npt.NDArray = None
+    roots0: npt.NDArray = None
+    roots_numerical: npt.NDArray = None
+
+    contours_real: list[npt.NDArray] = None
+    # contours_imag: list[npt.NDArray] = None
+
+    @cached_property
+    def complex_grid(self) -> npt.NDArray:
+        return 1j*self.imag_range.reshape(-1, 1) + self.real_range
+    
+    @cached_property
+    def contours_imag(self) -> list[npt.NDArray]:
+        contour_generator = contourpy.contour_generator(
+            x=self.real_range,
+            y=self.imag_range,
+            z=np.imag(self.z_value),
+        )
+        zero_level_contours = contour_generator.lines(0.0)
+        return zero_level_contours
 
 @overload
 def qpmr(

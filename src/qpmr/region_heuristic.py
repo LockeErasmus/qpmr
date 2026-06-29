@@ -1,10 +1,11 @@
-"""
+r"""
 Region heuristic
 ================
 
-As of now, assuming retarded quasi-polynomial and goal is to find smallest
-possible rectangular region that contains n rightmost roots.
-
+Region heuristic is a method to propose a rectangular region in the complex 
+plane that contains the most significant zeros of retarded or neutral 
+quasi-polynomials. The heuristic is based on obtaining asymptotic exponentials
+of the zero chains, bounds of the neutral vertical strip, and spectral envelope.
 """
 
 import logging
@@ -21,17 +22,47 @@ from .qpmr_validation import validate_qp
 logger = logging.getLogger(__name__)
 
 def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, float]:
-    """ TODO 
-    
-    Idea of this heuristic is that number of imaginary contours =approx= number
-    of zeros in region. 
-    
+    """ Proposes rectangular region that contains the most significant zeros
+    of retarded or neutral quasi-polynomial.
 
+    The heuristic is based on obtaining asymptotic exponentials of the zero 
+    chains, bounds of the neutral vertical strip, and spectral envelope.
 
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+
+    delays : ndarray
+        Vector of delays associated with each row in `coefs`.
+
+    **kwargs: additional arguments
+        n_roots : int, optional
+            Approximate number of rightmost roots to be contained in the
+            proposed region, default is 100.
+        re_stretch : float, optional
+            Stretch factor for the minimum real part of the region, default 
+            is 0.05.
+    
+    Raises
+    ------
+    ValueError
+        If the provided quasi-polynomial is advanced or if the heuristic cannot
+        be applied to the given quasi-polynomial.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import qpmr
+    >>> coefs = np.array([[1, 0], [0, 1]])
+    >>> delays = np.array([0, 1])
+    >>> region = qpmr.region_heuristic(coefs, delays, n_roots=50)
+    >>> print(region)
     """
-
     # unpack kwargs
     n_roots = kwargs.get("n_roots", 100)
+    re_stretch = kwargs.get("re_stretch", 0.05)
 
     # validate quasi-polynomial
     coefs, delays = validate_qp(coefs, delays)
@@ -58,11 +89,11 @@ def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, floa
         # coefs[:,-1] = [1, a1, a2, ...], delays = [0, tau1, tau2, ...]
         # coefs are non-zero real numbers
         mask = coefs[:,-1] != 0
-        mask[0] = False # first coefficient is 1 -> fix theta to solve smaller problems
-        ndiff_coefs, ndiff_delays = coefs[:,-1][mask], delays[mask]
-        cdm, cdp = _neutral_strip_bounds(ndiff_coefs, ndiff_delays)
+        diff_coefs, diff_delays = coefs[:,-1][mask], delays[mask]
+        cdm, cdp = _neutral_strip_bounds(diff_coefs, diff_delays)
 
-        region = (1.05*cdm, 1.05*cdp, 0, im_max)
+        region = (float((1 + re_stretch)*cdm), float((1 + re_stretch)*cdp),
+                  0., float(im_max))
         return region
 
     # Next, treat quasi-polynomial as it is retarded
@@ -82,25 +113,23 @@ def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, floa
     for i in range(len(mu)):
         for ww in w[i]:
             c = -mu[i] * np.log(im_max/ww)
-            print(c)
             if c < re_min:
                 re_min = c
-    print(f"{re_min=}, {re_max=}")
 
     if np.any(coefs[1:, -1] != 0.): # quasi-polynomial is neutral
         # obtain reprezentation of normalized delay-difference equation
         # coefs[:,-1] = [1, a1, a2, ...], delays = [0, tau1, tau2, ...]
         # coefs are non-zero real numbers
         mask = coefs[:,-1] != 0
-        mask[0] = False # first coefficient is 1 -> fix theta to solve smaller problems
-        ndiff_coefs, ndiff_delays = coefs[:,-1][mask], delays[mask]
-        cdm, cdp = _neutral_strip_bounds(ndiff_coefs, ndiff_delays)
-        logger.debug(f"Quasi-polynomial is of NEUTRAL type, neutral spectrum is bounded inside [{cdm}, {cdp}]")
+        diff_coefs, diff_delays = coefs[:,-1][mask], delays[mask]
+        cdm, cdp = _neutral_strip_bounds(diff_coefs, diff_delays)
 
         # solve neutral envelope crossing with x0 = re_max obtained from retarded case
-        re_max = _neutral_envelope_real_axis_crossing(norms[mask], ndiff_coefs, ndiff_delays, x0=re_max)
+        re_max = _neutral_envelope_real_axis_crossing(norms[mask], diff_coefs, diff_delays, x0=re_max)
         re_max = max(re_max, cdp)
         re_min = min(re_min, cdm)
 
-    region = (re_min - 0.05 * abs(re_max - re_min), re_max, 0, im_max)
+    # stretch Re min, by default 5% of the width of the region
+    region = (float(re_min - re_stretch * abs(re_max - re_min)),
+              float(re_max), 0., float(im_max))
     return region

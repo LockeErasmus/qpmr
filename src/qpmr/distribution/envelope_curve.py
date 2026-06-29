@@ -29,15 +29,16 @@ def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
     norms = np.zeros_like(delays, dtype=float)
     for k in range(len(delays)):
         if k == 0:
-            monic_coefs = coefs[k,:-1][::-1] # without leading 1
+            monic_coefs = coefs[k,:-1] # without leading 1
             if len(monic_coefs) == 0:
                 norms[k] = 0
             elif len(monic_coefs) == 1:
                 norms[k] = abs(monic_coefs[0])
             else:
-                n = len(delays) - 1
+                # n = len(delays) - 1
+                n = len(monic_coefs)
                 A0 = np.zeros(shape=(n, n))
-                A0[-1,:] = -coefs[k,:-1]
+                A0[-1,:] = -monic_coefs
                 A0[:-1, 1:] = np.eye(n-1)
                 # roots = np.roots(coefs[k,:-1][::-1])
                 norms[k] = np.linalg.norm(A0, ord=2)

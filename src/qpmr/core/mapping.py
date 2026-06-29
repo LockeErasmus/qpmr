@@ -2,6 +2,8 @@ r"""
 Spectrum mapping algorithm
 --------------------------
 
+
+
 """
 
 from typing import Callable
@@ -39,7 +41,9 @@ def _spectrum_mapping(f: Callable, re_range: npt.NDArray, im_range: npt.NDArray)
     contour_generator = contourpy.contour_generator(
         x=re_range,
         y=im_range,
-        z=f( 1j*im_range.reshape(-1, 1) + re_range )
+        z=f( 1j*im_range.reshape(-1, 1) + re_range ),
+        quad_as_tri=False,
+        z_interp="Linear",
     )
     roots = [np.empty(shape=(0,), dtype=np.complex128)]
     for c in contour_generator.lines(0.0):
@@ -47,7 +51,7 @@ def _spectrum_mapping(f: Callable, re_range: npt.NDArray, im_range: npt.NDArray)
         re_contour = 1j * c[:, 1] + c[:, 0]
         crossings = _find_crossings(
             re_contour,
-            np.imag( f(re_contour) ),
+            np.sign( np.imag( f(re_contour) ) ),
             remove_consequent=True,
             interpolate=True, # TODO, is it necessary?
         )
@@ -55,10 +59,9 @@ def _spectrum_mapping(f: Callable, re_range: npt.NDArray, im_range: npt.NDArray)
             roots.append(crossings)
     return np.hstack(roots)
 
-def spectrum_mapping(coefs: npt.NDArray, delays: npt.NDArray, rectangle: tuple[float, float, float, float], ds: float) -> npt.NDArray:
+def spectrum_mapping(coefs: npt.NDArray, delays: npt.NDArray, rectangle: tuple[float, float, float, float], ds: float=None) -> npt.NDArray:
     # TODO validation
     # TODO docstring
-
     roots = _spectrum_mapping(
         lambda s: quasipolynomial._eval_array(coefs, delays, s),
         re_range=np.arange(rectangle[0], rectangle[1], ds),

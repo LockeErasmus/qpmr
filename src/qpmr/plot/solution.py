@@ -7,12 +7,11 @@ import matplotlib.patches as patches
 import numpy as np
 import numpy.typing as npt
 
-from qpmr.qpmr_metadata import QpmrRecursionContext
 from . import basic
 
 
 
-def qpmr_solution_tree(ctx: QpmrRecursionContext, ax: Axes, **kwargs):
+def qpmr_solution_tree(ctx , ax: Axes, **kwargs):
     """ """
     if ax is None:
         _, ax = plt.subplots()

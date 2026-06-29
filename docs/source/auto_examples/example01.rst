@@ -21,18 +21,34 @@
 Example 1
 =========
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-22
+We start with he introductory quasi-polynomial
+
+.. math::
+
+    h(s) = e
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-29
+
+
+.. rst-class:: sphx-glr-script-out
+
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "C:\Users\peichl\source\qpmr\examples\example01.py", line 18, in <module>
+        import qpmr
+      File "C:\Users\peichl\source\qpmr\src\qpmr\__init__.py", line 9, in <module>
+        from .qpmr_v3 import qpmr
+      File "C:\Users\peichl\source\qpmr\src\qpmr\qpmr_v3.py", line 23, in <module>
+        from .core.spectrum_mapping import _spectrum_mapping
+    ModuleNotFoundError: No module named 'qpmr.core.spectrum_mapping'
 
 
 
-.. image-sg:: /auto_examples/images/sphx_glr_example01_001.png
-   :alt: example01
-   :srcset: /auto_examples/images/sphx_glr_example01_001.png
-   :class: sphx-glr-single-img
 
 
 
-
+|
 
 .. code-block:: Python
 
@@ -46,7 +62,7 @@ Example 1
     delays = np.array([0.0, 1.0])
     coefs = np.array([[0., 1],[1, 0]])
 
-    roots, meta = qpmr.qpmr(coefs, delays, [-10, 2, 0, 30])
+    roots, meta = qpmr.qpmr(coefs, delays, region=[-10, 2, 0, 30])
 
     qpmr.plot.roots(roots)
     plt.show()
@@ -54,7 +70,7 @@ Example 1
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.236 seconds)
+   **Total running time of the script:** (0 minutes 0.108 seconds)
 
 
 .. _sphx_glr_download_auto_examples_example01.py:

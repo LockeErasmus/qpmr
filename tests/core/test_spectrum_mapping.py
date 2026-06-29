@@ -6,7 +6,7 @@ Set of tests for spectrum mapping algorithm
 import logging
 import pytest
 
-from qpmr.core.spectrum_mapping import spectrum_mapping
+from qpmr.core.mapping import spectrum_mapping
 import qpmr.quasipoly.examples as examples
 import qpmr.plot
 

@@ -9,59 +9,34 @@ import pytest
 import qpmr.quasipoly.examples as examples
 from qpmr.quasipoly import eval, derivative
 
+DEFAULT_TEST_POINTS = [0+0j, 1+1j, -1-1j, 0.5+0.5j]
+DEFAULT_EPS = 1e-8
+DEFAULT_ABS_TOL = 1e-6
+DEFAULT_REL_TOL = 1e-4
 
 @pytest.mark.parametrize(
     argnames="qp, params",
     argvalues=[
         (examples.vyhlidal2014qpmr_01(), {}),
     ],
-    ids=[],
+    ids=["vyhlidal2014qpmr_01"],
 )
 def test_derivatives(qp, params):
     
     coefs, delays = qp # unpack quasipolynomial
     coefs_prime, delays_prime = derivative(coefs, delays, compress=False)
 
-    print(coefs, delays)
-    print(coefs_prime, delays_prime)
+    eps = params.get("eps", DEFAULT_EPS)
+    abs_tol = params.get("abs_tol", DEFAULT_ABS_TOL)
+    rel_tol = params.get("rel_tol", DEFAULT_REL_TOL)
 
-    s = 0.5+0.23j
-    numerical_derivative = []
-    eps_vector = np.logspace(-3, 0, 20)
-    for eps in eps_vector:
-        ceps = eps * (1+1j)
-        f1 = (eval(coefs, delays, s + ceps) - eval(coefs, delays, s - ceps))/ 2. / ceps
-        f2 = (eval(coefs, delays, s + eps) - eval(coefs, delays, s - eps) -1j*(eval(coefs, delays, s + 1j*eps) - eval(coefs, delays, s - 1j*eps)) ) / 4. / eps
-        numerical_derivative.append(
-            f2
-        )
-    
-    numerical_derivative = np.array(numerical_derivative)
-    analytical_derivative = np.full_like(numerical_derivative, fill_value=eval(coefs_prime, delays_prime, s))
+    for s in params.get("points", DEFAULT_TEST_POINTS):
+        analytical_derivative = eval(coefs_prime, delays_prime, s)
+        
+        numerical_derivative = (eval(coefs, delays, s + eps) - eval(coefs, delays, s - eps))/ 2. / eps
 
-    print(numerical_derivative)
-    print(analytical_derivative)
-
-
-    import matplotlib.pyplot as plt
-    plt.figure()
-    plt.plot(eps_vector, np.abs(numerical_derivative), "x-")
-    plt.plot(eps_vector, np.abs(analytical_derivative), "r-")
-    plt.show()
-
-    fig, (ax1, ax2) = plt.subplots(2,1, sharex=True)
-
-    ax1.plot(eps_vector, np.abs(numerical_derivative.real - analytical_derivative.real))
-    ax2.plot(eps_vector, np.abs(numerical_derivative.imag - analytical_derivative.imag))
-    plt.show()
-    
-    
-    # plt.figure()
-    # plt.semilogy(eps_vector, np.abs(numerical_derivative), "x-")
-    # plt.semilogy(eps_vector, np.abs(analytical_derivative), "r-")
-    # plt.show()
-
-
+        assert np.isclose(analytical_derivative, numerical_derivative, atol=abs_tol, rtol=rel_tol), \
+            f"Derivative mismatch at s={s}: analytical={analytical_derivative}, numerical={numerical_derivative}"
 
 
 

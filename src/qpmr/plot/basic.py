@@ -11,6 +11,33 @@ import numpy.typing as npt
 
 from qpmr import QpmrInfo
 
+def _roots_matlab(roots: npt.NDArray, ax: Axes=None, **kwargs):
+    """ Plots roots in the original QPmR V2 matlab style """
+    if ax is None:
+        _, ax = plt.subplots()
+    
+    if roots is None:
+        roots = np.array([], dtype=np.complex128)
+    
+    ax.axhline(0.0, linestyle="-.", linewidth=0.5, color="k")
+    ax.axvline(0.0, linestyle="-.", linewidth=0.5, color="k")
+
+
+    ax.scatter(np.real(roots),
+               np.imag(roots),
+               marker="o",
+               color="k",
+               s=8,
+               linewidths=0.5,
+    )
+    
+    ax.set_xlabel(r"$\Re (\lambda)$")
+    ax.set_ylabel(r"$\Im (\lambda)$")
+
+    return ax
+
+# def _roots_tds()
+
 def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots roots ('x') into complex plane
 
@@ -38,40 +65,48 @@ def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
     ax.axhline(0.0, linestyle="-.", linewidth=1, color="k")
     ax.axvline(0.0, linestyle="-.", linewidth=1, color="k")
 
-    roots_real = np.real(roots)
-    roots_imag = np.imag(roots)
+    style = kwargs.get("style", "matlab")
+    match style:
+        case "matlab":
+            ax = _roots_matlab(roots, ax=ax, **kwargs)
+            return ax
+        case _:
+                    
 
-    mask_negative = roots_real < -tol
-    if np.any(mask_negative) > 0:
-        ax.scatter(roots_real[mask_negative],
-                   roots_imag[mask_negative],
-                   marker="x",
-                   color="g",
-                   linewidths=0.5,
-        )
-    
-    mask_positive = roots_real > tol
-    if np.any(mask_positive) > 0:
-        ax.scatter(roots_real[mask_positive],
-                   roots_imag[mask_positive],
-                   marker="x",
-                   color="r",
-                   linewidths=0.5,
-        )
+            roots_real = np.real(roots)
+            roots_imag = np.imag(roots)
 
-    mask_zero = ~(mask_positive | mask_negative)
-    if np.any(mask_zero) > 0:
-        ax.scatter(roots_real[mask_zero],
-                   roots_imag[mask_zero],
-                   marker="x",
-                   color="b",
-                   linewidths=0.5,
-        )
-    
-    ax.set_xlabel(r"$\Re (\lambda)$")
-    ax.set_ylabel(r"$\Im (\lambda)$")
+            mask_negative = roots_real < -tol
+            if np.any(mask_negative) > 0:
+                ax.scatter(roots_real[mask_negative],
+                        roots_imag[mask_negative],
+                        marker="x",
+                        color="g",
+                        linewidths=0.5,
+                )
+            
+            mask_positive = roots_real > tol
+            if np.any(mask_positive) > 0:
+                ax.scatter(roots_real[mask_positive],
+                        roots_imag[mask_positive],
+                        marker="x",
+                        color="r",
+                        linewidths=0.5,
+                )
 
-    return ax
+            mask_zero = ~(mask_positive | mask_negative)
+            if np.any(mask_zero) > 0:
+                ax.scatter(roots_real[mask_zero],
+                        roots_imag[mask_zero],
+                        marker="x",
+                        color="b",
+                        linewidths=0.5,
+                )
+            
+            ax.set_xlabel(r"$\Re (\lambda)$")
+            ax.set_ylabel(r"$\Im (\lambda)$")
+
+            return ax
 
 def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
     """ Plots poles ('x', red) and zeros ('o', blue) to one plot

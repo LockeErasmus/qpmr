@@ -5,7 +5,28 @@
 Examples
 ========
 
-Below are examples demonstrating how to use the package.
+Below are examples demonstrating how to use `qpmr` package.
+
+Examples are divided thematically into groups and we recommend to start from
+top.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+Examples from QPmR V3 Journal article
+=====================================
+
 
 
 .. raw:: html
@@ -16,14 +37,31 @@ Below are examples demonstrating how to use the package.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example 1">
+    <div class="sphx-glr-thumbcontainer" tooltip="We consider neutral quasi-polynomial">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_example01_thumb.png
+  .. image:: /auto_examples/01_journal2026/images/thumb/sphx_glr_example02_thumb.png
     :alt:
 
-  :doc:`/auto_examples/example01`
+  :doc:`/auto_examples/01_journal2026/example02`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example 2</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We start with an introductory example of a neutral quasi-polynomial">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_journal2026/images/thumb/sphx_glr_example01_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01_journal2026/example01`
 
 .. raw:: html
 
@@ -40,8 +78,10 @@ Below are examples demonstrating how to use the package.
 
 .. toctree::
    :hidden:
+   :includehidden:
 
-   /auto_examples/example01
+
+   /auto_examples/01_journal2026/index.rst
 
 
 

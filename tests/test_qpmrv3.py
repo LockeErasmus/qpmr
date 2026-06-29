@@ -7,7 +7,6 @@ import logging
 import pytest
 import qpmr.quasipoly.examples as examples
 from qpmr.qpmr_v3 import qpmr as qpmr_v3
-from qpmr.qpmr_v3 import QpmrSubInfo, QpmrRecursionContext
 import qpmr.plot
 
 @pytest.mark.parametrize(

@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 
+from qpmr.core import spectrum_mapping
+
 from qpmr.core.quasipolynomial import eval
 from qpmr.quasipoly.examples import vyhlidal2014qpmr_02
 

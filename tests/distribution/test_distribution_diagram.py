@@ -7,9 +7,8 @@ TODO
 import pytest
 import numpy as np
 
+import qpmr
 import qpmr.quasipoly.examples as examples
-from qpmr import distribution_diagram, chain_asymptotes
-from qpmr.qpmr_v3 import qpmr as qpmr_v3
 import qpmr.plot
 
 @pytest.mark.parametrize(
@@ -30,7 +29,7 @@ import qpmr.plot
                 np.array([0., 1, 2, 4, 8, 10, 12, 14])
             ),
             (),
-            {},
+            {"region": (-6, 10, 0, 50)},
         ),
         (
             (
@@ -47,7 +46,7 @@ import qpmr.plot
             (),
             {},
         ),
-        (examples.vyhlidal2014qpmr_02(), (), {}),
+        (examples.vyhlidal2014qpmr_02(), (), {"region": (-6, 2, 0, 100)}),
     ],
     ids=[
         "advanced",
@@ -56,25 +55,21 @@ import qpmr.plot
     ],
 )
 def test_distribution_diagram(qp, qpmr_args: tuple, qpmr_kwargs: dict, enable_plot: bool):
-
     import numpy as np
     
     coefs, delays = qp
-    region=(-10, 20, 0, 100)
-
-    coefs, delays = qpmr.quasipoly.compress(coefs, delays)
-
-    x, y, mask = distribution_diagram(coefs, delays)
-    mi, wk_abs, gl_s = chain_asymptotes(coefs, delays)
-
-    roots, meta = qpmr_v3(coefs, delays, region)
-
+    x, y, mask = qpmr.distribution_diagram(coefs, delays)
+    
     if enable_plot:
         import matplotlib.pyplot as plt
+
+        roots, info = qpmr.qpmr(coefs, delays, **qpmr_kwargs)
+        mi, wk_abs = qpmr.chain_asymptotes(coefs, delays)
+        
         fig, (ax1, ax2) = plt.subplots(ncols=2, nrows=1)
-        qpmr.plot.delay_distribution.spectrum_distribution_diagram(x, y, mask, ax=ax1)
+        qpmr.plot.spectrum_distribution_diagram(x, y, mask, ax=ax1)
         
         qpmr.plot.roots(roots, ax=ax2)
-        qpmr.plot.chain_asymptotes(mi, wk_abs, region, ax=ax2)
+        qpmr.plot.chain_asymptotes(mi, wk_abs, region=info.region, ax=ax2)
 
         plt.show()

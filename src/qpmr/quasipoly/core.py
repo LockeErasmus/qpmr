@@ -7,6 +7,7 @@ import logging
 from typing import Any
 
 import math
+import warnings
 import numpy as np
 import numpy.typing as npt
 
@@ -451,6 +452,39 @@ def is_neutral(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
         return True
     else:
         return False
+
+def extract_delay_diff_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
+    """ Extracts delay-difference equation from quasipolynomial
+
+    Args:
+        coefs (array): matrix definition of polynomial coefficients (each row
+            represents polynomial coefficients corresponding to delay)
+        delays (array): vector definition of associated delays (each delay
+            corresponds to row in `coefs`)
+        **kwargs:
+            compress (bool): if False compresses the result (converts to minimal
+                form), default False
+    """
+    if kwargs.get("compress", False):
+        coefs, delays = compress(coefs, delays)
+
+    diff_coefs = coefs[:, -1]
+    mask = diff_coefs != 0.0
+
+    diff_coefs = diff_coefs[mask]
+    diff_delays = delays[mask]
+
+    if len(diff_coefs) == 0:
+        warnings.warn(f"Quasipolynomial: P={coefs.tolist()} delays={delays.tolist()} is not compressed or is empty after compresion, returning empty arrays")
+        return np.empty_like(diff_coefs), np.empty_like(delays)
+    
+    if kwargs.get("normalize", True):
+        diff_coefs /= diff_coefs[0]
+
+    diff_delays -= diff_delays[0] # this is assumed to be the smallest delay
+
+    return diff_coefs, diff_delays
+    
 
 def create_normalized_delay_difference_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
     """ Creates characteristic equation of the associated delay difference
