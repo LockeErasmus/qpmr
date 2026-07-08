@@ -47,9 +47,6 @@ def _neutral_strip_bounds(diff_coefs, diff_delays, **kwargs) -> tuple[float, flo
 #     lb = -_safe_upper_bound(ndiff_coefs[:-1]/ndiff_coefs[-1], -ndiff_delays[:-1] + ndiff_delays[-1], 0, 1e-6, 100)
 #     return lb, ub
 
-
-
-
 def safe_upper_bound_diff(coefs, delays, **kwargs):
     """ TODO
     
