@@ -1,0 +1,68 @@
+
+
+.. _sphx_glr_auto_examples_01_journal2026:
+
+.. _qpmr_journal2026_examples:
+
+Examples from QPmR V3 Journal article
+=====================================
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We consider neutral quasi-polynomial">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_journal2026/images/thumb/sphx_glr_example02_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01_journal2026/example02`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example 2</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We start with an introductory example of a neutral quasi-polynomial">
+
+.. only:: html
+
+  .. image:: /auto_examples/01_journal2026/images/thumb/sphx_glr_example01_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01_journal2026/example01`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example 1</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/01_journal2026/example02
+   /auto_examples/01_journal2026/example01
+

@@ -1,0 +1,1408 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>qpmr package &#8212; qpmr 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'qpmr';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="qpmr.core package" href="qpmr.core.html" />
+    <link rel="prev" title="Docstring Style Guide" href="docstrings.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.svg" class="logo__image only-light" alt="qpmr 0.1.0 documentation - Home"/>
+    <img src="_static/logo.svg" class="logo__image only-dark pst-js-only" alt="qpmr 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_reference.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing this work
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_reference.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing this work
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="docstrings.html">Docstring Style Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">qpmr package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html">qpmr.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html">qpmr.distribution package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html">qpmr.numerical_methods package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html">qpmr.plot package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html">qpmr.quasipoly package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="api_reference.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">qpmr package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="qpmr-package">
+<h1>qpmr package<a class="headerlink" href="#qpmr-package" title="Link to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qpmr.core.html">qpmr.core package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#module-qpmr.core.argument_principle">qpmr.core.argument_principle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#argument-principle-implementation">Argument Principle implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.argument_principle.rectangular_contour"><code class="docutils literal notranslate"><span class="pre">rectangular_contour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.argument_principle.circle_contour"><code class="docutils literal notranslate"><span class="pre">circle_contour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.argument_principle.argument_principle"><code class="docutils literal notranslate"><span class="pre">argument_principle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.argument_principle.argument_principle_rectangle"><code class="docutils literal notranslate"><span class="pre">argument_principle_rectangle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.argument_principle.argument_principle_circle"><code class="docutils literal notranslate"><span class="pre">argument_principle_circle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#module-qpmr.core.mapping">qpmr.core.mapping module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#spectrum-mapping-algorithm">Spectrum mapping algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.mapping.spectrum_mapping"><code class="docutils literal notranslate"><span class="pre">spectrum_mapping()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#module-qpmr.core.quasipolynomial">qpmr.core.quasipolynomial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#quasi-polynomial-core-operations">Quasi-polynomial core operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.eval"><code class="docutils literal notranslate"><span class="pre">eval()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.compress"><code class="docutils literal notranslate"><span class="pre">compress()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.normalize_exponent"><code class="docutils literal notranslate"><span class="pre">normalize_exponent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.factorize_power"><code class="docutils literal notranslate"><span class="pre">factorize_power()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.poly_degree"><code class="docutils literal notranslate"><span class="pre">poly_degree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.is_neutral"><code class="docutils literal notranslate"><span class="pre">is_neutral()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.extract_delay_diff_eq"><code class="docutils literal notranslate"><span class="pre">extract_delay_diff_eq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.quasipolynomial.create_normalized_delay_difference_eq"><code class="docutils literal notranslate"><span class="pre">create_normalized_delay_difference_eq()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#module-qpmr.core.validation">qpmr.core.validation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#functions-for-validating-qpmr-inputs">Functions for validating QPmR inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.validation.validate_region"><code class="docutils literal notranslate"><span class="pre">validate_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.validation.validate_qp"><code class="docutils literal notranslate"><span class="pre">validate_qp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html#module-qpmr.core">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#core-algorithms">Core algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.core.html#qpmr.core.spectrum_mapping"><code class="docutils literal notranslate"><span class="pre">spectrum_mapping()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qpmr.distribution.html">qpmr.distribution package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#module-qpmr.distribution.envelope_curve">qpmr.distribution.envelope_curve module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#envelope-curve">Envelope curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.envelope_curve.theta_grid_generator"><code class="docutils literal notranslate"><span class="pre">theta_grid_generator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.envelope_curve.envelope_real_axis_crossing"><code class="docutils literal notranslate"><span class="pre">envelope_real_axis_crossing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#module-qpmr.distribution.spectral_abscissa">qpmr.distribution.spectral_abscissa module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#spectral-abscissa-bounds">Spectral abscissa bounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectral_abscissa.safe_upper_bound_diff"><code class="docutils literal notranslate"><span class="pre">safe_upper_bound_diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectral_abscissa.bounds_neutral_strip"><code class="docutils literal notranslate"><span class="pre">bounds_neutral_strip()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#module-qpmr.distribution.spectrum_distribution_diagram">qpmr.distribution.spectrum_distribution_diagram module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#spectrum-distribution-diagram">Spectrum distribution diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata.P_theta"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata.P_theta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata.P_degree"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata.P_degree</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata.mask"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata.mask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata.L_theta"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata.L_theta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.SpectrumDistributionDiagramMetadata.L_degree"><code class="docutils literal notranslate"><span class="pre">SpectrumDistributionDiagramMetadata.L_degree</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.spectrum_distribution_diagram.distribution_diagram"><code class="docutils literal notranslate"><span class="pre">distribution_diagram()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#module-qpmr.distribution.zero_chains">qpmr.distribution.zero_chains module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.zero_chains.chain_asymptotes"><code class="docutils literal notranslate"><span class="pre">chain_asymptotes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html#module-qpmr.distribution">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#distribution-analysis">Distribution analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.distribution_diagram"><code class="docutils literal notranslate"><span class="pre">distribution_diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.chain_asymptotes"><code class="docutils literal notranslate"><span class="pre">chain_asymptotes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.safe_upper_bound_diff"><code class="docutils literal notranslate"><span class="pre">safe_upper_bound_diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.distribution.html#qpmr.distribution.bounds_neutral_strip"><code class="docutils literal notranslate"><span class="pre">bounds_neutral_strip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qpmr.numerical_methods.html">qpmr.numerical_methods package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html#module-qpmr.numerical_methods.mueller_method">qpmr.numerical_methods.mueller_method module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#newton-s-method">Newton’s method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.mueller_method.mueller"><code class="docutils literal notranslate"><span class="pre">mueller()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html#module-qpmr.numerical_methods.newton_method">qpmr.numerical_methods.newton_method module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#id1">Newton’s method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.newton_method.newton"><code class="docutils literal notranslate"><span class="pre">newton()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.newton_method.numerical_newton"><code class="docutils literal notranslate"><span class="pre">numerical_newton()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html#module-qpmr.numerical_methods.secant_method">qpmr.numerical_methods.secant_method module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#secant-method">Secant method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.secant_method.secant"><code class="docutils literal notranslate"><span class="pre">secant()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html#module-qpmr.numerical_methods">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#numerical-root-refinement">Numerical root refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.newton"><code class="docutils literal notranslate"><span class="pre">newton()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.numerical_newton"><code class="docutils literal notranslate"><span class="pre">numerical_newton()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.secant"><code class="docutils literal notranslate"><span class="pre">secant()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.numerical_methods.html#qpmr.numerical_methods.mueller"><code class="docutils literal notranslate"><span class="pre">mueller()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qpmr.plot.html">qpmr.plot package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot.basic">qpmr.plot.basic module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#basic-root-plots">Basic root plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.basic.roots"><code class="docutils literal notranslate"><span class="pre">roots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.basic.pole_zero"><code class="docutils literal notranslate"><span class="pre">pole_zero()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.basic.qpmr_contour"><code class="docutils literal notranslate"><span class="pre">qpmr_contour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.basic.argument_principle_circle"><code class="docutils literal notranslate"><span class="pre">argument_principle_circle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot.complex">qpmr.plot.complex module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#experimental-complex-plane-plots">Experimental complex plane plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.complex.experimental"><code class="docutils literal notranslate"><span class="pre">experimental()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot.delay_distribution">qpmr.plot.delay_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#delay-distribution-plots">Delay distribution plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.delay_distribution.spectrum_distribution_diagram"><code class="docutils literal notranslate"><span class="pre">spectrum_distribution_diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.delay_distribution.chain_asymptotes"><code class="docutils literal notranslate"><span class="pre">chain_asymptotes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot.solution">qpmr.plot.solution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.solution.qpmr_solution_tree"><code class="docutils literal notranslate"><span class="pre">qpmr_solution_tree()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot.utils">qpmr.plot.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.utils.matplotlib_axes_default"><code class="docutils literal notranslate"><span class="pre">matplotlib_axes_default()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html#module-qpmr.plot">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#plotting-utilities-requires-matplotlib">Plotting utilities (requires matplotlib)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.roots"><code class="docutils literal notranslate"><span class="pre">roots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.pole_zero"><code class="docutils literal notranslate"><span class="pre">pole_zero()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.qpmr_contour"><code class="docutils literal notranslate"><span class="pre">qpmr_contour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.argument_principle_circle"><code class="docutils literal notranslate"><span class="pre">argument_principle_circle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.spectrum_distribution_diagram"><code class="docutils literal notranslate"><span class="pre">spectrum_distribution_diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.chain_asymptotes"><code class="docutils literal notranslate"><span class="pre">chain_asymptotes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.spectrum_envelope"><code class="docutils literal notranslate"><span class="pre">spectrum_envelope()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.experimental"><code class="docutils literal notranslate"><span class="pre">experimental()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.plot.html#qpmr.plot.qpmr_solution_tree"><code class="docutils literal notranslate"><span class="pre">qpmr_solution_tree()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qpmr.quasipoly.html">qpmr.quasipoly package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.arithmetic">qpmr.quasipoly.arithmetic module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#basic-arithmetic-operations-on-quasipolynomials">Basic arithmetic operations on quasipolynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.arithmetic.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.arithmetic.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.core">qpmr.quasipoly.core module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#quasi-polynomial-core-operations">Quasi-polynomial core operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.eval"><code class="docutils literal notranslate"><span class="pre">eval()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.compress"><code class="docutils literal notranslate"><span class="pre">compress()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.normalize_exponent"><code class="docutils literal notranslate"><span class="pre">normalize_exponent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.factorize_power"><code class="docutils literal notranslate"><span class="pre">factorize_power()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.poly_degree"><code class="docutils literal notranslate"><span class="pre">poly_degree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.is_neutral"><code class="docutils literal notranslate"><span class="pre">is_neutral()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.extract_delay_diff_eq"><code class="docutils literal notranslate"><span class="pre">extract_delay_diff_eq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.core.create_normalized_delay_difference_eq"><code class="docutils literal notranslate"><span class="pre">create_normalized_delay_difference_eq()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.examples">qpmr.quasipoly.examples module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#quasipolynomial-examples">Quasipolynomial examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.mazanti2021multiplicity"><code class="docutils literal notranslate"><span class="pre">mazanti2021multiplicity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.yuksel2023distributed"><code class="docutils literal notranslate"><span class="pre">yuksel2023distributed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.vyhlidal2014qpmr_01"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_01()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.vyhlidal2014qpmr_02"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_02()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.vyhlidal2014qpmr_03"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_03()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.vyhlidal2014qpmr"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.appeltans2023analysis"><code class="docutils literal notranslate"><span class="pre">appeltans2023analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.qp_from_roots"><code class="docutils literal notranslate"><span class="pre">qp_from_roots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.self_inverse_polynomial"><code class="docutils literal notranslate"><span class="pre">self_inverse_polynomial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.empty"><code class="docutils literal notranslate"><span class="pre">empty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.examples.ndiff_01"><code class="docutils literal notranslate"><span class="pre">ndiff_01()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.form">qpmr.quasipoly.form module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#quasipolynomial-forms">Quasipolynomial forms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType.RETARDED"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.RETARDED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType.NEUTRAL"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.NEUTRAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType.ADVANCED"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.ADVANCED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType.POLYNOMIAL"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.POLYNOMIAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.QuasiPolynomialType.CONSTANT"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.CONSTANT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.form.qp_type"><code class="docutils literal notranslate"><span class="pre">qp_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.obj">qpmr.quasipoly.obj module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#quasi-polynomial-objects">Quasi-polynomial objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_empty"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_empty</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.degree"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.degree</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.m"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.m</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.n"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.n</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_constant</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_polynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_polynomial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_retarded"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_retarded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_neutral"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_neutral</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.is_advanced"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_advanced</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.derivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.derivative</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.antiderivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.antiderivative</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.compressed"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.compressed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.poly_degrees"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.poly_degrees</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.eval"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.from_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_constant()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.QuasiPolynomial.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.TransferFunction"><code class="docutils literal notranslate"><span class="pre">TransferFunction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.TransferFunction.numerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.numerator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.obj.TransferFunction.denumerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.denumerator</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly.operation">qpmr.quasipoly.operation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#more-complex-operations-on-quasipolynomials">More complex operations on quasipolynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.operation.derivative"><code class="docutils literal notranslate"><span class="pre">derivative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.operation.antiderivative"><code class="docutils literal notranslate"><span class="pre">antiderivative()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.quasipoly.html#module-qpmr.quasipoly">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#quasi-polynomial-package">Quasi-polynomial package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_empty"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_empty</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.degree"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.degree</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.m"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.m</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.n"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.n</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_constant</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_polynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_polynomial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_retarded"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_retarded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_neutral"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_neutral</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.is_advanced"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_advanced</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.derivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.derivative</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.antiderivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.antiderivative</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.compressed"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.compressed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.poly_degrees"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.poly_degrees</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.eval"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.from_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_constant()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.QuasiPolynomial.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.TransferFunction"><code class="docutils literal notranslate"><span class="pre">TransferFunction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.TransferFunction.numerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.numerator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.TransferFunction.denumerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.denumerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.compress"><code class="docutils literal notranslate"><span class="pre">compress()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.eval"><code class="docutils literal notranslate"><span class="pre">eval()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.normalize_exponent"><code class="docutils literal notranslate"><span class="pre">normalize_exponent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.factorize_power"><code class="docutils literal notranslate"><span class="pre">factorize_power()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.derivative"><code class="docutils literal notranslate"><span class="pre">derivative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qpmr.quasipoly.html#qpmr.quasipoly.antiderivative"><code class="docutils literal notranslate"><span class="pre">antiderivative()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-qpmr.grid">
+<span id="qpmr-grid-module"></span><h2>qpmr.grid module<a class="headerlink" href="#module-qpmr.grid" title="Link to this heading">#</a></h2>
+<section id="grid-utilities">
+<h3>Grid utilities<a class="headerlink" href="#grid-utilities" title="Link to this heading">#</a></h3>
+<p>Heuristics and helpers for building complex-plane grids used in spectrum
+mapping and QPmR.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.grid.grid_size_heuristic">
+<span class="sig-prename descclassname"><span class="pre">qpmr.grid.</span></span><span class="sig-name descname"><span class="pre">grid_size_heuristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.grid.grid_size_heuristic" title="Link to this definition">#</a></dt>
+<dd><p>Propose a grid step size for spectrum mapping.</p>
+<p>Uses the original QPmR (2009) heuristic based on the largest delay, or
+scales with region area when no delays are present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – Rectangular region <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p></li>
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ds</strong> – Recommended grid step size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.grid.complex_grid_rect">
+<span class="sig-prename descclassname"><span class="pre">qpmr.grid.</span></span><span class="sig-name descname"><span class="pre">complex_grid_rect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.grid.complex_grid_rect" title="Link to this definition">#</a></dt>
+<dd><p>Build a 2D complex grid over a rectangular region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span>) – Rectangular region <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p></li>
+<li><p><strong>ds</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Grid step along real and imaginary axes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>grid</strong> – 2D array of complex points covering the rectangle.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.qpmr_v2">
+<span id="qpmr-qpmr-v2-module"></span><h2>qpmr.qpmr_v2 module<a class="headerlink" href="#module-qpmr.qpmr_v2" title="Link to this heading">#</a></h2>
+<section id="qpmr-v2-implementation-legacy">
+<h3>QPmR v2 implementation (legacy)<a class="headerlink" href="#qpmr-v2-implementation-legacy" title="Link to this heading">#</a></h3>
+<p>Original QPmR algorithm from Vyhlídal &amp; Zítek (2009). Prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">qpmr.qpmr()</span></code>
+(v3) for new code.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_v2.</span></span><span class="sig-name descname"><span class="pre">QpmrInfoV2</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computation metadata from legacy QPmR v2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imag_range</strong> (<a class="reference internal" href="#qpmr.qpmr_v2.QpmrInfoV2.real_range" title="qpmr.qpmr_v2.QpmrInfoV2.real_range"><em>real_range</em></a><em>,</em>) – Grid axes used for spectrum mapping.</p></li>
+<li><p><strong>z_value</strong> (<em>ndarray</em>) – Quasi-polynomial values on the grid.</p></li>
+<li><p><strong>roots0</strong> (<em>ndarray</em>) – Initial root guesses from contour crossings.</p></li>
+<li><p><strong>roots_numerical</strong> (<em>ndarray</em>) – Roots after numerical refinement.</p></li>
+<li><p><strong>contours_real</strong> (<em>list</em><em> of </em><em>ndarray</em>) – Real zero-level contours from contourpy.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.real_range">
+<span class="sig-name descname"><span class="pre">real_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.real_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.imag_range">
+<span class="sig-name descname"><span class="pre">imag_range</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.imag_range" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.z_value">
+<span class="sig-name descname"><span class="pre">z_value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.z_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.roots0">
+<span class="sig-name descname"><span class="pre">roots0</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.roots0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.roots_numerical">
+<span class="sig-name descname"><span class="pre">roots_numerical</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.roots_numerical" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.contours_real">
+<span class="sig-name descname"><span class="pre">contours_real</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.contours_real" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.complex_grid">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">complex_grid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.complex_grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.QpmrInfoV2.contours_imag">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">contours_imag</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#qpmr.qpmr_v2.QpmrInfoV2.contours_imag" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.qpmr_v2.qpmr">
+<span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_v2.</span></span><span class="sig-name descname"><span class="pre">qpmr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_v2.qpmr" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<span class="sphinx_autodoc_typehints-type">list[float, float, float, float]</span>), <strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type">npt.NDArray</span>), <strong>delays</strong> (<span class="sphinx_autodoc_typehints-type">npt.NDArray</span>), <strong>kwargs</strong> → <span class="sphinx_autodoc_typehints-type">tuple[npt.NDArray[np.complex128], QpmrInfoV2]</span></p></li>
+<li><p><strong>region</strong> (<span class="sphinx_autodoc_typehints-type">list[float, float, float, float]</span>), <strong>qp</strong> (<span class="sphinx_autodoc_typehints-type">QuasiPolynomial</span>), <strong>kwargs</strong> → <span class="sphinx_autodoc_typehints-type">tuple[npt.NDArray[np.complex128], QpmrInfoV2]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>NDArray</em>[<em>complex128</em>], <a class="reference internal" href="#qpmr.qpmr_v2.QpmrInfoV2" title="qpmr.qpmr_v2.QpmrInfoV2"><em>QpmrInfoV2</em></a>]</p>
+</dd>
+</dl>
+<p>Quasi-polynomial Root Finder V2 (legacy).</p>
+<p>Finds roots in a rectangular region using spectrum mapping and optional
+Newton or secant refinement. See Vyhlídal &amp; Zítek (2009).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>tuple</em><em> of </em><em>float</em>) – Search region <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p></li>
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>e</strong> (<em>float</em><em>, </em><em>optional</em>) – Target accuracy (default 1e-6).</p></li>
+<li><p><strong>ds</strong> (<em>float</em><em>, </em><em>optional</em>) – Grid step; heuristic if omitted.</p></li>
+<li><p><strong>numerical_method</strong> (<em>{'newton'</em><em>, </em><em>'secant'}</em><em>, </em><em>optional</em>) – Refinement method (default <code class="docutils literal notranslate"><span class="pre">'newton'</span></code>).</p></li>
+<li><p><strong>numerical_method_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra arguments for the numerical method.</p></li>
+<li><p><strong>grid_nbytes_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum grid size in bytes (default 250e6).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>roots</strong> (<em>ndarray</em>) – Complex roots in <code class="docutils literal notranslate"><span class="pre">region</span></code>.</p></li>
+<li><p><strong>metadata</strong> (<em>QpmrInfoV2</em>) – Intermediate grids, contours, and guesses.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If validation fails or the grid exceeds <code class="docutils literal notranslate"><span class="pre">grid_nbytes_max</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>NDArray</em>[<em>complex128</em>], <a class="reference internal" href="#qpmr.qpmr_v2.QpmrInfoV2" title="qpmr.qpmr_v2.QpmrInfoV2"><em>QpmrInfoV2</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.qpmr_v3">
+<span id="qpmr-qpmr-v3-module"></span><h2>qpmr.qpmr_v3 module<a class="headerlink" href="#module-qpmr.qpmr_v3" title="Link to this heading">#</a></h2>
+<section id="qpmr-v3-implementation">
+<h3>QPmR v3 implementation<a class="headerlink" href="#qpmr-v3-implementation" title="Link to this heading">#</a></h3>
+<p>New implementation of QPmR algorithm.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QPmRNode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_v3.</span></span><span class="sig-name descname"><span class="pre">QPmRNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_v3.QPmRNode" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Node in the QPmR recursive subdivision tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – Rectangular subregion as <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p></li>
+<li><p><strong>ds</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Grid step size for spectrum mapping on this node.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_v3.</span></span><span class="sig-name descname"><span class="pre">QpmrInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solved_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsolved_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Metadata returned by <a class="reference internal" href="#module-qpmr" title="qpmr"><code class="xref py py-func docutils literal notranslate"><span class="pre">qpmr()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Compressed polynomial coefficients used during root finding.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>region</strong> (<em>tuple</em><em> of </em><em>float</em><em> or </em><em>None</em>) – Search region <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p></li>
+<li><p><strong>ds</strong> (<em>float</em><em> or </em><em>None</em>) – Grid step size used for spectrum mapping.</p></li>
+<li><p><strong>solved_nodes</strong> (<em>list</em><em> of </em><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><em>QPmRNode</em></a><em> or </em><em>None</em>) – Nodes successfully solved (reserved for future use).</p></li>
+<li><p><strong>unsolved_nodes</strong> (<em>list</em><em> of </em><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><em>QPmRNode</em></a><em> or </em><em>None</em>) – Nodes left unsolved (reserved for future use).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>NDArray</em><em>[</em><em>float64</em><em>]</em>)</p></li>
+<li><p><strong>delays</strong> (<em>NDArray</em><em>[</em><em>float64</em><em>]</em>)</p></li>
+<li><p><strong>region</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>ds</strong> (<em>float</em>)</p></li>
+<li><p><strong>solved_nodes</strong> (<em>list</em><em>[</em><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><em>QPmRNode</em></a><em>]</em>)</p></li>
+<li><p><strong>unsolved_nodes</strong> (<em>list</em><em>[</em><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><em>QPmRNode</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.coefs">
+<span class="sig-name descname"><span class="pre">coefs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.coefs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.delays">
+<span class="sig-name descname"><span class="pre">delays</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.delays" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.region">
+<span class="sig-name descname"><span class="pre">region</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.region" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.ds">
+<span class="sig-name descname"><span class="pre">ds</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.ds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.solved_nodes">
+<span class="sig-name descname"><span class="pre">solved_nodes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><span class="pre">QPmRNode</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.solved_nodes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.QpmrInfo.unsolved_nodes">
+<span class="sig-name descname"><span class="pre">unsolved_nodes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#qpmr.qpmr_v3.QPmRNode" title="qpmr.qpmr_v3.QPmRNode"><span class="pre">QPmRNode</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#qpmr.qpmr_v3.QpmrInfo.unsolved_nodes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.qpmr_v3.qpmr">
+<span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_v3.</span></span><span class="sig-name descname"><span class="pre">qpmr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_v3.qpmr" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type">npt.NDArray</span>), <strong>delays</strong> (<span class="sphinx_autodoc_typehints-type">npt.NDArray</span>), <strong>kwargs</strong> → <span class="sphinx_autodoc_typehints-type">tuple[npt.NDArray[np.complex128], QpmrInfo]</span></p></li>
+<li><p><strong>qp</strong> (<span class="sphinx_autodoc_typehints-type">QuasiPolynomial</span>), <strong>kwargs</strong> → <span class="sphinx_autodoc_typehints-type">tuple[npt.NDArray[np.complex128], QpmrInfo]</span></p></li>
+<li><p><strong>qp</strong> (<span class="sphinx_autodoc_typehints-type">Callable</span>), <strong>kwargs</strong> → <span class="sphinx_autodoc_typehints-type">tuple[npt.NDArray[np.complex128], QpmrInfo]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>NDArray</em>[<em>complex128</em>], <a class="reference internal" href="#qpmr.qpmr_v3.QpmrInfo" title="qpmr.qpmr_v3.QpmrInfo"><em>QpmrInfo</em></a>]</p>
+</dd>
+</dl>
+<p>Quasi-polynomial Root Finder V3</p>
+<p>Attempts to find all roots of quasi-polynomial in rectangular subregion of
+complex plane using the mapping-based QPmR algorithm (Vyhlidal and Zítek,
+2009).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+<li><p><strong>region</strong> (<em>tuple</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Definition of the rectangular region in the complex plane, specified as
+[Re_min, Re_max, Im_min, Im_max]. Defaults to None, which attempts to
+use region heuristic applicable to retarded and neutral
+quasi-polynomials such that it captures 100 most decisive roots.</p></li>
+<li><p><strong>e</strong> (<em>float</em><em>, </em><em>optional</em>) – Computation accuracy. Defaults to 1e-6.</p></li>
+<li><p><strong>ds</strong> (<em>float</em><em>, </em><em>optional</em>) – Grid step. If not provided, a heuristic will be used to determine the step size.</p></li>
+<li><p><strong>numerical_method</strong> (<em>{'newton'</em><em>, </em><em>'secant'}</em><em>, </em><em>optional</em>) – Numerical method used to refine the roots. Defaults to ‘newton’.</p></li>
+<li><p><strong>numerical_method_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments passed to the numerical method. Defaults to None.</p></li>
+<li><p><strong>grid_nbytes_max</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Maximum allowed grid size in bytes. Defaults to 32e6. Set to None to disable
+the size check.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>roots</strong> (<em>ndarray</em>) – 1D array of complex roots found inside the search region.</p></li>
+<li><p><strong>ctx</strong> (<em>QpmrInfo</em>) – Metadata from the computation (compressed coefficients, delays, and
+region).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If arguments are invalid or keyword options are inconsistent.</p></li>
+<li><p><strong>NotImplementedError</strong> – If a callable is passed instead of coefficient arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>NDArray</em>[<em>complex128</em>], <a class="reference internal" href="#qpmr.qpmr_v3.QpmrInfo" title="qpmr.qpmr_v3.QpmrInfo"><em>QpmrInfo</em></a>]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="math notranslate nohighlight">
+\[h(s) = \sum_{i=0}^n p_i(s)e^{-s\tau_i}\]</div>
+<p class="rubric">Examples</p>
+<p>Example from Vyhlidal and Zítek (2009), quasi-polynomial <span class="math notranslate nohighlight">\(h(s) = s + e^{-s}\)</span>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roots</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">qpmr</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Visualize roots:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qpmr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.qpmr_validation">
+<span id="qpmr-qpmr-validation-module"></span><h2>qpmr.qpmr_validation module<a class="headerlink" href="#module-qpmr.qpmr_validation" title="Link to this heading">#</a></h2>
+<section id="input-validation-re-exports">
+<h3>Input validation (re-exports)<a class="headerlink" href="#input-validation-re-exports" title="Link to this heading">#</a></h3>
+<p>Re-exports validation helpers from <a class="reference internal" href="qpmr.core.html#module-qpmr.core.validation" title="qpmr.core.validation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">qpmr.core.validation</span></code></a> for use by the
+top-level QPmR API.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.qpmr_validation.validate_qp">
+<span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_validation.</span></span><span class="sig-name descname"><span class="pre">validate_qp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_validation.validate_qp" title="Link to this definition">#</a></dt>
+<dd><p>Validate quasi-polynomial coefficient and delay arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code>]</span>) – 2D coefficient matrix (non-empty).</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code>]</span>) – 1D delay vector (non-empty), same length as rows of <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Validated coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Validated delay vector.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If inputs are not NumPy arrays of the expected dimensionality.</p></li>
+<li><p><strong>ValueError</strong> – If shapes are incompatible or arrays are empty.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.qpmr_validation.validate_region">
+<span class="sig-prename descclassname"><span class="pre">qpmr.qpmr_validation.</span></span><span class="sig-name descname"><span class="pre">validate_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.qpmr_validation.validate_region" title="Link to this definition">#</a></dt>
+<dd><p>Validate and normalize a rectangular complex-plane region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region</strong> (<em>tuple</em><em>, </em><em>list</em><em>, or </em><em>ndarray</em>) – Four numeric bounds <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>bounds</strong> – Validated region bounds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">region</span></code> is not a sequence of numeric values.</p></li>
+<li><p><strong>ValueError</strong> – If length is not 4 or bounds are not strictly ordered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.region_heuristic">
+<span id="qpmr-region-heuristic-module"></span><h2>qpmr.region_heuristic module<a class="headerlink" href="#module-qpmr.region_heuristic" title="Link to this heading">#</a></h2>
+<section id="region-heuristic">
+<h3>Region heuristic<a class="headerlink" href="#region-heuristic" title="Link to this heading">#</a></h3>
+<p>Region heuristic is a method to propose a rectangular region in the complex
+plane that contains the most significant zeros of retarded or neutral
+quasi-polynomials. The heuristic is based on obtaining asymptotic exponentials
+of the zero chains, bounds of the neutral vertical strip, and spectral envelope.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.region_heuristic.region_heuristic">
+<span class="sig-prename descclassname"><span class="pre">qpmr.region_heuristic.</span></span><span class="sig-name descname"><span class="pre">region_heuristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.region_heuristic.region_heuristic" title="Link to this definition">#</a></dt>
+<dd><p>Proposes rectangular region that contains the most significant zeros
+of retarded or neutral quasi-polynomial.</p>
+<p>The heuristic is based on obtaining asymptotic exponentials of the zero
+chains, bounds of the neutral vertical strip, and spectral envelope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>n_roots<span class="classifier">int, optional</span></dt><dd><p>Approximate number of rightmost roots to contain in the proposed
+region. Default is 100.</p>
+</dd>
+<dt>re_stretch<span class="classifier">float, optional</span></dt><dd><p>Stretch factor for the minimum real part of the region.
+Default is 0.05.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>region</strong> – Proposed region <code class="docutils literal notranslate"><span class="pre">(Re_min,</span> <span class="pre">Re_max,</span> <span class="pre">Im_min,</span> <span class="pre">Im_max)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the provided quasi-polynomial is advanced or if the heuristic cannot
+    be applied to the given quasi-polynomial.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">region</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">region_heuristic</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">,</span> <span class="n">n_roots</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.utils">
+<span id="qpmr-utils-module"></span><h2>qpmr.utils module<a class="headerlink" href="#module-qpmr.utils" title="Link to this heading">#</a></h2>
+<section id="package-utilities">
+<h3>Package utilities<a class="headerlink" href="#package-utilities" title="Link to this heading">#</a></h3>
+<p>Logging and other helpers for QPmR.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.utils.init_qpmr_logger">
+<span class="sig-prename descclassname"><span class="pre">qpmr.utils.</span></span><span class="sig-name descname"><span class="pre">init_qpmr_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(name)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s</span> <span class="pre">-</span> <span class="pre">%(message)s'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.utils.init_qpmr_logger" title="Link to this definition">#</a></dt>
+<dd><p>Configure the <code class="docutils literal notranslate"><span class="pre">qpmr</span></code> package logger with a stream handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – Logging level (e.g. <code class="docutils literal notranslate"><span class="pre">logging.DEBUG</span></code>). Default is <code class="docutils literal notranslate"><span class="pre">logging.INFO</span></code>.</p></li>
+<li><p><strong>format</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – <code class="docutils literal notranslate"><span class="pre">logging.Formatter</span></code> format string for console output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>logger</strong> – The configured <code class="docutils literal notranslate"><span class="pre">qpmr</span></code> logger.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></span></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Each call adds a new <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code>. For repeated setup in notebooks or
+scripts, remove existing handlers first if duplicate output is unwanted.</p>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.zero_multiplicity">
+<span id="qpmr-zero-multiplicity-module"></span><h2>qpmr.zero_multiplicity module<a class="headerlink" href="#module-qpmr.zero_multiplicity" title="Link to this heading">#</a></h2>
+<section id="functions-for-determining-zero-multiplicity">
+<h3>Functions for determining zero multiplicity<a class="headerlink" href="#functions-for-determining-zero-multiplicity" title="Link to this heading">#</a></h3>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.zero_multiplicity.cluster_roots">
+<span class="sig-prename descclassname"><span class="pre">qpmr.zero_multiplicity.</span></span><span class="sig-name descname"><span class="pre">cluster_roots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roots0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.zero_multiplicity.cluster_roots" title="Link to this definition">#</a></dt>
+<dd><p>Cluster nearby root candidates and estimate multiplicities.</p>
+<p>Simple DBSCAN-like clustering with <code class="docutils literal notranslate"><span class="pre">min_neighbors=1</span></code>. Assumes distinct
+zeros are separated by more than <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">*</span> <span class="pre">eps</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roots0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – 1D array of complex root candidates from spectrum mapping.</p></li>
+<li><p><strong>eps</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Maximum distance for two candidates to belong to the same cluster.
+Should satisfy <code class="docutils literal notranslate"><span class="pre">eps</span> <span class="pre">&lt;</span> <span class="pre">ds</span></code> where <code class="docutils literal notranslate"><span class="pre">ds</span></code> is the mapping grid step.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>centers</strong> (<em>ndarray</em>) – Cluster centroids (refined root approximations).</p></li>
+<li><p><strong>multiplicities</strong> (<em>ndarray of int</em>) – Number of candidates in each cluster.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Isolated clusters have no edges between points in different components.
+Full multiplicity verification is performed outside this function.</p>
+</dd></dl>
+
+</section>
+<section id="module-qpmr">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qpmr" title="Link to this heading">#</a></h2>
+<section id="qpmr-quasi-polynomial-root-finder">
+<h3>QPmR — Quasi-polynomial Root Finder<a class="headerlink" href="#qpmr-quasi-polynomial-root-finder" title="Link to this heading">#</a></h3>
+<p>Finds roots of quasi-polynomials (delay differential characteristic equations)
+in specified regions of the complex plane.</p>
+<section id="public-api">
+<h4>Public API<a class="headerlink" href="#public-api" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-qpmr" title="qpmr"><code class="xref py py-func docutils literal notranslate"><span class="pre">qpmr()</span></code></a> — main root-finding algorithm (v3)</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">QpmrInfo</span></code> — computation metadata returned by <a class="reference internal" href="#module-qpmr" title="qpmr"><code class="xref py py-func docutils literal notranslate"><span class="pre">qpmr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#module-qpmr.region_heuristic" title="qpmr.region_heuristic"><code class="xref py py-func docutils literal notranslate"><span class="pre">region_heuristic()</span></code></a> — propose a search region</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">distribution_diagram()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">chain_asymptotes()</span></code> — spectrum distribution</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">safe_upper_bound_diff()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">bounds_neutral_strip()</span></code> — spectral bounds</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransferFunction</span></code> — quasi-polynomial objects</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">init_qpmr_logger()</span></code> — configure package logging</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">qpmr.examples</span></code> — benchmark quasi-polynomials from the literature</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="docstrings.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Docstring Style Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="qpmr.core.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">qpmr.core package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.grid">qpmr.grid module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-utilities">Grid utilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.grid.grid_size_heuristic"><code class="docutils literal notranslate"><span class="pre">grid_size_heuristic()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.grid.complex_grid_rect"><code class="docutils literal notranslate"><span class="pre">complex_grid_rect()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.qpmr_v2">qpmr.qpmr_v2 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr-v2-implementation-legacy">QPmR v2 implementation (legacy)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.real_range"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.real_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.imag_range"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.imag_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.z_value"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.z_value</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.roots0"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.roots0</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.roots_numerical"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.roots_numerical</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.contours_real"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.contours_real</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.complex_grid"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.complex_grid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.QpmrInfoV2.contours_imag"><code class="docutils literal notranslate"><span class="pre">QpmrInfoV2.contours_imag</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v2.qpmr"><code class="docutils literal notranslate"><span class="pre">qpmr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.qpmr_v3">qpmr.qpmr_v3 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr-v3-implementation">QPmR v3 implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QPmRNode"><code class="docutils literal notranslate"><span class="pre">QPmRNode</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo"><code class="docutils literal notranslate"><span class="pre">QpmrInfo</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.coefs"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.coefs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.delays"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.delays</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.region"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.region</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.ds"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.ds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.solved_nodes"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.solved_nodes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.QpmrInfo.unsolved_nodes"><code class="docutils literal notranslate"><span class="pre">QpmrInfo.unsolved_nodes</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_v3.qpmr"><code class="docutils literal notranslate"><span class="pre">qpmr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.qpmr_validation">qpmr.qpmr_validation module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-validation-re-exports">Input validation (re-exports)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_validation.validate_qp"><code class="docutils literal notranslate"><span class="pre">validate_qp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.qpmr_validation.validate_region"><code class="docutils literal notranslate"><span class="pre">validate_region()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.region_heuristic">qpmr.region_heuristic module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#region-heuristic">Region heuristic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.region_heuristic.region_heuristic"><code class="docutils literal notranslate"><span class="pre">region_heuristic()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.utils">qpmr.utils module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-utilities">Package utilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.utils.init_qpmr_logger"><code class="docutils literal notranslate"><span class="pre">init_qpmr_logger()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.zero_multiplicity">qpmr.zero_multiplicity module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions-for-determining-zero-multiplicity">Functions for determining zero multiplicity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.zero_multiplicity.cluster_roots"><code class="docutils literal notranslate"><span class="pre">cluster_roots()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr-quasi-polynomial-root-finder">QPmR — Quasi-polynomial Root Finder</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#public-api">Public API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/qpmr.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Adam Peichl.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

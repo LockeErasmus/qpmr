@@ -1,0 +1,2079 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>qpmr.quasipoly package &#8212; qpmr 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'qpmr.quasipoly';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="auto_examples/index.html" />
+    <link rel="prev" title="qpmr.plot package" href="qpmr.plot.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.svg" class="logo__image only-light" alt="qpmr 0.1.0 documentation - Home"/>
+    <img src="_static/logo.svg" class="logo__image only-dark pst-js-only" alt="qpmr 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_reference.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing this work
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="introduction.html">
+    Introduction
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_reference.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing this work
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="docstrings.html">Docstring Style Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="qpmr.html">qpmr package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="qpmr.core.html">qpmr.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.distribution.html">qpmr.distribution package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.numerical_methods.html">qpmr.numerical_methods package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qpmr.plot.html">qpmr.plot package</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">qpmr.quasipoly package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="api_reference.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="qpmr.html" class="nav-link">qpmr package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">qpmr.quasipoly package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="qpmr-quasipoly-package">
+<h1>qpmr.quasipoly package<a class="headerlink" href="#qpmr-quasipoly-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-qpmr.quasipoly.arithmetic">
+<span id="qpmr-quasipoly-arithmetic-module"></span><h2>qpmr.quasipoly.arithmetic module<a class="headerlink" href="#module-qpmr.quasipoly.arithmetic" title="Link to this heading">#</a></h2>
+<section id="basic-arithmetic-operations-on-quasipolynomials">
+<h3>Basic arithmetic operations on quasipolynomials<a class="headerlink" href="#basic-arithmetic-operations-on-quasipolynomials" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>As of now:</dt><dd><ol class="arabic simple">
+<li><p>addition</p></li>
+<li><p>multiplication</p></li>
+</ol>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ol class="arabic simple">
+<li><p>negative quasipolynomial can be constructed simply by <cite>-coefs</cite></p></li>
+<li><p>subtraction = addition + negative</p></li>
+<li><p>division of two quasipolynomials is meromophic function -&gt; not covered</p></li>
+</ol>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.arithmetic.add">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.arithmetic.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefs2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.arithmetic.add" title="Link to this definition">#</a></dt>
+<dd><p>Add two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>coefs2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>delays2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Sum coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Sum delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.arithmetic.multiply">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.arithmetic.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefs2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.arithmetic.multiply" title="Link to this definition">#</a></dt>
+<dd><p>Multiply two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>coefs2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>delays2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Product coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Product delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly.core">
+<span id="qpmr-quasipoly-core-module"></span><h2>qpmr.quasipoly.core module<a class="headerlink" href="#module-qpmr.quasipoly.core" title="Link to this heading">#</a></h2>
+<section id="quasi-polynomial-core-operations">
+<h3>Quasi-polynomial core operations<a class="headerlink" href="#quasi-polynomial-core-operations" title="Link to this heading">#</a></h3>
+<p>Evaluation, compression, normalization, and representation transforms for
+quasi-polynomials in coefficient-delay form.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.eval">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.eval" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate a quasi-polynomial at <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>s</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – Complex point or array of points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> – Evaluated quasi-polynomial.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>number or ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">s</span></code> has an unsupported type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.compress">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">compress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.compress" title="Link to this definition">#</a></dt>
+<dd><p>Compress a quasi-polynomial to minimal coefficient-delay form.</p>
+<p>Merges duplicate delays, removes zero rows and trailing zero columns, and
+sorts delays in ascending order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Compressed coefficient matrix.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Compressed delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.normalize">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.normalize" title="Link to this definition">#</a></dt>
+<dd><p>Creates normalized quasi-polynomial representation</p>
+<p>Normalized quasi-polynomial is the quasi-polynomial with the same spectrum
+as the original one, but it’s representation is compressed (i.e. unique
+<cite>delays</cite> sorted in ascending order, no ending zero-column in <cite>coefs</cite>). First
+delay is 0.0 and the leading coefficient is 1.0 (leading coefficient is the
+coefficient with highest power of <span class="math notranslate nohighlight">\(s\)</span> and smallest delay).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of normalized polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, non-negative,
+sorted in ascending order, if non-empty first delay is 0</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncoefs</span><span class="p">,</span> <span class="n">ndelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncoefs</span>
+<span class="go">array([[0. , 0.5, 1. ],</span>
+<span class="go">       [0.5, 0.5, 2. ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndelays</span>
+<span class="go">array([0., 2.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.normalize_exponent">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">normalize_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.normalize_exponent" title="Link to this definition">#</a></dt>
+<dd><p>Normalize delays by scaling time (exponent normalization).</p>
+<p>Scales coefficients and delays so the largest delay is 1, preserving the
+spectrum up to a time-scale factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ncoefs</strong> (<em>ndarray</em>) – Scaled coefficient matrix.</p></li>
+<li><p><strong>ndelays</strong> (<em>ndarray</em>) – Delays shifted to start at 0 and divided by <code class="docutils literal notranslate"><span class="pre">tau_max</span></code>.</p></li>
+<li><p><strong>tau_max</strong> (<em>float</em>) – Largest delay before scaling (0 if empty).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If all delays are zero after shifting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.factorize_power">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">factorize_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.factorize_power" title="Link to this definition">#</a></dt>
+<dd><p>Factor out powers of <cite>s</cite> from quasi-polynomial</p>
+<p>Where original quasi-polynomial is of a form
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">h</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">=</span> <span class="n">s</span><span class="o">^</span><span class="n">n</span> <span class="n">g</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>such that <span class="math notranslate nohighlight">\(g(s)\)</span> is quasi-polynomial such that at least one trailing
+coefficient of polynomials associated with <span class="math notranslate nohighlight">\(g(s)\)</span> is non-zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of normalized polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, non-negative,
+sorted in ascending order, if non-empty first delay is 0</p></li>
+<li><p><strong>spower</strong> (<em>int</em>) – Exponent <span class="math notranslate nohighlight">\(n\)</span> factored out from <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g_coefs</span><span class="p">,</span> <span class="n">g_delays</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">factorize_power</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.shift">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.shift" title="Link to this definition">#</a></dt>
+<dd><p>Shifts quasi-polynomial to new origin</p>
+<p>Input quasi-polynomial <span class="math notranslate nohighlight">\(h(s)\)</span> is shifted to new origin
+<span class="math notranslate nohighlight">\(a\)</span> resulting in quasi-polynomial</p>
+<div class="math notranslate nohighlight">
+\[g(s) = h(s-a)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+<li><p><strong>origin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code></span>) – New origin of complex plane</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of shifted polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, it is identical
+to input</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span>
+<span class="go">array([[-1.        ,  1.        ],</span>
+<span class="go">       [-2.71828183,  2.71828183]])</span>
+</pre></div>
+</div>
+<p>Try to shift back to the original origin and check the results</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span>
+<span class="go">array([[0., 1.],</span>
+<span class="go">       [0., 1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.poly_degree">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">poly_degree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poly</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'reversed'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.poly_degree" title="Link to this definition">#</a></dt>
+<dd><p>Return the degree of a 1D polynomial coefficient vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>poly</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Coefficient vector, possibly with trailing zeros.</p></li>
+<li><p><strong>order</strong> (<em>{'reversed'</em><em>, </em><em>'forward'}</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">'reversed'</span></code>, highest degree is the last non-zero entry when read
+from the end. Default is <code class="docutils literal notranslate"><span class="pre">'reversed'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>degree</strong> – Polynomial degree.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.is_neutral">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">is_neutral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.is_neutral" title="Link to this definition">#</a></dt>
+<dd><p>Test whether a quasi-polynomial is of neutral type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress before the test.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>neutral</strong> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if neutral, <code class="docutils literal notranslate"><span class="pre">False</span></code> if retarded or empty.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.extract_delay_diff_eq">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">extract_delay_diff_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.extract_delay_diff_eq" title="Link to this definition">#</a></dt>
+<dd><p>Extract the delay-difference equation from a quasi-polynomial.</p>
+<p>Uses the highest-power coefficients (last column of <code class="docutils literal notranslate"><span class="pre">coefs</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, compress first. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), divide by the leading coefficient and shift
+delays so the first is zero.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>diff_coefs</strong> (<em>ndarray</em>) – 1D coefficients of the delay-difference equation.</p></li>
+<li><p><strong>diff_delays</strong> (<em>ndarray</em>) – Associated delays.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.core.create_normalized_delay_difference_eq">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.core.</span></span><span class="sig-name descname"><span class="pre">create_normalized_delay_difference_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.core.create_normalized_delay_difference_eq" title="Link to this definition">#</a></dt>
+<dd><p>Build the normalized delay-difference characteristic equation.</p>
+<p>For neutral quasi-polynomials, returns absolute values of sub-leading
+coefficients and their delays (leading term normalized to 1 and omitted).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress before extraction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>diff_coefs</strong> (<em>ndarray or None</em>) – Normalized delay-difference coefficients, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the
+quasi-polynomial is not neutral.</p></li>
+<li><p><strong>diff_delays</strong> (<em>ndarray or None</em>) – Delays for <code class="docutils literal notranslate"><span class="pre">diff_coefs</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly.examples">
+<span id="qpmr-quasipoly-examples-module"></span><h2>qpmr.quasipoly.examples module<a class="headerlink" href="#module-qpmr.quasipoly.examples" title="Link to this heading">#</a></h2>
+<section id="quasipolynomial-examples">
+<h3>Quasipolynomial examples<a class="headerlink" href="#quasipolynomial-examples" title="Link to this heading">#</a></h3>
+<p>This file contains various examples of quasi-polynomials taken from literature.
+Some examples are parametrizable, in these cases, calling without passing
+arguments is always possible and results in article supplied values. Callables
+constructing quasi-polynomials are named using citation key, for the whole
+reference and notes read docstring of individual callables.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.mazanti2021multiplicity">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">mazanti2021multiplicity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.964</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-0.67036</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.33</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.mazanti2021multiplicity" title="Link to this definition">#</a></dt>
+<dd><p>Example from Mazanti et al. (2021); default parameters give a dominant
+real pole of multiplicity 6 near <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">-6.021</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Model parameter from the article (default 1.964).</p></li>
+<li><p><strong>k</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Model parameter (default -0.67036).</p></li>
+<li><p><strong>tau0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Positive delays (default 0.33 each).</p></li>
+<li><p><strong>tau1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Positive delays (default 0.33 each).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Parameters follow Proposition 6.1, Eq. (6.10a)–(6.10f). Due to rounding,
+poles cluster near <code class="docutils literal notranslate"><span class="pre">-6.021</span></code> rather than coinciding exactly.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.yuksel2023distributed">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">yuksel2023distributed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_denum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.yuksel2023distributed" title="Link to this definition">#</a></dt>
+<dd><p>Internal Model Control Transfer function taken from</p>
+<p>YUKSEL, Can Kutlu, et al. A distributed delay based controller for
+simultaneous periodic disturbance rejection and input-delay compensation.
+Mechanical Systems and Signal Processing, 2023, 197: 110364.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>return_denum</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), return the denominator quasi-polynomial; if
+<code class="docutils literal notranslate"><span class="pre">False</span></code>, return the numerator.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Sensitivity function from Yuksel et al. (2023), Eq. (12). Plant <code class="docutils literal notranslate"><span class="pre">Gi(s)</span></code>
+is a non-delayed third-order LTI; controller <code class="docutils literal notranslate"><span class="pre">C(s)</span> <span class="pre">=</span> <span class="pre">D(s)/Gm(s)</span></code> with
+distributed delay <code class="docutils literal notranslate"><span class="pre">D(s)</span></code>. For article-matching results use
+<code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">=</span> <span class="pre">(-12,</span> <span class="pre">1,</span> <span class="pre">-0.1,</span> <span class="pre">5000)</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.vyhlidal2014qpmr_01">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">vyhlidal2014qpmr_01</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_01" title="Link to this definition">#</a></dt>
+<dd><p>Vyhlídal &amp; Zítek (2009) Example 1: <span class="math notranslate nohighlight">\(h(s) = s + e^{-s}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.vyhlidal2014qpmr_02">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">vyhlidal2014qpmr_02</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_02" title="Link to this definition">#</a></dt>
+<dd><p>Vyhlídal &amp; Zítek (2009) large-scale retarded benchmark (9 delays).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.vyhlidal2014qpmr_03">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">vyhlidal2014qpmr_03</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_03" title="Link to this definition">#</a></dt>
+<dd><p>Vyhlídal &amp; Zítek (2009) neutral quasi-polynomial benchmark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.vyhlidal2014qpmr">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">vyhlidal2014qpmr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr" title="Link to this definition">#</a></dt>
+<dd><p>Dispatch Vyhlídal &amp; Zítek (2009) benchmark examples 1–3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>example</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Example number (1, 2, or 3).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">example</span></code> is not 1, 2, or 3.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.appeltans2023analysis">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">appeltans2023analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.appeltans2023analysis" title="Link to this definition">#</a></dt>
+<dd><p>Benchmark quasi-polynomials from Appeltans (2023) analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>example</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Example identifier. Currently only <code class="docutils literal notranslate"><span class="pre">&quot;2.6&quot;</span></code> is supported.</p></li>
+<li><p><strong>tau2</strong> (<em>float</em><em>, </em><em>optional</em>) – For example 2.6, second delay value (default 2.0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">example</span></code> is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.qp_from_roots">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">qp_from_roots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roots</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.qp_from_roots" title="Link to this definition">#</a></dt>
+<dd><p>Build an ordinary polynomial quasi-polynomial from its roots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>roots</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Complex roots (with multiplicity implied by repetition).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix (single delay row).</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector <code class="docutils literal notranslate"><span class="pre">[0]</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.self_inverse_polynomial">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">self_inverse_polynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.self_inverse_polynomial" title="Link to this definition">#</a></dt>
+<dd><p>Self-inverse polynomial benchmark on a circle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Center of the circle in the complex plane. Default is 0.</p></li>
+<li><p><strong>radius</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Circle radius. Default is 1.</p></li>
+<li><p><strong>degree</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Polynomial degree. Default is 6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Delay vector <code class="docutils literal notranslate"><span class="pre">[0]</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.empty">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.empty" title="Link to this definition">#</a></dt>
+<dd><p>Constructs emtpy quasi-polynomial representation -&gt; h(s) = 0</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.examples.ndiff_01">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.examples.</span></span><span class="sig-name descname"><span class="pre">ndiff_01</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.examples.ndiff_01" title="Link to this definition">#</a></dt>
+<dd><p>Artifical neutral delay difference equation example</p>
+<p>Delays are ‘highly’ non-commensurate, this means that the roots will be
+distributed in the vertical strip of complex plane in a rich manner. As a
+a consequence, this example can be a good test for the robustness of the
+algorithm.</p>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly.form">
+<span id="qpmr-quasipoly-form-module"></span><h2>qpmr.quasipoly.form module<a class="headerlink" href="#module-qpmr.quasipoly.form" title="Link to this heading">#</a></h2>
+<section id="quasipolynomial-forms">
+<h3>Quasipolynomial forms<a class="headerlink" href="#quasipolynomial-forms" title="Link to this heading">#</a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.form.</span></span><span class="sig-name descname"><span class="pre">QuasiPolynomialType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Classification of quasi-polynomial spectral type.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType.RETARDED">
+<span class="sig-name descname"><span class="pre">RETARDED</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RETARDED'</span></span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType.RETARDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType.NEUTRAL">
+<span class="sig-name descname"><span class="pre">NEUTRAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NEUTRAL'</span></span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType.NEUTRAL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType.ADVANCED">
+<span class="sig-name descname"><span class="pre">ADVANCED</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ADVANCED'</span></span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType.ADVANCED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType.POLYNOMIAL">
+<span class="sig-name descname"><span class="pre">POLYNOMIAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'POLYNOMIAL'</span></span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType.POLYNOMIAL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.QuasiPolynomialType.CONSTANT">
+<span class="sig-name descname"><span class="pre">CONSTANT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CONSTANT'</span></span><a class="headerlink" href="#qpmr.quasipoly.form.QuasiPolynomialType.CONSTANT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.form.qp_type">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.form.</span></span><span class="sig-name descname"><span class="pre">qp_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.form.qp_type" title="Link to this definition">#</a></dt>
+<dd><p>Classify quasi-polynomial type (not yet implemented).</p>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly.obj">
+<span id="qpmr-quasipoly-obj-module"></span><h2>qpmr.quasipoly.obj module<a class="headerlink" href="#module-qpmr.quasipoly.obj" title="Link to this heading">#</a></h2>
+<section id="quasi-polynomial-objects">
+<h3>Quasi-polynomial objects<a class="headerlink" href="#quasi-polynomial-objects" title="Link to this heading">#</a></h3>
+<p>Object-oriented wrappers for quasi-polynomials and transfer functions.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.obj.</span></span><span class="sig-name descname"><span class="pre">QuasiPolynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Quasi-polynomial in coefficient-delay matrix form.</p>
+<p>Represents
+<span class="math notranslate nohighlight">\(h(s) = \sum_i p_i(s) e^{-\tau_i s}\)</span> where each row of <code class="docutils literal notranslate"><span class="pre">coefs</span></code>
+stores the coefficients of <span class="math notranslate nohighlight">\(p_i\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_empty">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_empty</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Checks if qp empty, equivalent to p(s) = 0</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.degree">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">degree</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.degree" title="Link to this definition">#</a></dt>
+<dd><p>maximal degree polynomials</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.m">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.m" title="Link to this definition">#</a></dt>
+<dd><p>number of powers = degree + 1 for non is_empty</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.n">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">n</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.n" title="Link to this definition">#</a></dt>
+<dd><p>number of delays</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_constant">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_constant</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_constant" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is a constant (not yet implemented).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_polynomial">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_polynomial</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_polynomial" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial reduces to an ordinary polynomial.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_retarded">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_retarded</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_retarded" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of retarded type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_neutral">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_neutral</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_neutral" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of neutral type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.is_advanced">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_advanced</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_advanced" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of advanced type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.derivative">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.derivative" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.antiderivative">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">antiderivative</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.antiderivative" title="Link to this definition">#</a></dt>
+<dd><p>Antiderivative with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code> (not yet implemented).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.compressed">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compressed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.compressed" title="Link to this definition">#</a></dt>
+<dd><p>Compressed quasipolynomial representation</p>
+<dl class="simple">
+<dt>Compresses quasipolynomial (converts to minimal form) in such way that:</dt><dd><ol class="arabic simple">
+<li><p>delays are unique and sorted</p></li>
+<li><p>coefs do not end with zero column</p></li>
+</ol>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.poly_degrees">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">poly_degrees</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.poly_degrees" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.eval" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate at complex point(s) <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>complex</em><em> | </em><em>NDArray</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.from_constant">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">const</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.from_constant" title="Link to this definition">#</a></dt>
+<dd><p>Creates constant represetation of a quasipolynomial</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>const</strong> (<em>float</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.QuasiPolynomial.from_array">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.obj.QuasiPolynomial.from_array" title="Link to this definition">#</a></dt>
+<dd><p>Creates crepresetation of non-delayed polynomial</p>
+<p>Assumes coefs=[a_0, a_1, …, a_d] representing polynomial:</p>
+<blockquote>
+<div><p>p(s) = a_0 + a_1 * s + … + a_d * s^d</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coefs</strong> (<em>NDArray</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.TransferFunction">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.obj.</span></span><span class="sig-name descname"><span class="pre">TransferFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.obj.TransferFunction" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Ratio of two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a></span>) – Numerator quasi-polynomial.</p></li>
+<li><p><strong>denum</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a></span>) – Denominator quasi-polynomial.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.TransferFunction.numerator">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">numerator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.obj.TransferFunction.numerator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.obj.TransferFunction.denumerator">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">denumerator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.obj.TransferFunction.denumerator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly.operation">
+<span id="qpmr-quasipoly-operation-module"></span><h2>qpmr.quasipoly.operation module<a class="headerlink" href="#module-qpmr.quasipoly.operation" title="Link to this heading">#</a></h2>
+<section id="more-complex-operations-on-quasipolynomials">
+<h3>More complex operations on quasipolynomials<a class="headerlink" href="#more-complex-operations-on-quasipolynomials" title="Link to this heading">#</a></h3>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.operation.derivative">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.operation.</span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.operation.derivative" title="Link to this definition">#</a></dt>
+<dd><p>Differentiate a quasi-polynomial with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<p>Applies the product rule to each term
+<span class="math notranslate nohighlight">\(p_i(s) e^{-\tau_i s}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs_prime</strong> (<em>ndarray</em>) – Derivative coefficient matrix.</p></li>
+<li><p><strong>delays_prime</strong> (<em>ndarray</em>) – Derivative delay vector (unchanged from input).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.operation.antiderivative">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.operation.</span></span><span class="sig-name descname"><span class="pre">antiderivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.operation.antiderivative" title="Link to this definition">#</a></dt>
+<dd><p>Integrate a quasi-polynomial with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs_anti</strong> (<em>ndarray</em>) – Antiderivative coefficient matrix (one extra column).</p></li>
+<li><p><strong>delays_anti</strong> (<em>ndarray</em>) – Antiderivative delay vector (unchanged from input).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qpmr.quasipoly">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qpmr.quasipoly" title="Link to this heading">#</a></h2>
+<section id="quasi-polynomial-package">
+<h3>Quasi-polynomial package<a class="headerlink" href="#quasi-polynomial-package" title="Link to this heading">#</a></h3>
+<p>Coefficient-delay representation, arithmetic, and object wrappers.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">QuasiPolynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Quasi-polynomial in coefficient-delay matrix form.</p>
+<p>Represents
+<span class="math notranslate nohighlight">\(h(s) = \sum_i p_i(s) e^{-\tau_i s}\)</span> where each row of <code class="docutils literal notranslate"><span class="pre">coefs</span></code>
+stores the coefficients of <span class="math notranslate nohighlight">\(p_i\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_empty">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_empty</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Checks if qp empty, equivalent to p(s) = 0</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.degree">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">degree</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.degree" title="Link to this definition">#</a></dt>
+<dd><p>maximal degree polynomials</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.m">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.m" title="Link to this definition">#</a></dt>
+<dd><p>number of powers = degree + 1 for non is_empty</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.n">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">n</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.n" title="Link to this definition">#</a></dt>
+<dd><p>number of delays</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_constant">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_constant</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_constant" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is a constant (not yet implemented).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_polynomial">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_polynomial</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_polynomial" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial reduces to an ordinary polynomial.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_retarded">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_retarded</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_retarded" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of retarded type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_neutral">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_neutral</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_neutral" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of neutral type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.is_advanced">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_advanced</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.is_advanced" title="Link to this definition">#</a></dt>
+<dd><p>Whether the quasi-polynomial is of advanced type.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.derivative">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.derivative" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.antiderivative">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">antiderivative</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.antiderivative" title="Link to this definition">#</a></dt>
+<dd><p>Antiderivative with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code> (not yet implemented).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.compressed">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compressed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.compressed" title="Link to this definition">#</a></dt>
+<dd><p>Compressed quasipolynomial representation</p>
+<dl class="simple">
+<dt>Compresses quasipolynomial (converts to minimal form) in such way that:</dt><dd><ol class="arabic simple">
+<li><p>delays are unique and sorted</p></li>
+<li><p>coefs do not end with zero column</p></li>
+</ol>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.poly_degrees">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">poly_degrees</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span></span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.poly_degrees" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.eval" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate at complex point(s) <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>complex</em><em> | </em><em>NDArray</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.from_constant">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">const</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.from_constant" title="Link to this definition">#</a></dt>
+<dd><p>Creates constant represetation of a quasipolynomial</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>const</strong> (<em>float</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qpmr.quasipoly.QuasiPolynomial.from_array">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.QuasiPolynomial.from_array" title="Link to this definition">#</a></dt>
+<dd><p>Creates crepresetation of non-delayed polynomial</p>
+<p>Assumes coefs=[a_0, a_1, …, a_d] representing polynomial:</p>
+<blockquote>
+<div><p>p(s) = a_0 + a_1 * s + … + a_d * s^d</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coefs</strong> (<em>NDArray</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qpmr.quasipoly.TransferFunction">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">TransferFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.TransferFunction" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Ratio of two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a></span>) – Numerator quasi-polynomial.</p></li>
+<li><p><strong>denum</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a></span>) – Denominator quasi-polynomial.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.TransferFunction.numerator">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">numerator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.TransferFunction.numerator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qpmr.quasipoly.TransferFunction.denumerator">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">denumerator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#qpmr.quasipoly.obj.QuasiPolynomial" title="qpmr.quasipoly.obj.QuasiPolynomial"><span class="pre">QuasiPolynomial</span></a></span><a class="headerlink" href="#qpmr.quasipoly.TransferFunction.denumerator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.compress">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">compress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.compress" title="Link to this definition">#</a></dt>
+<dd><p>Compress a quasi-polynomial to minimal coefficient-delay form.</p>
+<p>Merges duplicate delays, removes zero rows and trailing zero columns, and
+sorts delays in ascending order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Compressed coefficient matrix.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Compressed delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.normalize">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.normalize" title="Link to this definition">#</a></dt>
+<dd><p>Creates normalized quasi-polynomial representation</p>
+<p>Normalized quasi-polynomial is the quasi-polynomial with the same spectrum
+as the original one, but it’s representation is compressed (i.e. unique
+<cite>delays</cite> sorted in ascending order, no ending zero-column in <cite>coefs</cite>). First
+delay is 0.0 and the leading coefficient is 1.0 (leading coefficient is the
+coefficient with highest power of <span class="math notranslate nohighlight">\(s\)</span> and smallest delay).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of normalized polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, non-negative,
+sorted in ascending order, if non-empty first delay is 0</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncoefs</span><span class="p">,</span> <span class="n">ndelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ncoefs</span>
+<span class="go">array([[0. , 0.5, 1. ],</span>
+<span class="go">       [0.5, 0.5, 2. ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndelays</span>
+<span class="go">array([0., 2.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.eval">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.eval" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate a quasi-polynomial at <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>s</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – Complex point or array of points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> – Evaluated quasi-polynomial.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>number or ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">s</span></code> has an unsupported type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.shift">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.shift" title="Link to this definition">#</a></dt>
+<dd><p>Shifts quasi-polynomial to new origin</p>
+<p>Input quasi-polynomial <span class="math notranslate nohighlight">\(h(s)\)</span> is shifted to new origin
+<span class="math notranslate nohighlight">\(a\)</span> resulting in quasi-polynomial</p>
+<div class="math notranslate nohighlight">
+\[g(s) = h(s-a)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+<li><p><strong>origin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code></span>) – New origin of complex plane</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of shifted polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, it is identical
+to input</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span>
+<span class="go">array([[-1.        ,  1.        ],</span>
+<span class="go">       [-2.71828183,  2.71828183]])</span>
+</pre></div>
+</div>
+<p>Try to shift back to the original origin and check the results</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span> <span class="o">=</span> <span class="n">qpmr</span><span class="o">.</span><span class="n">quasipoly</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">ccoefs</span><span class="p">,</span> <span class="n">ddelays</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccoefs</span>
+<span class="go">array([[0., 1.],</span>
+<span class="go">       [0., 1.]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.normalize_exponent">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">normalize_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.normalize_exponent" title="Link to this definition">#</a></dt>
+<dd><p>Normalize delays by scaling time (exponent normalization).</p>
+<p>Scales coefficients and delays so the largest delay is 1, preserving the
+spectrum up to a time-scale factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ncoefs</strong> (<em>ndarray</em>) – Scaled coefficient matrix.</p></li>
+<li><p><strong>ndelays</strong> (<em>ndarray</em>) – Delays shifted to start at 0 and divided by <code class="docutils literal notranslate"><span class="pre">tau_max</span></code>.</p></li>
+<li><p><strong>tau_max</strong> (<em>float</em>) – Largest delay before scaling (0 if empty).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If all delays are zero after shifting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.factorize_power">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">factorize_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.factorize_power" title="Link to this definition">#</a></dt>
+<dd><p>Factor out powers of <cite>s</cite> from quasi-polynomial</p>
+<p>Where original quasi-polynomial is of a form
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">h</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">=</span> <span class="n">s</span><span class="o">^</span><span class="n">n</span> <span class="n">g</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>such that <span class="math notranslate nohighlight">\(g(s)\)</span> is quasi-polynomial such that at least one trailing
+coefficient of polynomials associated with <span class="math notranslate nohighlight">\(g(s)\)</span> is non-zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <cite>coefs</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>ccoefs</strong> (<em>ndarray</em>) – Matrix of normalized polynomial coefficients. Each row represents the
+coefficients corresponding to a specific delay.</p></li>
+<li><p><strong>ddelays</strong> (<em>ndarray</em>) – Vector of delays associated with each row in <cite>coefs</cite>, non-negative,
+sorted in ascending order, if non-empty first delay is 0</p></li>
+<li><p><strong>spower</strong> (<em>int</em>) – Exponent <span class="math notranslate nohighlight">\(n\)</span> factored out from <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">qpmr.quasipoly</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g_coefs</span><span class="p">,</span> <span class="n">g_delays</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">factorize_power</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">delays</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.add">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefs2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.add" title="Link to this definition">#</a></dt>
+<dd><p>Add two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>coefs2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>delays2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Sum coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Sum delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.multiply">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coefs2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.multiply" title="Link to this definition">#</a></dt>
+<dd><p>Multiply two quasi-polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>coefs2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>delays2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in the corresponding
+coefficient matrix.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>ndarray</em>) – Product coefficient matrix.</p></li>
+<li><p><strong>delays</strong> (<em>ndarray</em>) – Product delay vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.derivative">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.derivative" title="Link to this definition">#</a></dt>
+<dd><p>Differentiate a quasi-polynomial with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<p>Applies the product rule to each term
+<span class="math notranslate nohighlight">\(p_i(s) e^{-\tau_i s}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs_prime</strong> (<em>ndarray</em>) – Derivative coefficient matrix.</p></li>
+<li><p><strong>delays_prime</strong> (<em>ndarray</em>) – Derivative delay vector (unchanged from input).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qpmr.quasipoly.antiderivative">
+<span class="sig-prename descclassname"><span class="pre">qpmr.quasipoly.</span></span><span class="sig-name descname"><span class="pre">antiderivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qpmr.quasipoly.antiderivative" title="Link to this definition">#</a></dt>
+<dd><p>Integrate a quasi-polynomial with respect to <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Matrix of polynomial coefficients. Each row represents the coefficients
+corresponding to a specific delay.</p></li>
+<li><p><strong>delays</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></span>) – Vector of delays associated with each row in <code class="docutils literal notranslate"><span class="pre">coefs</span></code>.</p></li>
+<li><p><strong>compress</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), compress the result.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>coefs_anti</strong> (<em>ndarray</em>) – Antiderivative coefficient matrix (one extra column).</p></li>
+<li><p><strong>delays_anti</strong> (<em>ndarray</em>) – Antiderivative delay vector (unchanged from input).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="qpmr.plot.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">qpmr.plot package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="auto_examples/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.arithmetic">qpmr.quasipoly.arithmetic module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-arithmetic-operations-on-quasipolynomials">Basic arithmetic operations on quasipolynomials</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.arithmetic.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.arithmetic.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.core">qpmr.quasipoly.core module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quasi-polynomial-core-operations">Quasi-polynomial core operations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.eval"><code class="docutils literal notranslate"><span class="pre">eval()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.compress"><code class="docutils literal notranslate"><span class="pre">compress()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.normalize_exponent"><code class="docutils literal notranslate"><span class="pre">normalize_exponent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.factorize_power"><code class="docutils literal notranslate"><span class="pre">factorize_power()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.poly_degree"><code class="docutils literal notranslate"><span class="pre">poly_degree()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.is_neutral"><code class="docutils literal notranslate"><span class="pre">is_neutral()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.extract_delay_diff_eq"><code class="docutils literal notranslate"><span class="pre">extract_delay_diff_eq()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.core.create_normalized_delay_difference_eq"><code class="docutils literal notranslate"><span class="pre">create_normalized_delay_difference_eq()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.examples">qpmr.quasipoly.examples module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quasipolynomial-examples">Quasipolynomial examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.mazanti2021multiplicity"><code class="docutils literal notranslate"><span class="pre">mazanti2021multiplicity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.yuksel2023distributed"><code class="docutils literal notranslate"><span class="pre">yuksel2023distributed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_01"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_01()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_02"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_02()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr_03"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr_03()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.vyhlidal2014qpmr"><code class="docutils literal notranslate"><span class="pre">vyhlidal2014qpmr()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.appeltans2023analysis"><code class="docutils literal notranslate"><span class="pre">appeltans2023analysis()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.qp_from_roots"><code class="docutils literal notranslate"><span class="pre">qp_from_roots()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.self_inverse_polynomial"><code class="docutils literal notranslate"><span class="pre">self_inverse_polynomial()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.empty"><code class="docutils literal notranslate"><span class="pre">empty()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.examples.ndiff_01"><code class="docutils literal notranslate"><span class="pre">ndiff_01()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.form">qpmr.quasipoly.form module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quasipolynomial-forms">Quasipolynomial forms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType.RETARDED"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.RETARDED</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType.NEUTRAL"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.NEUTRAL</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType.ADVANCED"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.ADVANCED</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType.POLYNOMIAL"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.POLYNOMIAL</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.QuasiPolynomialType.CONSTANT"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomialType.CONSTANT</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.form.qp_type"><code class="docutils literal notranslate"><span class="pre">qp_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.obj">qpmr.quasipoly.obj module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quasi-polynomial-objects">Quasi-polynomial objects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_empty"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_empty</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.degree"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.degree</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.m"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.m</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.n"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.n</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_constant</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_polynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_polynomial</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_retarded"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_retarded</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_neutral"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_neutral</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.is_advanced"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_advanced</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.derivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.derivative</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.antiderivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.antiderivative</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.compressed"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.compressed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.poly_degrees"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.poly_degrees</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.eval"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.eval()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.from_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_constant()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.QuasiPolynomial.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.TransferFunction"><code class="docutils literal notranslate"><span class="pre">TransferFunction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.TransferFunction.numerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.numerator</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.obj.TransferFunction.denumerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.denumerator</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly.operation">qpmr.quasipoly.operation module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-complex-operations-on-quasipolynomials">More complex operations on quasipolynomials</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.operation.derivative"><code class="docutils literal notranslate"><span class="pre">derivative()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.operation.antiderivative"><code class="docutils literal notranslate"><span class="pre">antiderivative()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-qpmr.quasipoly">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quasi-polynomial-package">Quasi-polynomial package</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_empty"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_empty</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.degree"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.degree</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.m"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.m</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.n"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.n</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_constant</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_polynomial"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_polynomial</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_retarded"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_retarded</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_neutral"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_neutral</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.is_advanced"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.is_advanced</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.derivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.derivative</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.antiderivative"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.antiderivative</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.compressed"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.compressed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.poly_degrees"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.poly_degrees</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.eval"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.eval()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.from_constant"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_constant()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.QuasiPolynomial.from_array"><code class="docutils literal notranslate"><span class="pre">QuasiPolynomial.from_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.TransferFunction"><code class="docutils literal notranslate"><span class="pre">TransferFunction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.TransferFunction.numerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.numerator</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.TransferFunction.denumerator"><code class="docutils literal notranslate"><span class="pre">TransferFunction.denumerator</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.compress"><code class="docutils literal notranslate"><span class="pre">compress()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.eval"><code class="docutils literal notranslate"><span class="pre">eval()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.shift"><code class="docutils literal notranslate"><span class="pre">shift()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.normalize_exponent"><code class="docutils literal notranslate"><span class="pre">normalize_exponent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.factorize_power"><code class="docutils literal notranslate"><span class="pre">factorize_power()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.derivative"><code class="docutils literal notranslate"><span class="pre">derivative()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qpmr.quasipoly.antiderivative"><code class="docutils literal notranslate"><span class="pre">antiderivative()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/qpmr.quasipoly.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Adam Peichl.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
