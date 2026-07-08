@@ -10,7 +10,7 @@ dependencies = [
     "numpy>=2.0",
     "contourpy>=1.0.0",
 ]
-description = "Quassi polynomial root finder"
+description = "Quasi-polynomial root-finder"
 authors = [
 	{name = "Adam Peichl", email = "adpeichl@gmail.com"}
 ]
