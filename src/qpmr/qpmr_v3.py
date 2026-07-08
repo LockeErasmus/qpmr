@@ -244,7 +244,8 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     r"""Quasi-polynomial Root Finder V3
 
     Attempts to find all roots of quasi-polynomial in rectangular subregion of
-    complex plane using Quasi-polynomial Root Finder [1].
+    complex plane using the mapping-based QPmR algorithm (Vyhlidal and Zítek,
+    2009).
 
     Parameters
     ----------
@@ -300,16 +301,10 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
 
         h(s) = \sum_{i=0}^n p_i(s)e^{-s\tau_i}
 
-    References
-    ----------
-    .. [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
-           large-scale computation of quasi-polynomial zeros." IEEE
-           Transactions on Automatic Control 54.1 (2009): 171-177.
-
     Examples
     --------
 
-    Example 1 from [1], quasi-polynomial :math:`h(s) = s + e^{-s}`:
+    Example from Vyhlidal and Zítek (2009), quasi-polynomial :math:`h(s) = s + e^{-s}`:
 
     >>> import numpy as np
     >>> import qpmr

@@ -29,43 +29,31 @@ release = '0.1.0'
 # -- General configuration ---------------------------------------------------
 
 extensions = [
-    'sphinx.ext.autodoc',          # Automatically document docstrings
-    'sphinx.ext.napoleon',         # Google / NumPy style docstrings
-    "sphinx.ext.autodoc.typehints",
-    'sphinx.ext.mathjax',          # Render LaTeX math
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx_autodoc_typehints',
+    'sphinx.ext.mathjax',
     'sphinx.ext.todo',
-    'sphinx_gallery.gen_gallery',  # This is for examples
-    "sphinxcontrib.bibtex",        # LaTeX like citations
+    'sphinx_gallery.gen_gallery',
+    'sphinxcontrib.bibtex',
 ]
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = [
+    'modules.rst',
+    'sg_execution_times.rst',
+    'auto_examples/01_vyhlidal2014',
+    'auto_examples/05_vyhlidal2014',
+    'auto_examples/example01.rst',
+    'auto_examples/example02_mapping_algorithm.rst',
+    'auto_examples/example50_newton_mapping.rst',
+]
 
 # -- HTML output -------------------------------------------------------------
 
 html_theme = 'pydata_sphinx_theme' # 'alabaster'
 html_static_path = [os.path.join(PACKAGE_ROOT, 'docs', '_static')]
-html_favicon = os.path.join(html_static_path[0], 'favicon.ico')  # Path to favicon.ico, generated via: https://favicon.io/favicon-generator/
-html_logo = os.path.join(html_static_path[0], 'logo.svg')  # Path to logo
-
-# -- LaTeX output ------------------------------------------------------------
-latex_engine = "pdflatex"
-
-latex_documents = [
-    (
-        "index",                # root document
-        "tdspy.tex",            # output .tex file
-        "TDSpy Documentation",  # document title
-        "Adam Peichl",          # author
-        "manual",               # document class
-    ),
-]
-
-latex_elements = {
-    "papersize": "a4paper",
-    "pointsize": "11pt",
-    "figure_align": "htbp",
-}
+html_logo = os.path.join(html_static_path[0], 'logo.svg')
 
 # -- Autodoc settings --------------------------------------------------------
 

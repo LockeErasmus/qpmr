@@ -12,14 +12,6 @@ qpmr.distribution.envelope\_curve module
    :show-inheritance:
    :undoc-members:
 
-qpmr.distribution.psi\_curve module
------------------------------------
-
-.. automodule:: qpmr.distribution.psi_curve
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 qpmr.distribution.spectral\_abscissa module
 -------------------------------------------
 

@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   qpmr.core
    qpmr.distribution
    qpmr.numerical_methods
    qpmr.plot
@@ -15,34 +16,10 @@ Subpackages
 Submodules
 ----------
 
-qpmr.argument\_principle module
--------------------------------
-
-.. automodule:: qpmr.argument_principle
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-qpmr.common module
-------------------
-
-.. automodule:: qpmr.common
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 qpmr.grid module
 ----------------
 
 .. automodule:: qpmr.grid
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-qpmr.qpmr\_metadata module
---------------------------
-
-.. automodule:: qpmr.qpmr_metadata
    :members:
    :show-inheritance:
    :undoc-members:

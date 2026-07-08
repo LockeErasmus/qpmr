@@ -51,8 +51,8 @@ def _mueller_array(f: Callable, x0: npt.NDArray, x1: npt.NDArray, x2: npt.NDArra
 def mueller(f: Callable, x0: float | npt.NDArray, x1: float | npt.NDArray=None, x2: float | npt.NDArray=None, tol: float=1e-6, max_iter: int=100) -> tuple[float | complex | npt.NDArray, bool]:
     """Attempt to solve :math:`f(x) = 0` via Müller's method.
 
-  Uses a quadratic interpolating polynomial through three successive iterates.
-  Scalar inputs are not yet implemented; array inputs are solved element-wise.
+    Uses a quadratic interpolating polynomial through three successive iterates.
+    Scalar inputs are not yet implemented; array inputs are solved element-wise.
 
     Parameters
     ----------

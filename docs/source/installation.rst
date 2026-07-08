@@ -11,7 +11,7 @@ Prerequisites
 * ``pip`` installed
 
 Creating a virtual environment (recommended)
--------------------------------
+--------------------------------------------
 
 First, create and activate a virtual environment.
 

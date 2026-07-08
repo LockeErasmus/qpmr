@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
-class QpmrInfo:
+class QpmrInfoV2:
     """Computation metadata from legacy QPmR v2.
 
     Attributes
@@ -73,16 +73,16 @@ def qpmr(
     coefs: npt.NDArray,
     delays: npt.NDArray,
     **kwargs
-) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
+) -> tuple[npt.NDArray[np.complex128], QpmrInfoV2]: ...
 
 @overload
 def qpmr(
     region: list[float, float, float, float],
     qp: QuasiPolynomial,
     **kwargs
-) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
+) -> tuple[npt.NDArray[np.complex128], QpmrInfoV2]: ...
 
-def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
+def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfoV2]:
     """Quasi-polynomial Root Finder V2 (legacy).
 
     Finds roots in a rectangular region using spectrum mapping and optional
@@ -112,7 +112,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     -------
     roots : ndarray
         Complex roots in ``region``.
-    metadata : QpmrInfo
+    metadata : QpmrInfoV2
         Intermediate grids, contours, and guesses.
 
     Raises
@@ -158,7 +158,7 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
         raise ValueError(f"numerical_method='{numerical_method}' not implemented, available methods: {IMPLEMENTED_NUMERICAL_METHODS}")
     
     # create metadata object
-    metadata = QpmrInfo()
+    metadata = QpmrInfoV2()
 
     # extend region and create meshgrid (original algorithm)
     bmin=region[0] - 3*ds

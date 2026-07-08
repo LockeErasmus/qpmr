@@ -16,8 +16,8 @@ import numpy.polynomial
 from .obj import QuasiPolynomial, TransferFunction
 
 def mazanti2021multiplicity(kappa: float=1.964, k: float=-0.67036, tau0: float=0.33, tau1: float=0.33) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Example obtained from article [1], for the default setting, there is 
-    dominant real pole of multiplicity 6: s = −6.021
+    """Example from Mazanti et al. (2021); default parameters give a dominant
+    real pole of multiplicity 6 near ``s = -6.021``.
 
     Parameters
     ----------
@@ -35,16 +35,10 @@ def mazanti2021multiplicity(kappa: float=1.964, k: float=-0.67036, tau0: float=0
     delays : ndarray
         Delay vector.
 
-    References
-    ----------
-    .. [1] Mazanti, Guilherme, Islam Boussaada, and Silviu-Iulian Niculescu.
-           Multiplicity-induced-dominancy for delay-differential equations of
-           retarded type. Journal of Differential Equations, 286 (2021): 84-118.
-
     Notes
     -----
-    Default parameters yield a dominant real pole of multiplicity 6 near
-    ``s = -6.021``. Parameters follow Proposition 6.1, Eq. (6.10a)--(6.10f).
+    Parameters follow Proposition 6.1, Eq. (6.10a)--(6.10f). Due to rounding,
+    poles cluster near ``-6.021`` rather than coinciding exactly.
     """
     tau = tau0 + tau1
     r0 = -3. - (9)**(1/3.) + (3)**(1/3.)
