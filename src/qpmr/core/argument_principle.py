@@ -55,7 +55,23 @@ def rectangular_contour(re_min, re_max, im_min, im_max) -> tuple[Callable, Calla
     return gamma, gamma_prime, (0, 4)
 
 def circle_contour(center: complex, radius: float):
-    """ TODO
+    """Parametrize a circular contour in the complex plane.
+
+    Parameters
+    ----------
+    center : complex
+        Circle center.
+    radius : float
+        Circle radius.
+
+    Returns
+    -------
+    gamma : callable
+        Contour parametrization ``gamma(t)``.
+    gamma_prime : callable
+        Derivative ``gamma'(t)``.
+    interval : tuple of float
+        Parameter interval ``(0, 2*pi)``.
     """
     def gamma(t):
         return center + radius * np.exp(1j * t)
@@ -64,14 +80,23 @@ def circle_contour(center: complex, radius: float):
     return gamma, gamma_prime, (0, 2*np.pi)
 
 def _discretize_rectangular_boundary(bmin: float, bmax: float, wmin: float, wmax: float, ds: float):
-    """ Discretizes rectangular boundary contour into long complex vector
+    """Discretize a rectangular boundary into a closed complex polyline.
 
-    Note that first and last numbers are the same.
+    Parameters
+    ----------
+    bmin, bmax : float
+        Real-axis bounds.
+    wmin, wmax : float
+        Imaginary-axis bounds.
+    ds : float
+        Approximate edge step size.
 
-    Args:
-        TODO
-    Returns:
-        TODO
+    Returns
+    -------
+    contour : ndarray
+        Closed contour vertices (first equals last).
+    contour_steps : ndarray
+        Step vectors along each edge segment.
     """
     n_steps_real = int((bmax - bmin) / ds) + 1
     linspace_real = np.linspace(bmin, bmax, n_steps_real)
@@ -125,11 +150,25 @@ def _argument_principle(f: Callable, f_prime: Callable, gamma: Callable, gamma_p
     return integral / (2j * np.pi)
 
 def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: float, n_points: int=1000, zero_tol: float=1e-8):
-    """
-    Compute (N - P) using the Argument Principle with tracking of argument changes.
+    """Count zeros via unwrapped phase change along a contour.
 
-    Parameters:
-     TODO
+    Parameters
+    ----------
+    f : callable
+        Function evaluated on the contour.
+    gamma : callable
+        Contour parametrization.
+    a, b : float
+        Parameter interval endpoints.
+    n_points : int, optional
+        Number of discretization points.
+    zero_tol : float, optional
+        Tolerance for detecting zeros on the contour.
+
+    Returns
+    -------
+    n : int
+        Rounded net number of zeros minus poles inside the contour.
     """
     t = np.linspace(a, b, n_points)
     z = gamma(t)
@@ -145,10 +184,29 @@ def _argument_principle_tracking(f: Callable, gamma: Callable, a: float, b: floa
 
 def _argument_principle_robust(f: Callable, gamma: Callable, a: float, b: float, n_points_0: int=256, n_max: int=1e12,
                                phase_tol: float=np.pi/2, zero_tol: float=1e-12):
-    """ Compute (N - P) using the Argument Principle with adaptive refinement
+    """Count zeros via adaptive phase tracking along a contour.
 
-    Parameters:
-     TODO
+    Parameters
+    ----------
+    f : callable
+        Function evaluated on the contour.
+    gamma : callable
+        Contour parametrization.
+    a, b : float
+        Parameter interval endpoints.
+    n_points_0 : int, optional
+        Initial discretization count.
+    n_max : int, optional
+        Maximum discretization count before failure.
+    phase_tol : float, optional
+        Maximum allowed phase increment between samples.
+    zero_tol : float, optional
+        Tolerance for zeros on the contour.
+
+    Returns
+    -------
+    n : int or float
+        Rounded zero count, or ``nan`` if refinement failed.
     """
     
     n_points = n_points_0
@@ -182,18 +240,23 @@ def _argument_principle_robust(f: Callable, gamma: Callable, a: float, b: float,
 
 def argument_principle(f: Callable, region: tuple[float, float, float, float],
                        ds: float, eps: float) -> float:
-    """ Evaluates number of roots in given rectangular region via argument
-    principle
+    """Count roots in a rectangle via the argument principle.
 
-    Args:
-        func (Callable): vector-suitable callable for quassipolynomial
-        region (list of `float`): region in complex plane
-        ds (float): grid stepsize
-        eps (float): step for finite difference method
+    Parameters
+    ----------
+    f : callable
+        Vectorized quasi-polynomial evaluator.
+    region : tuple of float
+        Rectangular region ``(Re_min, Re_max, Im_min, Im_max)``.
+    ds : float
+        Contour discretization step scale.
+    eps : float
+        Finite-difference step for the derivative.
 
-    Returns:
-        n (float): rounded number of complex roots in region based on numerical
-            integration and argument principle
+    Returns
+    -------
+    n : float
+        Rounded number of roots inside the region.
     """
     # prepare contour path
     re_min, re_max, im_min, im_max = region
@@ -216,18 +279,25 @@ def argument_principle(f: Callable, region: tuple[float, float, float, float],
 
 def argument_principle_rectangle(f: Callable, region: tuple[float, float, float, float],
                                  ds: float, eps: float, f_prime=None) -> float:
-    """ Evaluates number of roots in given rectangular region via argument
-    principle
+    """Count roots in a rectangle via contour integration.
 
-    Args:
-        func (Callable): vector-suitable callable for quassipolynomial
-        region (list of `float`): region in complex plane
-        ds (float): grid stepsize
-        eps (float): step for finite difference method
+    Parameters
+    ----------
+    f : callable
+        Vectorized quasi-polynomial evaluator.
+    region : tuple of float
+        Rectangular region ``(Re_min, Re_max, Im_min, Im_max)``.
+    ds : float
+        Contour discretization step scale.
+    eps : float
+        Finite-difference step when ``f_prime`` is not provided.
+    f_prime : callable, optional
+        Derivative of ``f``. Computed by central differences if ``None``.
 
-    Returns:
-        n (float): rounded number of complex roots in region based on numerical
-            integration and argument principle
+    Returns
+    -------
+    n : float
+        Rounded number of roots inside the region.
     """
     # prepare contour path
     re_min, re_max, im_min, im_max = region
@@ -252,6 +322,26 @@ def argument_principle_rectangle(f: Callable, region: tuple[float, float, float,
     return n
 
 def argument_principle_circle(f, circle: tuple[complex, float], ds: float, eps:float, f_prime: Callable=None):
+    """Count roots inside a circle via the argument principle.
+
+    Parameters
+    ----------
+    f : callable
+        Vectorized quasi-polynomial evaluator.
+    circle : tuple
+        ``(center, radius)`` defining the circular contour.
+    ds : float
+        Angular step scale for discretization.
+    eps : float
+        Finite-difference step when ``f_prime`` is not provided.
+    f_prime : callable, optional
+        Derivative of ``f``.
+
+    Returns
+    -------
+    n : float
+        Rounded number of roots inside the circle.
+    """
     # prepare contour path
     center, radius = circle
     gamma, gamma_prime, (a, b) = circle_contour(center, radius)

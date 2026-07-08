@@ -1,5 +1,8 @@
-"""
+r"""
+Quasi-polynomial objects
+========================
 
+Object-oriented wrappers for quasi-polynomials and transfer functions.
 """
 
 import logging
@@ -15,6 +18,20 @@ from .operation import derivative, antiderivative
 logger = logging.getLogger(__name__)
 
 class QuasiPolynomial:
+    """Quasi-polynomial in coefficient-delay matrix form.
+
+    Represents
+    :math:`h(s) = \\sum_i p_i(s) e^{-\\tau_i s}` where each row of ``coefs``
+    stores the coefficients of :math:`p_i`.
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    """
 
     def __init__(self, coefs: npt.NDArray, delays: npt.NDArray) -> None:
         
@@ -61,23 +78,27 @@ class QuasiPolynomial:
     
     @property
     def is_constant(self) -> bool:
+        """Whether the quasi-polynomial is a constant (not yet implemented)."""
         raise NotImplementedError("")
 
     @property
     def is_polynomial(self) -> bool:
+        """Whether the quasi-polynomial reduces to an ordinary polynomial."""
         raise NotImplementedError("")
     
     @property
     def is_retarded(self) -> bool:
-        """ checks if qp is of retarded type """
+        """Whether the quasi-polynomial is of retarded type."""
         raise NotImplementedError("")
 
     @property
     def is_neutral(self) -> bool:
+        """Whether the quasi-polynomial is of neutral type."""
         raise NotImplementedError("")
 
     @property
     def is_advanced(self) -> bool:
+        """Whether the quasi-polynomial is of advanced type."""
         raise NotImplementedError("")
     
     @property
@@ -97,6 +118,7 @@ class QuasiPolynomial:
     
     @property
     def antiderivative(self) -> 'QuasiPolynomial':
+        """Antiderivative with respect to ``s`` (not yet implemented)."""
         raise NotImplementedError(".") # TODO
 
     @property
@@ -116,6 +138,7 @@ class QuasiPolynomial:
         return np.apply_along_axis(poly_degree, 1, self.coefs)
     
     def eval(self, s: complex | npt.NDArray):
+        """Evaluate at complex point(s) ``s``."""
         return eval(self.coefs, self.delays, s)
     
     def __neg__(self):
@@ -195,6 +218,15 @@ class QuasiPolynomial:
         return cls(coefs, np.array([0], dtype=dtype))
 
 class TransferFunction:
+    """Ratio of two quasi-polynomials.
+
+    Parameters
+    ----------
+    num : QuasiPolynomial
+        Numerator quasi-polynomial.
+    denum : QuasiPolynomial
+        Denominator quasi-polynomial.
+    """
 
     def __init__(self, num: QuasiPolynomial, denum: QuasiPolynomial):
         self.num = num

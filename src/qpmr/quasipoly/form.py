@@ -13,15 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class QuasiPolynomialType(str, Enum):
+    """Classification of quasi-polynomial spectral type."""
+
     RETARDED = "RETARDED"
     NEUTRAL = "NEUTRAL"
     ADVANCED = "ADVANCED"
-
     POLYNOMIAL = "POLYNOMIAL"
-    CONSTANT = "CONSTANT" # special case for h(s) = a this has no zeros
+    CONSTANT = "CONSTANT"
 
 def _qp_type_from_normed(coefs: npt.NDArray, delays: npt.NDArray) -> QuasiPolynomialType:
-    """ TODO """
+    """Classify type from compressed, normalized coefficients and delays."""
     if delays.size == 0 or (delays.size == 1 and coefs.shape[1] <= 1):
         return QuasiPolynomialType.CONSTANT
     elif delays.size == 1:
@@ -34,4 +35,5 @@ def _qp_type_from_normed(coefs: npt.NDArray, delays: npt.NDArray) -> QuasiPolyno
         return QuasiPolynomialType.RETARDED
     
 def qp_type(coefs, delays):
+    """Classify quasi-polynomial type (not yet implemented)."""
     raise NotImplementedError

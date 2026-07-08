@@ -1,11 +1,9 @@
-"""
-QPmR v2 implementation
-----------------------
-Set of funtions implement original QPmR v2 algorithm, based on [1].
+r"""
+QPmR v2 implementation (legacy)
+=================================
 
-[1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for large-scale
-    computation of quasi-polynomial zeros." IEEE Transactions on Automatic
-    Control 54.1 (2009): 171-177.
+Original QPmR algorithm from Vyhlídal & Zítek (2009). Prefer :func:`qpmr.qpmr`
+(v3) for new code.
 """
 from functools import cached_property
 import logging
@@ -29,6 +27,22 @@ logger = logging.getLogger(__name__)
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
 class QpmrInfo:
+    """Computation metadata from legacy QPmR v2.
+
+    Attributes
+    ----------
+    real_range, imag_range : ndarray
+        Grid axes used for spectrum mapping.
+    z_value : ndarray
+        Quasi-polynomial values on the grid.
+    roots0 : ndarray
+        Initial root guesses from contour crossings.
+    roots_numerical : ndarray
+        Roots after numerical refinement.
+    contours_real : list of ndarray
+        Real zero-level contours from contourpy.
+    """
+
     # TODO maybe dataclass? but solve cached property
     real_range: npt.NDArray = None
     imag_range: npt.NDArray = None
@@ -69,36 +83,42 @@ def qpmr(
 ) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
 
 def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
-    """ Quasi-polynomial Root Finder V2
+    """Quasi-polynomial Root Finder V2 (legacy).
 
-    Attempts to find all roots of quasi-polynomial in rectangular subregion of
-    complex plane. For more details, see:
+    Finds roots in a rectangular region using spectrum mapping and optional
+    Newton or secant refinement. See Vyhlídal & Zítek (2009).
 
-    [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
-    large-scale computation of quasi-polynomial zeros." IEEE Transactions on
-    Automatic Control 54.1 (2009): 171-177.
+    Parameters
+    ----------
+    region : tuple of float
+        Search region ``(Re_min, Re_max, Im_min, Im_max)``.
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    e : float, optional
+        Target accuracy (default 1e-6).
+    ds : float, optional
+        Grid step; heuristic if omitted.
+    numerical_method : {'newton', 'secant'}, optional
+        Refinement method (default ``'newton'``).
+    numerical_method_kwargs : dict, optional
+        Extra arguments for the numerical method.
+    grid_nbytes_max : int, optional
+        Maximum grid size in bytes (default 250e6).
 
-    TODO Overload:
-        ...
+    Returns
+    -------
+    roots : ndarray
+        Complex roots in ``region``.
+    metadata : QpmrInfo
+        Intermediate grids, contours, and guesses.
 
-    Args:
-        region (list): definition of rectangular region in the complex plane of
-            a form [Re_min, Re_max, Im_min, Im_max]
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-
-        **kwargs:
-            e (float) - computation accuracy, default = 1e-6
-            ds (float) - grid step, default obtained by heuristic
-            numerical_method (str) - numerical method for increasing precission
-                of roots, default "newton", other options: "secant"
-            numerical_method_kwargs (dict) - keyword arguments for numerical
-                method, default None
-            grid_nbytes_max (int): maximal allowed size of grid in bytes,
-                default 250e6 bytes, set to None to disregard maximum size check
-                of the grid
+    Raises
+    ------
+    ValueError
+        If validation fails or the grid exceeds ``grid_nbytes_max``.
     """
     # solve overload, unpack *args
     if len(args) == 2:

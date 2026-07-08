@@ -12,25 +12,26 @@ from .spectrum_distribution_diagram import distribution_diagram
 logger = logging.getLogger(__name__)
 
 def chain_asymptotes(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
-    """ Calculates exponentials of the root chains
+    """Compute asymptotic slopes and frequencies of zero chains.
 
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            assume_compressed (bool): set to True if quasipolynomial already
-                in compressed form, default False
-            abs_wk_decimals_round (int): absolute value of wk is rounded to this
-                amount of decimals before selecting unique values, default 10
-    
-    Returns:
-        tuple containing:
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    assume_compressed : bool, optional
+        If ``False`` (default), compress before analysis.
+    abs_wk_decimals_round : int, optional
+        Decimal places for rounding unique root magnitudes (default 10).
 
-            - mi_vec (array): segment slopes
-            - abs_omega (list of `array`): corresponding unique absolute values
-                of roots    
+    Returns
+    -------
+    mi_vec : ndarray
+        Segment slopes from the spectrum distribution diagram.
+    abs_omega : list of ndarray
+        Unique absolute root magnitudes per segment.
     """
     abs_wk_decimals_round = kwargs.get("abs_wk_decimals_round", 10)
     assume_compressed = kwargs.get("assume_compressed", False)

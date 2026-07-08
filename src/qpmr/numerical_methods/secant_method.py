@@ -12,20 +12,27 @@ import numpy.typing as npt
 logger = logging.getLogger(__name__)
 
 def secant(func: Callable, x0, x1=None, tol: float=1e-8, max_iter: int=100) -> tuple[npt.NDArray, bool]:
-    """ Secant method
-    
-    Args:
-        func (callable): vectorized quasi-polynomical function which maps Complex -> Complex
-        x0 (ndarray): initial guess 0 for roots
-        x1 (ndarray): initial guess 1 for roots, default None
-        tol (float): required tol, default 1e-7
-        max_iter (int): maximum iterations, default 100
+    """Secant method for vectorized root refinement.
 
-    Returns:
-        tuple containing
+    Parameters
+    ----------
+    func : callable
+        Vectorized complex function.
+    x0 : ndarray
+        Primary initial guesses.
+    x1 : ndarray, optional
+        Secondary initial guesses. If ``None``, obtained by perturbing ``x0``.
+    tol : float, optional
+        Convergence tolerance. Default is 1e-8.
+    max_iter : int, optional
+        Maximum iterations. Default is 100.
 
-        - x (ndarray): roots with increased precission
-        - converged (bool): True if successful, False otherwise
+    Returns
+    -------
+    x : ndarray
+        Refined roots.
+    converged : bool
+        Whether the method converged.
     """
     x = np.copy(x0)
     eval_counter = 0

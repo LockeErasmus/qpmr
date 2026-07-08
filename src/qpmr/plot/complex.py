@@ -9,19 +9,21 @@ import numpy as np
 import numpy.typing as npt
 
 def experimental(roots: npt.NDArray, ax: Axes=None, **kwargs):
-    """ Plots roots ('x') into complex plane TODO - description
+    """Experimental polar-style root plot.
 
-    Roots have different color stable - green, margin of stability - blue
-    unstable - red
-    
-    Args:
-        roots (array): array of complex numbers, if None treated as empty array
-        ax (Axes): matplotlib Axes object, if None new figure, ax is created
-        **kwargs:
-            tol (float): tolerance for assuming Re(root) ~ 0, defgault 1e-10
+    Parameters
+    ----------
+    roots : ndarray
+        Complex roots.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
+    tol : float, optional
+        Tolerance for stability classification (default 1e-10).
 
-    Returns:
-        ax (Axes): matplotlib Axes object
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the plot.
     """
 
     tol = kwargs.get("tol", 1e-10)

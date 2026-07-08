@@ -12,7 +12,20 @@ from . import basic
 
 
 def qpmr_solution_tree(ctx , ax: Axes, **kwargs):
-    """ """
+    """Visualize the QPmR solution tree and regional subdivisions.
+
+    Parameters
+    ----------
+    ctx
+        Context object with ``solution_tree`` and ``roots`` attributes.
+    ax : Axes
+        Matplotlib axes to draw on.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the tree visualization.
+    """
     if ax is None:
         _, ax = plt.subplots()
     for leaf in ctx.solution_tree.leaves:

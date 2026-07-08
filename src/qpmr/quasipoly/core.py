@@ -1,8 +1,10 @@
-"""
-TODO:
-    1. is_empty QP
-"""
+r"""
+Quasi-polynomial core operations
+================================
 
+Evaluation, compression, normalization, and representation transforms for
+quasi-polynomials in coefficient-delay form.
+"""
 import logging
 from typing import Any
 
@@ -14,34 +16,12 @@ import numpy.typing as npt
 logger = logging.getLogger(__name__)
 
 def _eval_scalar(coefs: npt.NDArray, delays: npt.NDArray, s: int|float|complex):
-    """ Evaluates quasipolynomial on complex value
-
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        s (number): complex value to evaluate quasipolynomial
-
-    Returns:
-        number: evaluated quasipolynomial at `s`
-    """
+    """Evaluate a quasi-polynomial at a single complex point."""
     powers = np.arange(0, coefs.shape[1], 1, dtype=int)
     return np.inner(np.sum(coefs * np.power(s,  powers), axis=1), np.exp(-delays*s))
 
 def _eval_array(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
-    """ Evaluates quasipolynomial on nD array of complex values
-
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        s (array): nD array of complex values to evaluate quasipolynomial on
-
-    Returns:
-        array: evaluated quasipolynomial at all elements of `s`
-    """
+    """Evaluate a quasi-polynomial on an array of complex points."""
     coefs = coefs.T # transpose rows - powers of s, cols - delays
     delays = delays
     powers = np.arange(0, coefs.shape[0], 1, dtype=int)
@@ -54,22 +34,7 @@ def _eval_array(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
     return np.sum(r, axis=-1)
 
 def _eval_array_opt(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
-    """ Evaluates quasipolynomial on nD array of complex values OPTIMIZED
-
-    Leverages the fact that:
-        s^(k+1) = s * s^k,
-    i.e. it reuses powers of s in calculation.
-
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        s (array): nD array of complex values to evaluate quasipolynomial on
-
-    Returns:
-        array: evaluated quasipolynomial at all elements of `s`
-    """
+    """Evaluate a quasi-polynomial on an array (optimized power reuse)."""
     _memory = np.ones_like(s)
     # solve degree 0
     dels = np.exp(- s[..., np.newaxis] * delays[np.newaxis, ...])
@@ -80,17 +45,27 @@ def _eval_array_opt(coefs: npt.NDArray, delays: npt.NDArray, s: npt.NDArray):
     return result
 
 def eval(coefs: npt.NDArray, delays: npt.NDArray, s: Any):
-    """ Evaluates quasipolynomial on s
+    """Evaluate a quasi-polynomial at ``s``.
 
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        s (array or number): complex value (s) to evaluate quasipolynomial on
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    s : number or ndarray
+        Complex point or array of points.
 
-    Returns:
-        array: evaluated quasipolynomial at all elements of `s`
+    Returns
+    -------
+    value : number or ndarray
+        Evaluated quasi-polynomial.
+
+    Raises
+    ------
+    ValueError
+        If ``s`` has an unsupported type.
     """
     if isinstance(s, (int, float, complex)):
         return _eval_scalar(coefs, delays, s)
@@ -100,25 +75,25 @@ def eval(coefs: npt.NDArray, delays: npt.NDArray, s: Any):
         raise ValueError(f"Unsupported type of s '{type(s)}'")
 
 def compress(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Compresses quasipolynomial representation into a form where no
-    duplicates in delays are present and last column vector of `coefs` is
-    non-zero. Compressed quasipolynomial has also ordered delays in ascending
-    order.
+    """Compress a quasi-polynomial to minimal coefficient-delay form.
 
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-    
-    Returns:
-        tuple containing:
+    Merges duplicate delays, removes zero rows and trailing zero columns, and
+    sorts delays in ascending order.
 
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
 
+    Returns
+    -------
+    ccoefs : ndarray
+        Compressed coefficient matrix.
+    ddelays : ndarray
+        Compressed delay vector.
     """
     logger.debug(f"Original quasipolynomial:\n{coefs}\n{delays}")
     if coefs.size == 0 and delays.size == 0: # trivial case with empty definition, i.e. qp(s) = 0
@@ -188,10 +163,10 @@ def normalize(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt
     >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
     >>> delays = np.array([-1., 1, 1])
     >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
-    >>> coefs
+    >>> ncoefs
     array([[0. , 0.5, 1. ],
            [0.5, 0.5, 2. ]])
-    >>> delays
+    >>> ndelays
     array([0., 2.])
 
     """
@@ -206,46 +181,32 @@ def normalize(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt
     return ccoefs, cdelays
 
 def normalize_exponent(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray, float]:
-    """ Creates normalized quasi-polynomial representation - TODO
+    """Normalize delays by scaling time (exponent normalization).
 
-    Normalized quasi-polynomial is the quasi-polynomial with the same spectrum
-    as the original one, but it's representation is compressed (i.e. unique
-    `delays` sorted in ascending order, no ending zero-column in `coefs`). First
-    delay is 0.0 and the leading coefficient is 1.0 (leading coefficient is the 
-    coefficient with highest power of :math:`s` and smallest delay).
+    Scales coefficients and delays so the largest delay is 1, preserving the
+    spectrum up to a time-scale factor.
 
     Parameters
     ----------
     coefs : ndarray
         Matrix of polynomial coefficients. Each row represents the coefficients
         corresponding to a specific delay.
-
     delays : ndarray
-        Vector of delays associated with each row in `coefs`.
+        Vector of delays associated with each row in ``coefs``.
 
-    Returns - TODO
+    Returns
     -------
-    ccoefs : ndarray
-        Matrix of normalized polynomial coefficients. Each row represents the
-        coefficients corresponding to a specific delay.
+    ncoefs : ndarray
+        Scaled coefficient matrix.
+    ndelays : ndarray
+        Delays shifted to start at 0 and divided by ``tau_max``.
+    tau_max : float
+        Largest delay before scaling (0 if empty).
 
-    ddelays : ndarray
-        Vector of delays associated with each row in `coefs`, non-negative,
-        sorted in ascending order, if non-empty first delay is 0
-
-    Examples - TODO
-    --------
-    >>> import numpy as np
-    >>> import qpmr.quasipoly
-    >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
-    >>> delays = np.array([-1., 1, 1])
-    >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
-    >>> coefs
-    array([[0. , 0.5, 1. ],
-           [0.5, 0.5, 2. ]])
-    >>> delays
-    array([0., 2.])
-
+    Raises
+    ------
+    NotImplementedError
+        If all delays are zero after shifting.
     """
     if delays.size == 0:
         return np.copy(coefs), np.copy(delays), 0
@@ -268,7 +229,7 @@ def factorize_power(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArra
     """ Factor out powers of `s` from quasi-polynomial
 
     Where original quasi-polynomial is of a form
-    ..math::
+    .. math::
 
         h(s) = s^n g(s)
 
@@ -296,21 +257,17 @@ def factorize_power(coefs: npt.NDArray, delays: npt.NDArray) -> tuple[npt.NDArra
         sorted in ascending order, if non-empty first delay is 0
 
     spower : int
-        Power of s in factorization
+        Exponent :math:`n` factored out from ``s``.
 
-    Examples - TODO
+    Examples
     --------
     >>> import numpy as np
-    >>> import qpmr.quasipoly
-    >>> coefs = np.array([[0., 1, 2, 0], [1, 1, 2, 0], [0, 0, 2, 0]])
-    >>> delays = np.array([-1., 1, 1])
-    >>> ncoefs, ndelays = qpmr.quasipoly.normalize(coefs, delays)
-    >>> coefs
-    array([[0. , 0.5, 1. ],
-           [0.5, 0.5, 2. ]])
-    >>> delays
-    array([0., 2.])
-
+    >>> import qpmr.quasipoly as qp
+    >>> coefs = np.array([[0., 1.], [1., 0.]])
+    >>> delays = np.array([0., 1.])
+    >>> g_coefs, g_delays, n = qp.factorize_power(coefs, delays)
+    >>> n
+    1
     """
 
     if delays.size == 0:
@@ -338,7 +295,7 @@ def shift(coefs: npt.NDArray, delays: npt.NDArray, origin: float|complex) -> tup
     Input quasi-polynomial :math:`h(s)` is shifted to new origin
     :math:`a` resulting in quasi-polynomial
 
-    ..math::
+    .. math::
 
         g(s) = h(s-a)
 
@@ -404,12 +361,20 @@ def shift(coefs: npt.NDArray, delays: npt.NDArray, origin: float|complex) -> tup
     return ccoefs, ddelays
 
 def poly_degree(poly: npt.NDArray, order="reversed") -> int:
-    """ assumes 1D array as input
-    
-    [a0, a1, ... am, 0, 0, ... 0] -> degree m
+    """Return the degree of a 1D polynomial coefficient vector.
 
-    reverse order
+    Parameters
+    ----------
+    poly : ndarray
+        Coefficient vector, possibly with trailing zeros.
+    order : {'reversed', 'forward'}, optional
+        If ``'reversed'``, highest degree is the last non-zero entry when read
+        from the end. Default is ``'reversed'``.
 
+    Returns
+    -------
+    degree : int
+        Polynomial degree.
     """
     degree = len(poly) - 1
     if order == "reversed":
@@ -425,19 +390,22 @@ def poly_degree(poly: npt.NDArray, order="reversed") -> int:
 
 
 def is_neutral(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
-    """ Checks if quasipolynomial is neutral
-    
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if True compresses the result (converts to minimal
-                form), default True
-    
-    Returns:
-        bool - True if neutral, False if retarded
+    """Test whether a quasi-polynomial is of neutral type.
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    compress : bool, optional
+        If ``True`` (default), compress before the test.
+
+    Returns
+    -------
+    neutral : bool
+        ``True`` if neutral, ``False`` if retarded or empty.
     """
 
     if kwargs.get("compress", True):
@@ -454,16 +422,29 @@ def is_neutral(coefs: npt.NDArray, delays: npt.NDArray, **kwargs):
         return False
 
 def extract_delay_diff_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Extracts delay-difference equation from quasipolynomial
+    """Extract the delay-difference equation from a quasi-polynomial.
 
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if False compresses the result (converts to minimal
-                form), default False
+    Uses the highest-power coefficients (last column of ``coefs``).
+
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    compress : bool, optional
+        If ``True``, compress first. Default is ``False``.
+    normalize : bool, optional
+        If ``True`` (default), divide by the leading coefficient and shift
+        delays so the first is zero.
+
+    Returns
+    -------
+    diff_coefs : ndarray
+        1D coefficients of the delay-difference equation.
+    diff_delays : ndarray
+        Associated delays.
     """
     if kwargs.get("compress", False):
         coefs, delays = compress(coefs, delays)
@@ -487,14 +468,28 @@ def extract_delay_diff_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> 
     
 
 def create_normalized_delay_difference_eq(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Creates characteristic equation of the associated delay difference
-    equation
+    """Build the normalized delay-difference characteristic equation.
 
-    The characteristic equation is normalized (leading term = 1 and is omitted)
-        
-    returns None if does not exist
+    For neutral quasi-polynomials, returns absolute values of sub-leading
+    coefficients and their delays (leading term normalized to 1 and omitted).
 
-    TODO
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    compress : bool, optional
+        If ``True`` (default), compress before extraction.
+
+    Returns
+    -------
+    diff_coefs : ndarray or None
+        Normalized delay-difference coefficients, or ``None`` if the
+        quasi-polynomial is not neutral.
+    diff_delays : ndarray or None
+        Delays for ``diff_coefs``, or ``None``.
     """
     if kwargs.get("compress", True):
         coefs, delays = compress(coefs, delays)

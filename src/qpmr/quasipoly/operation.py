@@ -17,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def _retarded_qp2ss(coefs: npt.NDArray, delays: npt.NDArray):
-
-    # TODO empty arrays
+    """Convert a retarded quasi-polynomial to companion state-space form."""
     # TODO assert that arrays are normalized and compressed
 
     n, d = coefs.shape
@@ -49,33 +48,27 @@ def _retarded_qp2ss(coefs: npt.NDArray, delays: npt.NDArray):
 
 
 def derivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Derivative of quasipolynomial
+    """Differentiate a quasi-polynomial with respect to ``s``.
 
-    Assume quasipolynomial h(s) in a form of sum of products of polynomials of
-    order m_i <= m and exp(.)
-    
-                n
-        h(s) = SUM p_i(s) * exp(-tau_i*s)
-               i=0
+    Applies the product rule to each term
+    :math:`p_i(s) e^{-\\tau_i s}`.
 
-    derivative can be solved via product rule applied on all those products.
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    compress : bool, optional
+        If ``True`` (default), compress the result.
 
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if True compresses the result (converts to minimal
-                form), default True
-    
-    Returns:
-        tuple containing:
-
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
+    Returns
+    -------
+    coefs_prime : ndarray
+        Derivative coefficient matrix.
+    delays_prime : ndarray
+        Derivative delay vector (unchanged from input).
     """
     n, m = coefs.shape
     coefs_prime = np.zeros_like(coefs)
@@ -95,33 +88,24 @@ def derivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.N
     return coefs_prime, delays_prime
 
 def antiderivative(coefs: npt.NDArray, delays: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Antiderivative of quasipolynomial
+    """Integrate a quasi-polynomial with respect to ``s``.
 
-    Assume quasipolynomial h(s) in a form of sum of products of polynomials of
-    order m_i <= m and exp(.)
-    
-                n
-        h(s) = SUM p_i(s) * exp(-tau_i*s)
-               i=0
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    compress : bool, optional
+        If ``True`` (default), compress the result.
 
-    antiderivative can be solved ... TODO
-
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if True compresses the result (converts to minimal
-                form), default True
-    
-    Returns:
-        tuple containing:
-
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
+    Returns
+    -------
+    coefs_anti : ndarray
+        Antiderivative coefficient matrix (one extra column).
+    delays_anti : ndarray
+        Antiderivative delay vector (unchanged from input).
     """
     # TODO I am assuming at least one coefficient one delay - if else for empty quasi-polynomial
 

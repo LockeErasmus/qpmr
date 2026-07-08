@@ -34,12 +34,39 @@ logger = logging.getLogger(__name__)
 IMPLEMENTED_NUMERICAL_METHODS = ["newton", "secant"]
 
 class QPmRNode:
+    """Node in the QPmR recursive subdivision tree.
+
+    Parameters
+    ----------
+    region : tuple of float
+        Rectangular subregion as ``(Re_min, Re_max, Im_min, Im_max)``.
+    ds : float
+        Grid step size for spectrum mapping on this node.
+    """
+
     def __init__(self, region: tuple[float, float, float, float], ds: float):
         self.region = region
         self.ds = ds
 
 @dataclass
 class QpmrInfo:
+    """Metadata returned by :func:`qpmr`.
+
+    Attributes
+    ----------
+    coefs : ndarray
+        Compressed polynomial coefficients used during root finding.
+    delays : ndarray
+        Delays associated with each row in ``coefs``.
+    region : tuple of float or None
+        Search region ``(Re_min, Re_max, Im_min, Im_max)``.
+    ds : float or None
+        Grid step size used for spectrum mapping.
+    solved_nodes : list of QPmRNode or None
+        Nodes successfully solved (reserved for future use).
+    unsolved_nodes : list of QPmRNode or None
+        Nodes left unsolved (reserved for future use).
+    """
     coefs: npt.NDArray[np.float64]
     delays: npt.NDArray[np.float64]
 
@@ -51,7 +78,33 @@ class QpmrInfo:
 
 
 def _qpmr_solve_node(f: Callable, f_prime: Callable, region: tuple[float, float, float, float], e: float, ds: float, **kwargs):
-    """ TODO """
+    """Solve a single rectangular node of the QPmR subdivision tree.
+
+    Applies argument principle, spectrum mapping, optional numerical refinement,
+    and validation checks for one subregion.
+
+    Parameters
+    ----------
+    f : callable
+        Quasi-polynomial evaluated on a complex grid.
+    f_prime : callable
+        Derivative of ``f``.
+    region : tuple of float
+        Rectangular subregion ``(Re_min, Re_max, Im_min, Im_max)``.
+    e : float
+        Target accuracy.
+    ds : float
+        Grid step for spectrum mapping.
+    **kwargs
+        Passed through to numerical refinement (e.g. ``numerical_method``).
+
+    Returns
+    -------
+    roots : ndarray or None
+        Roots found in ``region``, or ``None`` if the node could not be solved.
+    meta : dict
+        Status message (e.g. ``{"message": "SOLVED"}``).
+    """
 
     multiplicity_heuristic = kwargs.get("multiplicity_heuristic", False)
     numerical_method = kwargs.get("numerical_method", "newton")
@@ -188,7 +241,7 @@ def qpmr(
 ) -> tuple[npt.NDArray[np.complex128], QpmrInfo]: ...
 
 def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
-    """ Quasi-polynomial Root Finder V3
+    r"""Quasi-polynomial Root Finder V3
 
     Attempts to find all roots of quasi-polynomial in rectangular subregion of
     complex plane using Quasi-polynomial Root Finder [1].
@@ -227,15 +280,19 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
     Returns
     -------
     roots : ndarray
-        Matrix of polynomial coefficients. Each row corresponds to a delay value.
+        1D array of complex roots found inside the search region.
 
     ctx : QpmrInfo
-        Information object containing the computation metadata
+        Metadata from the computation (compressed coefficients, delays, and
+        region).
 
-        Attributes
-        ----------
-        TODO
-    
+    Raises
+    ------
+    ValueError
+        If arguments are invalid or keyword options are inconsistent.
+    NotImplementedError
+        If a callable is passed instead of coefficient arrays.
+
     Notes
     -----
 
@@ -243,18 +300,16 @@ def qpmr(*args, **kwargs) -> tuple[npt.NDArray[np.complex128], QpmrInfo]:
 
         h(s) = \sum_{i=0}^n p_i(s)e^{-s\tau_i}
 
-    TODO
-
     References
     ----------
     .. [1] Vyhlidal, Tomas, and Pavel Zitek. "Mapping based algorithm for
-           large-scale computation of quasi-polynomial zeros." IEEE 
+           large-scale computation of quasi-polynomial zeros." IEEE
            Transactions on Automatic Control 54.1 (2009): 171-177.
 
     Examples
     --------
-    
-    Example 1 from [1], i.e. quasi-polynomial :math: h(s) = s + e^{-s}``
+
+    Example 1 from [1], quasi-polynomial :math:`h(s) = s + e^{-s}`:
 
     >>> import numpy as np
     >>> import qpmr

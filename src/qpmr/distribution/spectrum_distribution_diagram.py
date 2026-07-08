@@ -13,13 +13,7 @@ from qpmr.quasipoly.core import poly_degree, compress
 logger = logging.getLogger(__name__)
 
 def _concave_envelope_inplace(x: npt.NDArray, y: npt.NDArray, mask: npt.NDArray) -> None:
-    """ inplace fills the mask with True values representing concave envelope
-
-    Args:
-        x (array): x coordinates (thetas) 
-        y (array): y coordinates (degrees)
-        mask (array): mask 
-    """
+    """Fill ``mask`` in place with the concave envelope of ``(x, y)``."""
     n = len(mask)
     logger.info(f"{n=}, {x=}, {y=}, {mask=}")
     if n == 0: # is_empty mask
@@ -45,14 +39,24 @@ def _concave_envelope_inplace(x: npt.NDArray, y: npt.NDArray, mask: npt.NDArray)
             _concave_envelope_inplace(x[i+1:], y[i+1:], mask[i+1:])
 
 def _concave_envelope(x: npt.NDArray, y: npt.NDArray) -> npt.NDArray:
-    """ Creates concave envelope mask
+    """Return a boolean mask for the concave envelope of diagram points.
 
-    Args:
-        x (array): x coordinates (thetas) in ascending order 
-        y (array): y coordinates (degrees)
-    
-    Returns:
-        mask (array): mask defining which [x,y] forms the envelope
+    Parameters
+    ----------
+    x : ndarray
+        Theta coordinates (ascending).
+    y : ndarray
+        Polynomial degrees.
+
+    Returns
+    -------
+    mask : ndarray
+        ``True`` for envelope vertices.
+
+    Raises
+    ------
+    ValueError
+        If ``x`` and ``y`` are not 1D arrays of equal length.
     """
     if x.ndim != 1 or y.ndim != 1:
         raise ValueError("Inputs have to 1D arrays")
@@ -69,7 +73,17 @@ def _concave_envelope(x: npt.NDArray, y: npt.NDArray) -> npt.NDArray:
 
 @dataclass
 class SpectrumDistributionDiagramMetadata:
-    # TODO consider moving to dataclass implementation
+    """Cached spectrum distribution diagram data.
+
+    Attributes
+    ----------
+    P_theta : ndarray or None
+        Theta coordinates of diagram points.
+    P_degree : ndarray or None
+        Polynomial degrees at each point.
+    mask : ndarray or None
+        Boolean mask selecting the concave envelope.
+    """
     P_theta: npt.NDArray = None
     P_degree: npt.NDArray = None
     mask: npt.NDArray = None
@@ -89,21 +103,26 @@ class SpectrumDistributionDiagramMetadata:
             return None
 
 def distribution_diagram(coefs, delays, **kwargs) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
-    """ Creates spectrum distribution diagram for quasipolynomial
-    
-    Args:
-        TODO
-        qp (QuasiPolynomial): class representing quasipolynomial
+    """Build the spectrum distribution diagram for a quasi-polynomial.
 
-        assume_minimal (bool): wheter to convert qp to minimal form before
-            creating distribution diagram, default False
-    
-    Returns:
-        tuple containing
+    Parameters
+    ----------
+    coefs : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays : ndarray
+        Vector of delays associated with each row in ``coefs``.
+    assume_compressed : bool, optional
+        If ``False`` (default), compress and sort delays before analysis.
 
-        - thetas (ndarray): max(delays) - delays in ascending order
-        - degrees (ndarray): according degree of polynomial
-        - mask (ndarray): mask determining concave envelope
+    Returns
+    -------
+    thetas : ndarray
+        ``max(delays) - delays`` in ascending order.
+    degrees : ndarray
+        Degree of the polynomial factor at each diagram point.
+    mask : ndarray
+        Boolean mask selecting the concave envelope vertices.
     """
     assume_compressed = kwargs.get("assume_compressed", False)
     if assume_compressed:

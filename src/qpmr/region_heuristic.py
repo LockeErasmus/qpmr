@@ -37,14 +37,19 @@ def region_heuristic(coefs, delays, **kwargs) -> tuple[float, float, float, floa
     delays : ndarray
         Vector of delays associated with each row in `coefs`.
 
-    **kwargs: additional arguments
+    **kwargs : dict, optional
         n_roots : int, optional
-            Approximate number of rightmost roots to be contained in the
-            proposed region, default is 100.
+            Approximate number of rightmost roots to contain in the proposed
+            region. Default is 100.
         re_stretch : float, optional
-            Stretch factor for the minimum real part of the region, default 
-            is 0.05.
-    
+            Stretch factor for the minimum real part of the region.
+            Default is 0.05.
+
+    Returns
+    -------
+    region : tuple of float
+        Proposed region ``(Re_min, Re_max, Im_min, Im_max)``.
+
     Raises
     ------
     ValueError

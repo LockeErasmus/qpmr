@@ -21,28 +21,25 @@ from .core import compress
 logger = logging.getLogger(__name__)
 
 def add(coefs1: npt.NDArray, delays1: npt.NDArray, coefs2: npt.NDArray, delays2: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Adds two quasipolynomials without checks
+    """Add two quasi-polynomials.
 
-    Args:
-        coefs1 (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays1 (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        coefs2 (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays2 (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if True compresses the result (converts to minimal
-                form), default True
+    Parameters
+    ----------
+    coefs1, coefs2 : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays1, delays2 : ndarray
+        Vector of delays associated with each row in the corresponding
+        coefficient matrix.
+    compress : bool, optional
+        If ``True`` (default), compress the result.
 
-    Returns:
-        tuple containing:
-
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
+    Returns
+    -------
+    coefs : ndarray
+        Sum coefficient matrix.
+    delays : ndarray
+        Sum delay vector.
     """
     n1, m1 = coefs1.shape # ndelays x degree*
     n2, m2 = coefs2.shape
@@ -59,28 +56,25 @@ def add(coefs1: npt.NDArray, delays1: npt.NDArray, coefs2: npt.NDArray, delays2:
         return add(coefs2, delays2, coefs1, delays1)
 
 def multiply(coefs1: npt.NDArray, delays1: npt.NDArray, coefs2: npt.NDArray, delays2: npt.NDArray, **kwargs) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Multiply two quasipolynomials without checks
-    
-    Args:
-        coefs1 (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays1 (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        coefs2 (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays2 (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-        **kwargs:
-            compress (bool): if True compresses the result (converts to minimal
-                form), default True
+    """Multiply two quasi-polynomials.
 
-    Returns:
-        tuple containing:
+    Parameters
+    ----------
+    coefs1, coefs2 : ndarray
+        Matrix of polynomial coefficients. Each row represents the coefficients
+        corresponding to a specific delay.
+    delays1, delays2 : ndarray
+        Vector of delays associated with each row in the corresponding
+        coefficient matrix.
+    compress : bool, optional
+        If ``True`` (default), compress the result.
 
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
+    Returns
+    -------
+    coefs : ndarray
+        Product coefficient matrix.
+    delays : ndarray
+        Product delay vector.
     """
     n1, m1 = coefs1.shape # ndelays x degree*
     n2, m2 = coefs2.shape

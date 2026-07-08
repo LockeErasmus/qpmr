@@ -11,19 +11,23 @@ import numpy.typing as npt
 from qpmr.numerical_methods import newton, secant
 
 def _spectral_norms(coefs: npt.NDArray, delays: npt.NDArray) -> npt.NDArray:
-    """ Calculate spectral norm associated with polynomials
-    
-    Args:
-        coefs (array): matrix definition of polynomial coefficients (each row
-            represents polynomial coefficients corresponding to delay)
-        delays (array): vector definition of associated delays (each delay
-            corresponds to row in `coefs`)
-    
-    Returns:
-        norms (array): vector of spectral norms associated to polynomials
+    """Compute spectral norms of polynomial factors in a quasi-polynomial.
 
-    Notes:
-        1. assumes quasipolynomial is in minimal, sorted and normalized form
+    Parameters
+    ----------
+    coefs : ndarray
+        Normalized, compressed coefficient matrix.
+    delays : ndarray
+        Associated delays.
+
+    Returns
+    -------
+    norms : ndarray
+        Spectral norm per delay row.
+
+    Notes
+    -----
+    Assumes the quasi-polynomial is in minimal sorted normalized form.
     """
     
     norms = np.zeros_like(delays, dtype=float)
@@ -59,9 +63,7 @@ def theta_grid_generator(m: int, n_grid_points:int=10):
         yield vec
 
 def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: int):
-    """ TODO does not work this function properly
-    coefs: vector representing coefficients of DIFF equation
-    """
+    """Evaluate neutral-part envelope coefficient at a complex point."""
     # assumes non-zero real vector p with at least 2 elements
     # vector of delays [0, tau1, tau2, ...]
     # x complex scalar, n >> 0, n has to be even !!!
@@ -81,16 +83,32 @@ def _coef_neutral_part(coefs: npt.NDArray, delays: npt.NDArray, x: complex, n: i
     return 1.0 / fval_star
 
 def _neutral_envelope_real_axis_crossing(norms, ndiff_coefs, ndiff_delays, **kwargs):
-    """TODO"""
+    """Find real-axis crossing of the neutral spectral envelope."""
     f = lambda x: x - _coef_neutral_part(ndiff_coefs, ndiff_delays, x, n=kwargs.get("n", 10)) * np.inner(norms, np.exp(-x*ndiff_delays))
     x_star, converged = secant(f, x0=kwargs.get("x0", 0.0), x1=kwargs.get("x1", 1.0), tol=kwargs.get("tol", 1e-6), max_iter=kwargs.get("max_iter", 100))
     return 1.0 # TODO
 
 def _envelope_real_axis_crossing(spectral_norms: npt.NDArray, delays: npt.NDArray, **newton_kwargs):
-    """
-    TODO
-    
+    """Find where the retarded spectral envelope crosses the real axis.
 
+    Parameters
+    ----------
+    spectral_norms : ndarray
+        Spectral norms of polynomial factors.
+    delays : ndarray
+        Associated delays.
+    **newton_kwargs
+        Passed to :func:`qpmr.numerical_methods.newton`.
+
+    Returns
+    -------
+    x_star : float
+        Real part of the crossing.
+
+    Raises
+    ------
+    ValueError
+        If Newton's method does not converge.
     """
     f = lambda x: x - np.inner(spectral_norms, np.exp(-x*delays))
     f_prime = lambda x: 1 - np.inner(-delays * spectral_norms, np.exp(-x*delays))
@@ -108,10 +126,6 @@ def _envelope_imag_axis_crossing(spectral_norms: npt.NDArray) -> float:
 def _envelope_eval(real: npt.NDArray, norms: npt.NDArray, delays: npt.NDArray):
     return np.sqrt( np.square(np.sum(np.exp(-real[:, None] * delays[None, :]) * norms[None, :], axis=1)) - np.square(real) )
 
-
 def envelope_real_axis_crossing(coefs, delays):
-    """
-    """
-
-    # TODO: coefs and delays are compressed and normalized and neutral or retarded
-    pass
+    """Public API for real-axis envelope crossing (not yet implemented)."""
+    raise NotImplementedError("Not yet implemented")

@@ -8,7 +8,18 @@ from typing import Callable
 
 
 def matplotlib_axes_default(f: Callable):
-    """ TODO """
+    """Decorator that creates a matplotlib ``Axes`` when ``ax`` is omitted.
+
+    Parameters
+    ----------
+    f : callable
+        Plot function whose last keyword may be ``ax``.
+
+    Returns
+    -------
+    wrapper : callable
+        Wrapped function that supplies a default axes.
+    """
     def wrapper(*args, **kwargs):
         ax = kwargs.pop("ax", None)
         if ax is None:

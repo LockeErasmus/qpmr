@@ -13,9 +13,7 @@ import numpy.typing as npt
 logger = logging.getLogger(__name__)
 
 def _newton_scalar(f: Callable, f_prime: Callable, x0: float | complex, m: float=1.0, tol: float=1e-8, max_iter: int=100):
-    """ TODO
-    
-    """
+    """Scalar Newton iteration for a single root."""
     x = x0
     for i in range(max_iter):
         fval = f(x)
@@ -40,15 +38,19 @@ def _newton_scalar(f: Callable, f_prime: Callable, x0: float | complex, m: float
     return x, False
 
 def _newton_array(f: Callable, f_prime: Callable, x0: npt.NDArray, m: npt.NDArray=1.0, tol: float=1e-8, max_iter: int=100):
-    """ Performs Newton method element-wise
+    """Element-wise Newton iteration on an array of initial guesses.
 
-    Args:
-        m (): multiplicity of roots
-    
-    Stopping conditions:
-        1. `tol` is smaller then the largest `step`
-    
-    TODO
+    Parameters
+    ----------
+    m : ndarray, optional
+        Multiplicity factor per element for quadratic convergence.
+
+    Returns
+    -------
+    x : ndarray
+        Updated approximations.
+    converged : bool
+        ``True`` if all elements converged within tolerance.
     """
     x = np.copy(x0)
     for i in range(max_iter):
@@ -70,26 +72,30 @@ def _newton_array(f: Callable, f_prime: Callable, x0: npt.NDArray, m: npt.NDArra
     logger.warning(f"Numerical Newton did not converged in {max_iter} steps, last MAX(|res|) = {max_res}")
     return x, False
 
-def newton(f: Callable, f_prime: Callable, x0: float | npt.NDArray, m: float | npt.NDArray=1.0, tol: float=1e-6, max_iter: int=100) -> float:
-    """ Attemts to approximate solution of f(x)=0 via Newton's method
+def newton(f: Callable, f_prime: Callable, x0: float | npt.NDArray, m: float | npt.NDArray=1.0, tol: float=1e-6, max_iter: int=100) -> tuple[float | complex | npt.NDArray, bool]:
+    """Attempt to solve :math:`f(x) = 0` via Newton's method.
 
-    Args:
-        f (callable): function f(x)
-        f_prime (callable): derivative of f(x)
-        x0 (float | array): initial guess for solution of f(x)=0
-        m (float | array): multiplicity to recover quadratic convergence,
-            default 1.0
-        tol (float): positive number which defines stopping criteria
-            |f(x)| < eps, default 1e-6
-        max_iter (int): maximum number of iterations, default 100
+    Parameters
+    ----------
+    f : callable
+        Function to find a root of.
+    f_prime : callable
+        Derivative of ``f``.
+    x0 : float or ndarray
+        Initial guess(es) for the root.
+    m : float or ndarray, optional
+        Root multiplicity factor for quadratic convergence. Default is 1.0.
+    tol : float, optional
+        Stopping tolerance on ``|f(x)|`` and step size. Default is 1e-6.
+    max_iter : int, optional
+        Maximum number of iterations. Default is 100.
 
-    Returns:
-        tuple containing
-
-        - x (ndarray): roots with increased precission
-        - converged (bool): True if successful, False otherwise
-
-    
+    Returns
+    -------
+    x : float, complex, or ndarray
+        Approximate root(s).
+    converged : bool
+        ``True`` if the method converged within ``max_iter`` iterations.
     """
     if isinstance(x0, (float, int)):
         return _newton_scalar(f, f_prime, x0, m=m, tol=tol, max_iter=max_iter)
@@ -99,21 +105,28 @@ def newton(f: Callable, f_prime: Callable, x0: float | npt.NDArray, m: float | n
         raise NotImplementedError(f"Not implemented")
 
 def numerical_newton(func: Callable, x0: npt.NDArray, tolerance: float=1e-7, max_iterations: int=100) -> tuple[npt.NDArray, bool]:
-    """ Numerical newton method
-    
-    Implementation of original numerical method from QPmR v2
+    """Vectorized Newton refinement (QPmR v2 compatibility).
 
-    Args:
-        func (callable): vectorized quasi-polynomical function which maps Complex -> Complex
-        x0 (ndarray): initial guesses for roots
-        tolerance (float): required tolerance, default 1e-7
-        max_iterations (int): maximum iterations, default 100
+    Uses central finite differences for the derivative when no analytic
+    ``f_prime`` is supplied.
 
-    Returns:
-        tuple containing
+    Parameters
+    ----------
+    func : callable
+        Vectorized complex function.
+    x0 : ndarray
+        Initial root guesses.
+    tolerance : float, optional
+        Convergence tolerance. Default is 1e-7.
+    max_iterations : int, optional
+        Maximum iterations. Default is 100.
 
-        - x (ndarray): roots with increased precission
-        - converged (bool): True if successful, False otherwise
+    Returns
+    -------
+    x : ndarray
+        Refined roots.
+    converged : bool
+        Whether convergence was achieved for all elements.
     """
     eps = tolerance * 0.1 # epsilon TODO why 0.1 - just taken from original implementation
     f_prime = lambda s: (func(s + eps) - func(s - eps)) / 2. / eps

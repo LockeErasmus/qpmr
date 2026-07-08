@@ -39,19 +39,26 @@ def _roots_matlab(roots: npt.NDArray, ax: Axes=None, **kwargs):
 # def _roots_tds()
 
 def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
-    """ Plots roots ('x') into complex plane
+    """Plot roots in the complex plane.
 
-    Roots have different color stable - green, margin of stability - blue
-    unstable - red
-    
-    Args:
-        roots (array): array of complex numbers, if None treated as empty array
-        ax (Axes): matplotlib Axes object, if None new figure, ax is created
-        **kwargs:
-            tol (float): tolerance for assuming Re(root) ~ 0, defgault 1e-10
+    Stable roots (negative real part) are green, unstable red, near imaginary
+    axis blue. Style ``'matlab'`` uses filled circles.
 
-    Returns:
-        ax (Axes): matplotlib Axes object
+    Parameters
+    ----------
+    roots : ndarray
+        Complex roots to plot.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
+    tol : float, optional
+        Tolerance for classifying real part as zero (default 1e-10).
+    style : str, optional
+        Plot style, ``'matlab'`` or default cross markers.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the plot.
     """
 
     tol = kwargs.get("tol", 1e-10)
@@ -109,18 +116,21 @@ def roots(roots: npt.NDArray, ax: Axes=None, **kwargs):
             return ax
 
 def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
-    """ Plots poles ('x', red) and zeros ('o', blue) to one plot
+    """Plot poles and zeros on one complex-plane axes.
 
-    Args:
-        poles (array): array of complex numbers, if None treated as empty array
-        zeros (array): array of complex numbers, if None treated as empty array
-        ax (Axes): matplotlib Axes object to plot to, default None, if None
-            creates a new one
-        **kwargs:
-            ---
+    Parameters
+    ----------
+    poles : ndarray
+        Complex poles (red ``x`` markers).
+    zeros : ndarray
+        Complex zeros (blue ``o`` markers).
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
 
-    Returns:
-        ax (Axes): matplotlib Axes object
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the plot.
     """
     if ax is None:
         _, ax = plt.subplots()
@@ -139,15 +149,21 @@ def pole_zero(poles: npt.NDArray, zeros: npt.NDArray, ax: Axes=None, **kwargs):
     return ax
     
 def qpmr_contour(roots: npt.NDArray, meta:QpmrInfo=None, ax: Axes=None, **kwargs):
-    """ Root plot with real and imaginary 0-level curves
+    """Plot roots with real and imaginary zero-level contours from QPmR metadata.
 
-    Args:
-        roots (array): array of complex roots
-        ax (Axes): matplotlib Axes object, if None new figure, ax is created
-        meta (QpmrInfo): metadata obtained via qpmr(.)
-    
-    Returns:
-        ax (Axes): matplotlib Axes object
+    Parameters
+    ----------
+    roots : ndarray
+        Complex roots.
+    meta : QpmrInfo, optional
+        Metadata from :func:`qpmr.qpmr` containing grid and contour data.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the plot.
     """
     if ax is None:
         _, ax = plt.subplots()
@@ -174,7 +190,22 @@ def qpmr_contour(roots: npt.NDArray, meta:QpmrInfo=None, ax: Axes=None, **kwargs
     return ax
 
 def argument_principle_circle(roots: npt.NDArray, ds: float, ax: Axes=None):
-    """ TODO """
+    """Draw small circles around roots for multiplicity visualization.
+
+    Parameters
+    ----------
+    roots : ndarray
+        Complex roots.
+    ds : float
+        Grid step; circle radius is ``ds / 20``.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with circles added.
+    """
 
     alpha=0.3
     color="red"

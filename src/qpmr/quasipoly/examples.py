@@ -19,30 +19,32 @@ def mazanti2021multiplicity(kappa: float=1.964, k: float=-0.67036, tau0: float=0
     """ Example obtained from article [1], for the default setting, there is 
     dominant real pole of multiplicity 6: s = −6.021
 
-    Args:
-        kappa (float): parameter from article
-        k (float): parameter from article
-        tau0 (float): delay from article, should be positive
-        tau1 (float): delay from article, should be positive
+    Parameters
+    ----------
+    kappa : float, optional
+        Model parameter from the article (default 1.964).
+    k : float, optional
+        Model parameter (default -0.67036).
+    tau0, tau1 : float, optional
+        Positive delays (default 0.33 each).
 
-    Returns:
-        tuple containing:
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
 
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
-    
-    
-    [1] MAZANTI, Guilherme; BOUSSAADA, Islam; NICULESCU, Silviu-Iulian.
-    Multiplicity-induced-dominancy for delay-differential equations of retarded
-    type. Journal of Differential Equations, 2021, 286: 84-118.
+    References
+    ----------
+    .. [1] Mazanti, Guilherme, Islam Boussaada, and Silviu-Iulian Niculescu.
+           Multiplicity-induced-dominancy for delay-differential equations of
+           retarded type. Journal of Differential Equations, 286 (2021): 84-118.
 
-    Notes:
-        - Parameters calculated corresponding to Proposition 6.1,
-          Eq. (6.10a) - (6.10f), see notes in code
-        - have in mind that due to rounding, it is expected that the poles are
-          distributed on the disk around -6.021
+    Notes
+    -----
+    Default parameters yield a dominant real pole of multiplicity 6 near
+    ``s = -6.021``. Parameters follow Proposition 6.1, Eq. (6.10a)--(6.10f).
     """
     tau = tau0 + tau1
     r0 = -3. - (9)**(1/3.) + (3)**(1/3.)
@@ -69,54 +71,25 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
     simultaneous periodic disturbance rejection and input-delay compensation.
     Mechanical Systems and Signal Processing, 2023, 197: 110364.
 
-    Args:
-        return_denum (bool): if True, returns quasipolynomial representing
-            denumerator of transfer function, set to False to obtain numerator,
-            default True
+    Parameters
+    ----------
+    return_denum : bool, optional
+        If ``True`` (default), return the denominator quasi-polynomial; if
+        ``False``, return the numerator.
 
-    Returns:
-        tuple containing:
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
 
-            - coefs (array): matrix definition of polynomial coefficients (each row
-                represents polynomial coefficients corresponding to delay)
-            - delays (array): vector definition of associated delays (each delay
-                corresponds to row in `coefs`)
-    
-    Additional commentary:
-
-    Sensitivity is given by Eq. (12) as
-
-                    1 - C(s) * G_m(s) * exp(-s*tau_m) 
-    S(s) = -------------------------------------------------------------
-            1 + C(s) * ( G_i(s) * exp(-s*tau) - G_m(s) * exp(-s*tau_m))
-
-    we are interested in showing zeros and poles of S(s).
-    
-    The model is considered in the form of non delayd LTI as
-
-                    K
-        Gm(s) = ---------
-                T*s + 1
-
-    Plant Gi(s) was identified as a non delayed LTI of 3rd order and controller
-    
-    C(s) is given by
-
-                  1
-        C(s) = --------- * D(s)
-                Gm(s)
-    with:
-                1
-        D(s) = --- (a_0 + a_1 * exp(-s * theta) + ... a_N * exp(-s * N * theta))
-                s
-
-    To obtain same results as in article, use:
-    
-    >>> region = (-12, 1, -0.1, 5000)
-
-    Numerator is expected to have purely imaginary zeros:
-
-    >>> expected_zeros = np.array([4,8,12,16,20,24,28,32]) * 1j * 2 * np.pi
+    Notes
+    -----
+    Sensitivity function from Yuksel et al. (2023), Eq. (12). Plant ``Gi(s)``
+    is a non-delayed third-order LTI; controller ``C(s) = D(s)/Gm(s)`` with
+    distributed delay ``D(s)``. For article-matching results use
+    ``region = (-12, 1, -0.1, 5000)``.
     """
     # Gi - identified system
     Gi_num = np.array([[1.816*1e6, 1.055*1e5, 2286.]])
@@ -176,13 +149,29 @@ def yuksel2023distributed(return_denum: bool=True) -> tuple[npt.NDArray, npt.NDA
         return tf.num.coefs, tf.num.delays
 
 def vyhlidal2014qpmr_01() -> tuple[npt.NDArray, npt.NDArray]:
-    """ TODO """
+    """Vyhlídal & Zítek (2009) Example 1: :math:`h(s) = s + e^{-s}`.
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector ``[0, 1]``.
+    """
     delays = np.array([0, 1.])
     coefs = np.array([[0, 1],[1, 0.]])
     return coefs, delays
 
 def vyhlidal2014qpmr_02() -> tuple[npt.NDArray, npt.NDArray]:
-    """ TODO """
+    """Vyhlídal & Zítek (2009) large-scale retarded benchmark (9 delays).
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
+    """
     delays = np.array([24.99, 23.35, 19.9, 18.52, 13.32, 10.33, 8.52, 4.61, 0.0])
     coefs = np.array([[51.7, 0, 0, 0, 0, 0, 0, 0 , 0],
                       [1.5, -0.1, 0.04, 0.03, 0, 0, 0, 0, 0],
@@ -196,7 +185,15 @@ def vyhlidal2014qpmr_02() -> tuple[npt.NDArray, npt.NDArray]:
     return coefs, delays
 
 def vyhlidal2014qpmr_03() -> tuple[npt.NDArray, npt.NDArray]:
-    """ TODO """
+    """Vyhlídal & Zítek (2009) neutral quasi-polynomial benchmark.
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
+    """
     delays = np.array([0.0, 1.5, 2.2, 4.3, 6.3])
     coefs = np.array([[2.1, 5, 0, 0.2, 1],
                       [0, -2.1, 0, 0, 0.5],
@@ -206,6 +203,25 @@ def vyhlidal2014qpmr_03() -> tuple[npt.NDArray, npt.NDArray]:
     return coefs, delays
 
 def vyhlidal2014qpmr(example: str | int=1):
+    """Dispatch Vyhlídal & Zítek (2009) benchmark examples 1--3.
+
+    Parameters
+    ----------
+    example : int or str
+        Example number (1, 2, or 3).
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
+
+    Raises
+    ------
+    ValueError
+        If ``example`` is not 1, 2, or 3.
+    """
     match int(example):
         case 1:
             return vyhlidal2014qpmr_01()
@@ -218,12 +234,26 @@ def vyhlidal2014qpmr(example: str | int=1):
             raise ValueError(f"Example '{example}' is not supported. Supported list of examples: {', '.join(allowed_examples)}")
 
 def appeltans2023analysis(example: str=None, **kwargs):
-    """ TODO 
-    
-    Example 2.6:
-        **kwargs:
-            tau2 (float): delay tau2, should be positive, default 2.0   
-    
+    """Benchmark quasi-polynomials from Appeltans (2023) analysis.
+
+    Parameters
+    ----------
+    example : str, optional
+        Example identifier. Currently only ``"2.6"`` is supported.
+    tau2 : float, optional
+        For example 2.6, second delay value (default 2.0).
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector.
+
+    Raises
+    ------
+    ValueError
+        If ``example`` is not supported.
     """
     if not isinstance(example, str):
         example = str(example)
@@ -243,12 +273,42 @@ def appeltans2023analysis(example: str=None, **kwargs):
     return coefs, delays
 
 def qp_from_roots(roots: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
-    """ Constructs quasi-polynomial from roots and multiplicities
+    """Build an ordinary polynomial quasi-polynomial from its roots.
+
+    Parameters
+    ----------
+    roots : ndarray
+        Complex roots (with multiplicity implied by repetition).
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix (single delay row).
+    delays : ndarray
+        Delay vector ``[0]``.
     """
     coefs = np.polynomial.polynomial.polyfromroots(np.asarray(roots))
     return np.real(coefs[None,:]), np.array([0.])
 
 def self_inverse_polynomial(center: float=0., radius: float=1.0, degree: int=6):
+    """Self-inverse polynomial benchmark on a circle.
+
+    Parameters
+    ----------
+    center : float, optional
+        Center of the circle in the complex plane. Default is 0.
+    radius : float, optional
+        Circle radius. Default is 1.
+    degree : int, optional
+        Polynomial degree. Default is 6.
+
+    Returns
+    -------
+    coefs : ndarray
+        Coefficient matrix.
+    delays : ndarray
+        Delay vector ``[0]``.
+    """
     coefs = ( (1 / radius * np.poly1d([1, -center])) ** degree - 1 ).coeffs[None, ::-1]
     delays = np.array([0.])
     return coefs, delays

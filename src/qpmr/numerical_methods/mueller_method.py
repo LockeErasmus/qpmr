@@ -13,9 +13,7 @@ import numpy.typing as npt
 logger = logging.getLogger(__name__)
 
 def _mueller_scalar(f: Callable, f_prime: Callable, x0: float | complex, m: float=1.0, tol: float=1e-8, max_iter: int=100):
-    """ TODO
-    
-    """
+    """Scalar Müller iteration (not yet implemented)."""
     raise NotImplementedError
 
 def _mueller_array(f: Callable, x0: npt.NDArray, x1: npt.NDArray, x2: npt.NDArray, tol: float=1e-8, max_iter: int=100):
@@ -50,26 +48,38 @@ def _mueller_array(f: Callable, x0: npt.NDArray, x1: npt.NDArray, x2: npt.NDArra
     logger.warning(f"Mueller's method did not converged in {max_iter} steps, last MAX(|res|) = {max_res}")
     return x2, False
 
-def mueller(f: Callable, x0: float | npt.NDArray, x1: float | npt.NDArray=None, x2: float | npt.NDArray=None, tol: float=1e-6, max_iter: int=100) -> float:
-    """ Attemts to approximate solution of f(x)=0 via Newton's method
+def mueller(f: Callable, x0: float | npt.NDArray, x1: float | npt.NDArray=None, x2: float | npt.NDArray=None, tol: float=1e-6, max_iter: int=100) -> tuple[float | complex | npt.NDArray, bool]:
+    """Attempt to solve :math:`f(x) = 0` via Müller's method.
 
-    Args:
-        f (callable): function f(x)
-        f_prime (callable): derivative of f(x)
-        x0 (float | array): initial guess for solution of f(x)=0
-        m (float | array): multiplicity to recover quadratic convergence,
-            default 1.0
-        tol (float): positive number which defines stopping criteria
-            |f(x)| < eps, default 1e-6
-        max_iter (int): maximum number of iterations, default 100
+  Uses a quadratic interpolating polynomial through three successive iterates.
+  Scalar inputs are not yet implemented; array inputs are solved element-wise.
 
-    Returns:
-        tuple containing
+    Parameters
+    ----------
+    f : callable
+        Function to find a root of.
+    x0 : float or ndarray
+        First initial guess.
+    x1 : float or ndarray, optional
+        Second initial guess. If ``None``, obtained by perturbing ``x0``.
+    x2 : float or ndarray, optional
+        Third initial guess. If ``None``, obtained by one secant update.
+    tol : float, optional
+        Stopping tolerance. Default is 1e-6.
+    max_iter : int, optional
+        Maximum number of iterations. Default is 100.
 
-        - x (ndarray): roots with increased precission
-        - converged (bool): True if successful, False otherwise
+    Returns
+    -------
+    x : ndarray
+        Approximate root(s).
+    converged : bool
+        ``True`` if the method converged within ``max_iter`` iterations.
 
-    
+    Raises
+    ------
+    NotImplementedError
+        If ``x0`` is a scalar.
     """
     if isinstance(x0, (float, int)):
         #return _newton_scalar(f, f_prime, x0, m=m, tol=tol, max_iter=max_iter)

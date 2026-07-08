@@ -24,7 +24,7 @@ sys.path.insert(0, SRC_PATH)
 project = 'qpmr'
 author = 'Adam Peichl'
 copyright = '2026, Adam Peichl'
-release = '0.0.1'
+release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 

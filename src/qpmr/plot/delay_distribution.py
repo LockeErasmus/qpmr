@@ -13,16 +13,23 @@ from . import utils
 from qpmr.distribution.envelope_curve import _spectral_norms, _envelope_eval, _envelope_real_axis_crossing
 
 def spectrum_distribution_diagram(x, y, mask, ax: Axes=None) -> Axes:
-    """ Plots delay distribution
+    """Plot a spectrum distribution diagram.
 
-    Args:
-        x (array): vector of theta_i = tau_max - tau_i sorted in ascending order
-        y (array): vector of correspoding polynomial orders (associated to theta_i from `x`)
-        mask (array): mask defining envelope, same length as `x` and `y`
-        ax (Axes): matplotlib Axes object, if None new is created
+    Parameters
+    ----------
+    x : ndarray
+        Theta coordinates ``tau_max - tau_i``.
+    y : ndarray
+        Polynomial degrees at each point.
+    mask : ndarray
+        Boolean mask selecting envelope vertices.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
 
-    Returns:
-        ax (Axes): matplotlib Axes object
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the diagram.
     """
     if ax is None:
         _, ax = plt.subplots()
@@ -37,10 +44,23 @@ def spectrum_distribution_diagram(x, y, mask, ax: Axes=None) -> Axes:
     return ax
 
 def chain_asymptotes(mi: npt.NDArray, abs_wk: list[npt.NDArray], region: tuple, ax: Axes=None) -> Axes:
-    """ TODO
-    
-    TODO allow custom beta
-    beta = np.linspace(region[0], region[1], 1000)
+    """Plot zero-chain asymptotic curves in a region.
+
+    Parameters
+    ----------
+    mi : ndarray
+        Segment slopes from :func:`qpmr.chain_asymptotes`.
+    abs_wk : list of ndarray
+        Unique root magnitudes per segment.
+    region : tuple of float
+        Plot bounds ``(Re_min, Re_max, Im_min, Im_max)``.
+    ax : Axes, optional
+        Matplotlib axes. Created if ``None``.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with asymptotic curves.
     """
     if ax is None:
         _, ax = plt.subplots()
@@ -58,7 +78,24 @@ def chain_asymptotes(mi: npt.NDArray, abs_wk: list[npt.NDArray], region: tuple, 
 
 @utils.matplotlib_axes_default
 def spectrum_envelope(norms: npt.NDArray, delays: npt.NDArray, region: tuple, ax: Axes) -> Axes:
-    
+    """Plot the spectral envelope curve over a region.
+
+    Parameters
+    ----------
+    norms : ndarray
+        Spectral norms of polynomial factors.
+    delays : ndarray
+        Associated delays.
+    region : tuple of float
+        Plot bounds ``(Re_min, Re_max, Im_min, Im_max)``.
+    ax : Axes
+        Matplotlib axes to draw on.
+
+    Returns
+    -------
+    ax : Axes
+        Matplotlib axes with the envelope.
+    """
     re_max = _envelope_real_axis_crossing(norms, delays)
     
     x = np.linspace(region[0], min(region[1], re_max), 1000)
