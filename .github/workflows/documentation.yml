@@ -18,7 +18,7 @@ jobs:
 
       - name: Install QPmR package
         run: |
-          pip install .
+          pip install .[plot]
 
       - name: Install documentation dependencies
         run: |
