@@ -72,6 +72,24 @@ def _neutral_strip_bounds(diff_coefs, diff_delays, **kwargs) -> tuple[float, flo
     lb = -_safe_upper_bound(diff_coefs[:-1]/diff_coefs[-1], -diff_delays[:-1] + diff_delays[-1], 0, 1e-6, 100)
     return lb, ub
 
+<<<<<<< HEAD
+=======
+# def _neutral_strip_bounds(ndiff_coefs, ndiff_delays, **kwargs) -> tuple[float, float]:
+#     """
+#     Docstring for delay_difference_eq_bounds
+
+#     :param ndiff_coefs: Description
+#     :param ndiff_delays: Description
+#     :param kwargs: Description
+
+#     assumes coefs, delays define normalized delay-difference equation
+#     returns bounds for vertical strip associated with neutral segment
+
+#     """
+#     ub = _safe_upper_bound(ndiff_coefs, ndiff_delays, 0, 1e-6, 100)
+#     lb = -_safe_upper_bound(ndiff_coefs[:-1]/ndiff_coefs[-1], -ndiff_delays[:-1] + ndiff_delays[-1], 0, 1e-6, 100)
+#     return lb, ub
+>>>>>>> 31aacc7914401f5485376270e1e85431cb3672e4
 
 def safe_upper_bound_diff(coefs, delays, **kwargs):
     """Upper bound on the real part from the delay-difference equation.
